@@ -1,0 +1,162 @@
+{
+  "title": "Rift Valley Fever Virus Genomic Surveillance",
+  "maintainers": [
+    {"name": "Your Name", "url": "https://your-website.com"}
+  ],
+  "build_url": "https://github.com/yourusername/rvf-nextstrain",
+  "colorings": [
+    {
+      "key": "segment",
+      "title": "Genome Segment",
+      "type": "categorical",
+      "scale": [
+        ["L", "#8F2727"],
+        ["M", "#3F548F"],
+        ["S", "#458F3F"]
+      ]
+    },
+    {
+      "key": "country",
+      "title": "Country",
+      "type": "categorical"
+    },
+    {
+      "key": "region",
+      "title": "Region",
+      "type": "categorical"
+    },
+    {
+      "key": "host",
+      "title": "Host",
+      "type": "categorical",
+      "scale": [
+        ["Homo sapiens", "#4C5270"],
+        ["Bos taurus", "#F0A868"],
+        ["Ovis aries", "#D9B5A8"],
+        ["Capra hircus", "#CE9889"],
+        ["Aedes", "#85A389"],
+        ["Culex", "#ADC4CE"],
+        ["Other", "#B3B3B3"]
+      ]
+    },
+    {
+      "key": "host_category",
+      "title": "Host Category",
+      "type": "categorical",
+      "scale": [
+        ["Human", "#4C5270"],
+        ["Livestock", "#F0A868"],
+        ["Vector", "#85A389"],
+        ["Wildlife", "#ADC4CE"],
+        ["Other", "#B3B3B3"]
+      ]
+    },
+    {
+      "key": "outbreak_associated",
+      "title": "Outbreak Associated",
+      "type": "categorical",
+      "scale": [
+        ["yes", "#FF5757"],
+        ["no", "#9E9E9E"]
+      ]
+    },
+    {
+      "key": "clade_membership",
+      "title": "Phylogenetic Lineage",
+      "type": "categorical"
+    },
+    {
+      "key": "num_date",
+      "title": "Sampling Date",
+      "type": "continuous"
+    },
+    {
+      "key": "gt",
+      "title": "Genotype",
+      "type": "categorical"
+    }
+  ],
+  "geo_resolutions": [
+    "region",
+    "country",
+    "division"
+  ],
+  "filters": [
+    "segment",
+    "region",
+    "country",
+    "division",
+    "host",
+    "host_category",
+    "outbreak_associated",
+    "clade_membership",
+    "gt",
+    "author"
+  ],
+  "panels": [
+    "tree",
+    "map",
+    "entropy",
+    "frequencies"
+  ],
+  "display_defaults": {
+    "map_triplicate": true,
+    "color_by": "segment",
+    "geo_resolution": "country",
+    "distance_measure": "div",
+    "transmission_lines": false
+  },
+  "entropy": {
+    "title": "Nucleotide diversity",
+    "min": 0,
+    "max": 0.15
+  },
+  "metadata": [
+    {
+      "name": "segment",
+      "type": "categorical",
+      "description": "Genome segment of RVF virus (L, M, or S)"
+    },
+    {
+      "name": "host",
+      "type": "categorical",
+      "description": "Host species from which the sample was collected"
+    },
+    {
+      "name": "host_category",
+      "type": "categorical",
+      "description": "Broader category of host (Human, Livestock, Vector, Wildlife, Other)"
+    },
+    {
+      "name": "outbreak_associated",
+      "type": "categorical",
+      "description": "Whether the sequence is associated with a documented outbreak"
+    }
+  ],
+  "annotations": {
+    "nuc": [
+      {
+        "start": 1,
+        "end": 6404,
+        "strand": "+",
+        "label": "L segment",
+        "segment": "L"
+      },
+      {
+        "start": 1,
+        "end": 3885,
+        "strand": "+",
+        "label": "M segment",
+        "segment": "M"
+      },
+      {
+        "start": 1,
+        "end": 1690,
+        "strand": "+",
+        "label": "S segment",
+        "segment": "S"
+      }
+    ]
+  },
+  "description": "Rift Valley Fever virus is a mosquito-borne zoonotic pathogen causing severe disease in livestock and humans across Africa and parts of the Middle East. This genomic surveillance tracks the evolution and spread of RVF across different regions, hosts, and the three viral segments (L, M, S). The dashboard enables analysis of geographical spread, host switching events, and genetic diversity across the tri-segmented genome."
+}
