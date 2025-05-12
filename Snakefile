@@ -78,12 +78,15 @@ rule download_data:
     script:
         "scripts/run_download.py"
 
-# Clean and validate metadata
+# Clean, validate and standardize metadata
 rule prepare_metadata:
     input:
-        metadata = f"data/metadata/raw/{output_prefix}_metadata.tsv"
+        metadata = f"data/metadata/raw/{output_prefix}_metadata.tsv",
+        schema = "config/metadata_schema.json",
+        lat_longs = config.get("lat_longs_path", "config/lat_longs.tsv")
     output:
-        metadata = f"data/metadata/{output_prefix}_metadata.tsv"
+        metadata = f"data/metadata/{output_prefix}_metadata.tsv",
+        report = f"data/metadata/{output_prefix}_validation_report.json"
     log:
         f"logs/prepare_metadata_{output_prefix}.log"
     shell:
@@ -91,6 +94,9 @@ rule prepare_metadata:
         python scripts/prepare_metadata.py \
             {input.metadata} \
             {output.metadata} \
+            --schema {input.schema} \
+            --lat-longs {input.lat_longs} \
+            --report {output.report} \
             > {log} 2>&1
         """
 
