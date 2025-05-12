@@ -74,6 +74,15 @@ if %ERRORLEVEL% neq 0 (
     
     :: Generate build summary
     python scripts/generate_build_summary.py >> %LOG_FILE% 2>&1
+
+    :: Create a backup after successful run
+    echo Creating backup of critical data... >> %LOG_FILE%
+    python scripts\backup_data.py backup --name "scheduled_win" >> %LOG_FILE% 2>&1
+    if %ERRORLEVEL% neq 0 (
+        echo WARNING: Backup creation failed with code %ERRORLEVEL% >> %LOG_FILE%
+    ) else (
+        echo Backup created successfully >> %LOG_FILE%
+    )
 )
 
 :exit_script

@@ -1,0 +1,26 @@
+{
+  "critical_data": [
+    "data/sequences/raw",
+    "data/metadata/raw",
+    "data/metadata/*.tsv"
+  ],
+  "critical_configs": [
+    "config/*.yaml",
+    "config/*.json",
+    "config/*.tsv",
+    "pathogens/*/config/*.yaml",
+    "pathogens/*/config/*.json",
+    "pathogens/*/config/*.tsv"
+  ],
+  "output_dirs": [
+    "results/auspice",
+    "results/qc_reports"
+  ],
+  "backup_dir": "backups",
+  "retention_days": 30,
+  "retention_count": 10,
+  "compression": true,
+  "backup_outputs": true,
+  "remote_sync": false,
+  "remote_path": null
+}

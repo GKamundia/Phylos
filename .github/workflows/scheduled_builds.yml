@@ -127,5 +127,33 @@ jobs:
           path: build_summary.md
           retention-days: 7
 
+  data-backup:
+    name: Backup Critical Data
+    needs: build-analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: nextstrain-results
+
+      - name: Install dependencies
+        run: |
+          pip install pyyaml
+
+      - name: Run backup
+        run: |
+          python scripts/backup_data.py backup --name "scheduled_run"
+
+      - name: Upload backup archive
+        uses: actions/upload-artifact@v3
+        with:
+          name: data-backup
+          path: backups/*.tar.gz
+          retention-days: 14
+
   # Deployment job would be added here if needed
   # Examples: Deploy to AWS S3, GitHub Pages, etc.

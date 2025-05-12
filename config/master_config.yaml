@@ -102,3 +102,17 @@ common:
     monitoring_dashboard:
       mem_mb: 2000
       runtime: 10
+
+  # Backup configuration
+  backup:
+    enabled: true
+    directory: "backups"
+    retention_days: 30
+    retention_count: 10
+    compression: true
+    max_age: 7 # Maximum acceptable age in days for monitoring
+    alert_email: "your.email@example.com"
+    schedule:
+      after_build: true
+      weekly_full: true
+      weekly_day: "Sunday"
