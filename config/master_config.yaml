@@ -56,7 +56,9 @@ common:
     use_checkpoints: true # Enable checkpoint-based workflow control
     save_intermediates: true # Save intermediate files for debugging
     notification: # Notification settings for automated runs
-      { enabled: false, email: "", slack_webhook: "" }
+      enabled: true
+      email: "your.email@example.com" # Optional: email address
+      slack_webhook: "https://hooks.slack.com/services/..." # Optional: Slack webhook URL
 
   # Resource specifications for scaling
   resources:

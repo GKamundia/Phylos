@@ -10,6 +10,7 @@ import time
 from datetime import datetime
 from pathlib import Path
 from Bio import SeqIO
+import snakemake
 
 # Access Snakemake variables
 pathogen = snakemake.params.pathogen

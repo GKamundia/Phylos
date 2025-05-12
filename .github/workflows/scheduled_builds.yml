@@ -1,0 +1,131 @@
+name: Scheduled Nextstrain Builds
+
+on:
+  # Run on a schedule (default: every Monday at 2:00 AM UTC)
+  schedule:
+    - cron: "0 2 * * 1" # Every Monday at 2:00 AM UTC
+
+  # Allow manual triggering
+  workflow_dispatch:
+    inputs:
+      run_data_only:
+        description: "Run only data acquisition"
+        required: false
+        default: false
+        type: boolean
+      pathogen:
+        description: "Pathogen to build (default: active from master_config.yaml)"
+        required: false
+        default: ""
+        type: string
+
+jobs:
+  data-acquisition:
+    name: Data Acquisition
+    runs-on: ubuntu-latest
+    container:
+      image: nextstrain/base:build-20250505T154520Z
+      volumes:
+        - ${{ github.workspace }}:/nextstrain/rvf-nextstrain
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install additional dependencies
+        run: |
+          pip install --no-cache-dir -r requirements.txt
+
+      - name: Read active pathogen from config
+        id: read-config
+        run: |
+          PATHOGEN=$(python -c "import yaml; print(yaml.safe_load(open('config/master_config.yaml'))['active_pathogen'])")
+          if [[ "${{ github.event.inputs.pathogen }}" != "" ]]; then
+            PATHOGEN="${{ github.event.inputs.pathogen }}"
+          fi
+          echo "pathogen=$PATHOGEN" >> $GITHUB_OUTPUT
+
+      - name: Run data acquisition
+        run: |
+          mkdir -p logs
+          echo "Running data acquisition for ${{ steps.read-config.outputs.pathogen }} at $(date)"
+          nextstrain build . --configfile config/master_config.yaml --until prepare_metadata
+
+      - name: Upload data for future steps
+        uses: actions/upload-artifact@v3
+        with:
+          name: nextstrain-data
+          path: |
+            data/
+            logs/download*
+            logs/prepare_metadata*
+          retention-days: 7
+
+  build-analysis:
+    name: Phylogenetic Analysis
+    needs: data-acquisition
+    # Skip this step if manual run with data-only option
+    if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.run_data_only != 'true' }}
+    runs-on: ubuntu-latest
+    container:
+      image: nextstrain/base:build-20250505T154520Z
+      volumes:
+        - ${{ github.workspace }}:/nextstrain/rvf-nextstrain
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Download data from previous step
+        uses: actions/download-artifact@v3
+        with:
+          name: nextstrain-data
+
+      - name: Install additional dependencies
+        run: |
+          pip install --no-cache-dir -r requirements.txt
+
+      - name: Read active pathogen from config
+        id: read-config
+        run: |
+          PATHOGEN=$(python -c "import yaml; print(yaml.safe_load(open('config/master_config.yaml'))['active_pathogen'])")
+          if [[ "${{ github.event.inputs.pathogen }}" != "" ]]; then
+            PATHOGEN="${{ github.event.inputs.pathogen }}"
+          fi
+          echo "pathogen=$PATHOGEN" >> $GITHUB_OUTPUT
+
+      - name: Run full build
+        run: |
+          mkdir -p logs results
+          echo "Running full analysis for ${{ steps.read-config.outputs.pathogen }} at $(date)"
+          nextstrain build . --configfile config/master_config.yaml
+
+      - name: Upload build results
+        uses: actions/upload-artifact@v3
+        with:
+          name: nextstrain-results
+          path: |
+            results/
+            logs/
+          retention-days: 7
+
+      - name: Generate build summary
+        run: |
+          echo "# Nextstrain Build Summary - $(date)" > build_summary.md
+          echo "## Build Configuration" >> build_summary.md
+          echo "- Pathogen: ${{ steps.read-config.outputs.pathogen }}" >> build_summary.md
+          echo "- Build Time: $(date)" >> build_summary.md
+          echo "## Sequence Counts" >> build_summary.md
+          python -c "import json; s=json.load(open('results/qc_reports/${{ steps.read-config.outputs.pathogen }}_qc_summary.json')); print(f'- Raw sequences: {s.get(\"sequence_counts\", {}).get(\"raw\", \"N/A\")}')" >> build_summary.md
+          python -c "import json; s=json.load(open('results/qc_reports/${{ steps.read-config.outputs.pathogen }}_qc_summary.json')); print(f'- Filtered sequences: {s.get(\"sequence_counts\", {}).get(\"filtered\", \"N/A\")}')" >> build_summary.md
+          python -c "import json; s=json.load(open('results/qc_reports/${{ steps.read-config.outputs.pathogen }}_qc_summary.json')); print(f'- QC passed sequences: {s.get(\"sequence_counts\", {}).get(\"qc_passed\", \"N/A\")}')" >> build_summary.md
+
+      - name: Upload build summary
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-summary
+          path: build_summary.md
+          retention-days: 7
+
+  # Deployment job would be added here if needed
+  # Examples: Deploy to AWS S3, GitHub Pages, etc.
