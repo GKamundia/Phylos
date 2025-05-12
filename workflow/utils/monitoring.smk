@@ -69,23 +69,47 @@ rule monitor_execution_errors:
     script:
         "../../scripts/monitoring/check_logs_for_errors.py"
 
-# Send monitoring alert
-rule send_monitoring_alert:
+# Run alert system to check for issues and send notifications
+rule run_alert_system:
     input:
         error_report = f"logs/monitoring/{output_prefix}_error_report.json",
         status = f"logs/monitoring/{output_prefix}_status.json",
         duration = f"logs/monitoring/{output_prefix}_duration_metrics.json"
     output:
-        notification = f"logs/notifications/{output_prefix}_monitoring_alert.txt"
+        alerts = f"logs/monitoring/{output_prefix}_alerts.json"
     params:
-        enabled = config.get("workflow", {}).get("notification", {}).get("enabled", False),
-        email = config.get("workflow", {}).get("notification", {}).get("email", ""),
-        slack_webhook = config.get("workflow", {}).get("notification", {}).get("slack_webhook", ""),
-        pathogen = config["pathogen"],
-        pathogen_name = config["pathogen_name"]
+        config_path = "config/master_config.yaml",
+        logs_dir = "logs"
     log:
-        f"logs/send_monitoring_alert_{output_prefix}.log"
+        f"logs/alert_system_{output_prefix}.log"
     resources:
         mem_mb = 1000
+    shell:
+        """
+        python scripts/monitoring/alert_system.py \
+            --config {params.config_path} \
+            --logs-dir {params.logs_dir} \
+            --output {output.alerts} \
+            > {log} 2>&1
+        """
+
+# Generate comprehensive monitoring dashboard
+rule generate_monitoring_dashboard:
+    input:
+        performance = f"logs/performance/{output_prefix}_performance_report.json",
+        duration = f"logs/monitoring/{output_prefix}_duration_metrics.json",
+        errors = f"logs/monitoring/{output_prefix}_error_report.json",
+        alerts = f"logs/monitoring/{output_prefix}_alerts.json",
+        summary = f"logs/summary/{output_prefix}_workflow_summary.json"
+    output:
+        dashboard = f"logs/monitoring/{output_prefix}_dashboard.html"
+    params:
+        pathogen = config["pathogen"],
+        pathogen_name = config["pathogen_name"],
+        segment_mode = segment_mode
+    log:
+        f"logs/monitoring_dashboard_{output_prefix}.log"
+    resources:
+        mem_mb = 1500
     script:
-        "../../scripts/monitoring/send_monitoring_alert.py"
+        "../../scripts/monitoring/generate_dashboard.py"

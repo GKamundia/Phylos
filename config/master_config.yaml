@@ -94,3 +94,11 @@ common:
       mem_mb: 2000
     combined_qc:
       mem_mb: 2000
+
+    # Performance monitoring resources
+    performance_report:
+      mem_mb: 2000
+      runtime: 15
+    monitoring_dashboard:
+      mem_mb: 2000
+      runtime: 10

@@ -1,165 +1,172 @@
 #!/usr/bin/env python3
 """
-Structured logging utilities for the RVF-Nextstrain pipeline
-Provides consistent formatting and logging levels across all scripts
+Enhanced logging utilities for RVF-Nextstrain project
+Provides structured logging with consistent formats and contextual information
 """
 
 import os
 import sys
 import json
 import logging
+import time
 from datetime import datetime
-from pathlib import Path
+from typing import Dict, Any, Optional, Union
 
-# Default log format with color support for terminal and structured format for files
-DEFAULT_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-JSON_FORMAT = {
-    "timestamp": "%(asctime)s",
-    "level": "%(levelname)s",
-    "name": "%(name)s",
-    "module": "%(module)s",
-    "function": "%(funcName)s",
-    "line": "%(lineno)d",
-    "message": "%(message)s"
-}
-
-# Define log levels for different types of events
-LOG_LEVELS = {
-    "DEBUG": logging.DEBUG,      # Detailed diagnostic information
-    "INFO": logging.INFO,        # Confirmation that things are working
-    "WARNING": logging.WARNING,  # Indication that something unexpected happened
-    "ERROR": logging.ERROR,      # The software has not been able to perform a task
-    "CRITICAL": logging.CRITICAL # A serious error that may prevent the program from continuing
-}
-
-class StructuredFormatter(logging.Formatter):
-    """Custom formatter for structured logs that can output both text and JSON"""
-    
-    def __init__(self, fmt=None, json_fmt=None, datefmt=None, json_output=False):
-        super().__init__(fmt, datefmt)
-        self.json_fmt = json_fmt or JSON_FORMAT
-        self.json_output = json_output
-    
-    def format(self, record):
-        if self.json_output:
-            log_data = {key: value % vars(record) 
-                        for key, value in self.json_fmt.items()
-                        if hasattr(record, key.split("(")[0].strip("%"))}
-            
-            # Add any extra attributes
-            if hasattr(record, "extra"):
-                log_data.update(record.extra)
-            
-            # Add exception info if present
-            if record.exc_info:
-                log_data["exception"] = {
-                    "type": record.exc_info[0].__name__,
-                    "message": str(record.exc_info[1]),
-                    "traceback": self.formatException(record.exc_info)
-                }
-                
-            return json.dumps(log_data)
-        else:
-            return super().format(record)
-
-def setup_logger(name, 
-                log_file=None, 
-                level="INFO", 
-                json_output=False, 
-                console_output=True,
-                log_dir="logs"):
+def setup_logger(
+    name: str, 
+    log_file: Optional[str] = None, 
+    level: str = "INFO",
+    json_output: bool = False,
+    include_timestamp: bool = True,
+    log_to_console: bool = True
+) -> logging.Logger:
     """
-    Sets up a logger with both file and console handlers
+    Set up a logger with consistent formatting and optional JSON output
     
     Args:
-        name (str): Name of the logger
-        log_file (str, optional): Path to log file. If None, no file handler is created.
-        level (str, optional): Log level. Defaults to "INFO".
-        json_output (bool, optional): Whether to output logs in JSON format. Defaults to False.
-        console_output (bool, optional): Whether to output logs to console. Defaults to True.
-        log_dir (str, optional): Directory to store log files. Defaults to "logs".
+        name: Logger name
+        log_file: Path to log file (optional)
+        level: Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+        json_output: Whether to format logs as JSON
+        include_timestamp: Whether to include timestamp in log format
+        log_to_console: Whether to log to console in addition to file
         
     Returns:
-        logging.Logger: Configured logger instance
+        Configured logger instance
     """
-    # Create logger
     logger = logging.getLogger(name)
-    logger.setLevel(LOG_LEVELS.get(level.upper(), logging.INFO))
+    logger.setLevel(logging.getLevelName(level))
     
-    # Remove existing handlers to avoid duplicates
-    logger.handlers = []
+    # Clear any existing handlers
+    for handler in logger.handlers[:]:
+        logger.removeHandler(handler)
     
-    # Create formatters
-    text_formatter = StructuredFormatter(DEFAULT_FORMAT, json_output=False)
-    json_formatter = StructuredFormatter(json_fmt=JSON_FORMAT, json_output=True)
+    # Create handlers
+    handlers = []
+    
+    # Add file handler if log_file is specified
+    if log_file:
+        os.makedirs(os.path.dirname(log_file), exist_ok=True)
+        file_handler = logging.FileHandler(log_file)
+        handlers.append(file_handler)
     
     # Add console handler if requested
-    if console_output:
+    if log_to_console:
         console_handler = logging.StreamHandler(sys.stdout)
-        console_handler.setFormatter(text_formatter)
-        logger.addHandler(console_handler)
+        handlers.append(console_handler)
     
-    # Add file handler if log_file is provided
-    if log_file:
-        # Ensure log directory exists
-        if log_dir:
-            os.makedirs(log_dir, exist_ok=True)
-        
-        # Use specified log file or create one based on script name
-        log_path = log_file
-        if not log_path.startswith(log_dir):
-            log_path = os.path.join(log_dir, log_file)
-            
-        file_handler = logging.FileHandler(log_path)
-        file_handler.setFormatter(json_formatter if json_output else text_formatter)
-        logger.addHandler(file_handler)
+    # Set formatter based on output type
+    if json_output:
+        formatter = logging.Formatter('{"timestamp": "%(asctime)s", "name": "%(name)s", "level": "%(levelname)s", "message": %(message)s}')
+    else:
+        if include_timestamp:
+            formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        else:
+            formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+    
+    # Add formatter to all handlers
+    for handler in handlers:
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
     
     return logger
 
-def log_execution_stats(logger, start_time, metadata=None, status="completed"):
+def log_with_context(
+    logger: logging.Logger,
+    level: str,
+    message: str,
+    context: Optional[Dict[str, Any]] = None
+) -> None:
+    """
+    Log a message with additional context in a structured format
+    
+    Args:
+        logger: The logger instance
+        level: Log level (INFO, WARNING, ERROR, etc.)
+        message: Log message
+        context: Additional contextual data to include
+    """
+    log_level = logging.getLevelName(level)
+    
+    # Create structured log message
+    if context:
+        # For JSON logs, pass context as part of the message
+        if any(hasattr(h.formatter, '_fmt') and '%(message)s' in h.formatter._fmt for h in logger.handlers):
+            log_message = json.dumps({
+                "msg": message,
+                "context": context
+            })
+        else:
+            # For text logs, append context as a formatted string
+            context_str = ", ".join(f"{k}={v}" for k, v in context.items())
+            log_message = f"{message} [{context_str}]"
+    else:
+        log_message = message if isinstance(message, str) else str(message)
+    
+    # Log at the appropriate level
+    logger_method = getattr(logger, level.lower())
+    logger_method(log_message)
+
+def log_execution_stats(
+    logger: logging.Logger, 
+    start_time: float, 
+    context: Dict[str, Any] = None,
+    status: str = "completed"
+) -> None:
     """
     Log execution statistics including runtime
     
     Args:
-        logger (logging.Logger): Logger instance
-        start_time (float): Start time from time.time()
-        metadata (dict, optional): Additional metadata to log
-        status (str, optional): Execution status. Defaults to "completed".
+        logger: The logger instance
+        start_time: Start time of execution (from time.time())
+        context: Additional contextual data
+        status: Execution status (completed, failed, etc.)
     """
-    import time
-    
     end_time = time.time()
     runtime_seconds = end_time - start_time
-    hours, rem = divmod(runtime_seconds, 3600)
-    minutes, seconds = divmod(rem, 60)
     
+    # Format runtime for human readability
+    hours, remainder = divmod(runtime_seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    runtime_formatted = f"{int(hours)}h:{int(minutes)}m:{seconds:.2f}s"
+    
+    # Prepare execution stats
     stats = {
+        "runtime_seconds": runtime_seconds,
+        "runtime_formatted": runtime_formatted,
         "status": status,
-        "runtime": {
-            "seconds": runtime_seconds,
-            "formatted": f"{int(hours):02d}:{int(minutes):02d}:{seconds:.2f}"
-        }
+        "timestamp": datetime.now().isoformat()
     }
     
-    if metadata:
-        stats.update(metadata)
+    # Add context if provided
+    if context:
+        stats.update(context)
     
-    if status == "completed":
-        logger.info(f"Execution completed in {stats['runtime']['formatted']}", extra={"stats": stats})
-    else:
-        logger.warning(f"Execution {status} after {stats['runtime']['formatted']}", extra={"stats": stats})
+    log_with_context(
+        logger,
+        "INFO" if status == "completed" else "ERROR",
+        f"Execution {status} in {runtime_formatted}",
+        stats
+    )
 
-def log_with_context(logger, level, message, context=None):
+def get_step_logger(step_name: str, pathogen: str, segment: Optional[str] = None) -> logging.Logger:
     """
-    Log a message with additional context
+    Get a logger for a specific pipeline step with standardized naming
     
     Args:
-        logger (logging.Logger): Logger instance
-        level (str): Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-        message (str): Log message
-        context (dict, optional): Additional context to include
+        step_name: Name of the pipeline step
+        pathogen: Pathogen name
+        segment: Genome segment (if applicable)
+        
+    Returns:
+        Configured logger instance
     """
-    log_level = LOG_LEVELS.get(level.upper(), logging.INFO)
-    extra = {"extra": context} if context else {}
+    log_name = f"{step_name}_{pathogen}"
+    if segment:
+        log_name = f"{log_name}_{segment}"
     
-    logger.log(log_level, message, extra=extra)
+    log_dir = "logs"
+    os.makedirs(log_dir, exist_ok=True)
+    log_file = os.path.join(log_dir, f"{log_name}.log")
+    
+    return setup_logger(log_name, log_file=log_file)

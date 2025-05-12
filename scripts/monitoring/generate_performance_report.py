@@ -1,263 +1,425 @@
 #!/usr/bin/env python3
 """
-Generate performance report from benchmark files
+Generate performance reports and visualizations from benchmarking data
 """
 
 import os
 import sys
 import json
 import time
-from datetime import datetime
-from pathlib import Path
+import argparse
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
+from datetime import datetime
+from pathlib import Path
+from typing import Dict, List, Any, Optional
+
 import snakemake
 
 # Add parent directory to path for importing utils
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from utils.log_utils import setup_logger, log_execution_stats, log_with_context
+from utils.log_utils import setup_logger, log_with_context, log_execution_stats
 
 # Configure logger
 logger = setup_logger(
-    name="generate_performance_report", 
-    log_file=snakemake.log[0] if "snakemake" in globals() else "generate_performance_report.log", 
-    level="INFO"
+    name="performance_report",
+    log_file=snakemake.log[0] if "snakemake" in globals() else "generate_performance_report.log"
 )
 
-def parse_benchmark_file(file_path):
-    """Parse Snakemake benchmark file into a DataFrame"""
-    try:
-        # Load benchmark data
-        df = pd.read_csv(file_path, sep='\t')
-        
-        # Extract rule name from filename
-        rule_name = file_path.stem
-        # Extract rule name without prefix/suffix
-        if '_' in rule_name:
-            parts = rule_name.split('_')
-            if len(parts) >= 2:
-                rule_name = '_'.join(parts[:-1])  # Remove last part (often a timestamp or suffix)
-        
-        # Add rule name to DataFrame
-        df['rule'] = rule_name
-        
-        return df
-    except Exception as e:
-        logger.error(f"Error parsing benchmark file {file_path}: {e}")
-        return None
-
-def generate_json_report(benchmarks, output_file):
-    """Generate JSON performance report"""
-    # Combine all benchmark data
+def parse_benchmark_files(benchmark_files: List[str]) -> pd.DataFrame:
+    """Parse Snakemake benchmark files into a DataFrame"""
     all_data = []
-    for rule, df in benchmarks.items():
-        if not df.empty:
-            stats = {
-                "rule": rule,
-                "runtime_s": float(df['s'].mean()),
-                "max_runtime_s": float(df['s'].max()),
-                "min_runtime_s": float(df['s'].min()),
-                "mean_mem_mb": float(df['max_rss'] / 1024).mean() if 'max_rss' in df else None,
-                "max_mem_mb": float(df['max_rss'] / 1024).max() if 'max_rss' in df else None,
-            }
-            all_data.append(stats)
     
-    # Sort by runtime (descending)
-    all_data.sort(key=lambda x: x['runtime_s'], reverse=True)
+    for file_path in benchmark_files:
+        try:
+            # Extract rule name from the benchmark filename
+            file_name = os.path.basename(file_path)
+            rule_name = file_name.split("_")[0]
+            
+            # Read benchmark data
+            df = pd.read_csv(file_path, sep="\t")
+            
+            # Add rule name and file path
+            df["rule"] = rule_name
+            df["benchmark_file"] = file_path
+            
+            all_data.append(df)
+        except Exception as e:
+            logger.error(f"Error parsing benchmark file {file_path}: {e}")
     
-    # Create report
-    report = {
-        "generated_at": datetime.now().isoformat(),
-        "pathogen": snakemake.params.pathogen,
-        "pathogen_name": snakemake.params.pathogen_name,
-        "segment_mode": snakemake.params.segment_mode,
-        "segments": snakemake.params.segments,
-        "metrics": {
-            "rules": all_data,
-            "total_runtime_s": sum(item['runtime_s'] for item in all_data),
-            "max_runtime_rule": max(all_data, key=lambda x: x['runtime_s'])['rule'] if all_data else None,
-            "max_memory_rule": max(all_data, key=lambda x: x['max_mem_mb'] if x['max_mem_mb'] is not None else 0)['rule'] if all_data else None
-        }
-    }
-    
-    # Write report
-    with open(output_file, 'w') as f:
-        json.dump(report, f, indent=2)
-    
-    return report
-
-def generate_html_dashboard(benchmarks, output_file, report):
-    """Generate HTML performance dashboard with visualizations"""
-    # Create a more detailed DataFrame for visualization
-    data = []
-    for rule, df in benchmarks.items():
-        if not df.empty:
-            for _, row in df.iterrows():
-                entry = {
-                    'rule': rule,
-                    'runtime_s': row['s'],
-                    'max_rss_mb': row['max_rss'] / 1024 if 'max_rss' in df else 0,
-                    'io_in_mb': row['io_in'] / (1024 * 1024) if 'io_in' in df else 0,
-                    'io_out_mb': row['io_out'] / (1024 * 1024) if 'io_out' in df else 0
-                }
-                data.append(entry)
-    
-    if not data:
-        logger.warning("No benchmark data available for visualization")
-        with open(output_file, 'w') as f:
-            f.write("<html><body><h1>No benchmark data available</h1></body></html>")
-        return
-    
-    df = pd.DataFrame(data)
-    
-    # Create visualization
-    plt.figure(figsize=(12, 10))
-    
-    # Runtime by rule
-    plt.subplot(2, 1, 1)
-    runtime_by_rule = df.groupby('rule')['runtime_s'].mean().sort_values(ascending=False)
-    sns.barplot(x=runtime_by_rule.values, y=runtime_by_rule.index)
-    plt.title(f'Average Runtime by Rule ({snakemake.params.pathogen_name})')
-    plt.xlabel('Runtime (seconds)')
-    plt.tight_layout()
-    
-    # Memory usage by rule
-    plt.subplot(2, 1, 2)
-    if 'max_rss_mb' in df and df['max_rss_mb'].sum() > 0:
-        mem_by_rule = df.groupby('rule')['max_rss_mb'].mean().sort_values(ascending=False)
-        sns.barplot(x=mem_by_rule.values, y=mem_by_rule.index)
-        plt.title('Average Memory Usage by Rule')
-        plt.xlabel('Memory (MB)')
+    # Combine all data
+    if all_data:
+        result = pd.concat(all_data, ignore_index=True)
+        return result
     else:
-        plt.text(0.5, 0.5, "No memory usage data available", ha='center')
+        # Return empty DataFrame with expected columns
+        return pd.DataFrame(columns=["s", "h:m:s", "max_rss", "max_vms", "max_uss", "max_pss", "io_in", "io_out", "mean_load", "cpu_time", "rule", "benchmark_file"])
+
+def generate_summary(benchmark_data: pd.DataFrame) -> Dict[str, Any]:
+    """Generate summary statistics from benchmark data"""
+    if benchmark_data.empty:
+        return {
+            "total_rules": 0,
+            "total_runtime_seconds": 0,
+            "total_runtime_formatted": "0:00:00",
+            "most_time_consuming_rule": None,
+            "highest_memory_rule": None,
+            "rules_summary": []
+        }
     
-    plt.tight_layout()
+    # Calculate summary statistics
+    rules_summary = []
     
-    # Save visualization
-    plt.savefig('temp_performance_viz.png')
+    # Group by rule name
+    grouped = benchmark_data.groupby("rule")
     
-    # Create HTML
-    html = f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Nextstrain Performance Dashboard - {snakemake.params.pathogen_name}</title>
-        <style>
-            body {{ font-family: Arial, sans-serif; margin: 20px; }}
-            .container {{ max-width: 1200px; margin: 0 auto; }}
-            .header {{ background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin-bottom: 20px; }}
-            .chart {{ margin-top: 30px; }}
-            table {{ border-collapse: collapse; width: 100%; }}
-            th, td {{ text-align: left; padding: 8px; border-bottom: 1px solid #ddd; }}
-            th {{ background-color: #f2f2f2; }}
-            tr:hover {{ background-color: #f5f5f5; }}
-            .highlight {{ background-color: #ffffcc; }}
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="header">
-                <h1>Nextstrain Performance Dashboard</h1>
-                <p>Pathogen: <strong>{snakemake.params.pathogen_name}</strong> ({snakemake.params.pathogen})</p>
-                <p>Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
-                <p>Segment Mode: {snakemake.params.segment_mode}</p>
-            </div>
-            
-            <h2>Performance Summary</h2>
-            <p><strong>Total Runtime:</strong> {report['metrics']['total_runtime_s']:.2f} seconds ({report['metrics']['total_runtime_s']/60:.2f} minutes)</p>
-            <p><strong>Longest Running Rule:</strong> {report['metrics']['max_runtime_rule'] or 'N/A'}</p>
-            <p><strong>Most Memory-Intensive Rule:</strong> {report['metrics']['max_memory_rule'] or 'N/A'}</p>
-            
-            <div class="chart">
-                <img src="data:image/png;base64,{open('temp_performance_viz.png', 'rb').read().hex()}" width="100%">
-            </div>
-            
-            <h2>Detailed Rule Performance</h2>
-            <table>
-                <tr>
-                    <th>Rule</th>
-                    <th>Avg Runtime (s)</th>
-                    <th>Max Runtime (s)</th>
-                    <th>Min Runtime (s)</th>
-                    <th>Avg Memory (MB)</th>
-                    <th>Max Memory (MB)</th>
-                </tr>
-    """
+    for rule, group in grouped:
+        # Calculate statistics for this rule
+        runtime_seconds = group["s"].sum()
+        max_memory_mb = group["max_rss"].max() / 1024  # Convert to MB
+        
+        # Format runtime
+        hours, remainder = divmod(runtime_seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        runtime_formatted = f"{int(hours)}:{int(minutes):02d}:{seconds:.2f}"
+        
+        rules_summary.append({
+            "rule": rule,
+            "runtime_seconds": runtime_seconds,
+            "runtime_formatted": runtime_formatted,
+            "max_memory_mb": max_memory_mb,
+            "cpu_time": group["cpu_time"].sum(),
+            "instances": len(group)
+        })
     
-    # Add rows for each rule
-    for rule_data in sorted(report['metrics']['rules'], key=lambda x: x['runtime_s'], reverse=True):
-        highlight = ' class="highlight"' if rule_data['rule'] in [report['metrics']['max_runtime_rule'], report['metrics']['max_memory_rule']] else ''
-        html += f"""
-                <tr{highlight}>
-                    <td>{rule_data['rule']}</td>
-                    <td>{rule_data['runtime_s']:.2f}</td>
-                    <td>{rule_data['max_runtime_s']:.2f}</td>
-                    <td>{rule_data['min_runtime_s']:.2f}</td>
-                    <td>{rule_data['mean_mem_mb']:.2f if rule_data['mean_mem_mb'] is not None else 'N/A'}</td>
-                    <td>{rule_data['max_mem_mb']:.2f if rule_data['max_mem_mb'] is not None else 'N/A'}</td>
-                </tr>
+    # Sort rules by runtime
+    rules_summary.sort(key=lambda x: x["runtime_seconds"], reverse=True)
+    
+    # Calculate total runtime
+    total_runtime_seconds = benchmark_data["s"].sum()
+    hours, remainder = divmod(total_runtime_seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    total_runtime_formatted = f"{int(hours)}:{int(minutes):02d}:{seconds:.2f}"
+    
+    # Find most time-consuming rule
+    most_time_consuming_rule = rules_summary[0] if rules_summary else None
+    
+    # Find highest memory rule
+    highest_memory_rule = max(rules_summary, key=lambda x: x["max_memory_mb"]) if rules_summary else None
+    
+    return {
+        "total_rules": len(rules_summary),
+        "total_runtime_seconds": total_runtime_seconds,
+        "total_runtime_formatted": total_runtime_formatted,
+        "most_time_consuming_rule": most_time_consuming_rule,
+        "highest_memory_rule": highest_memory_rule,
+        "rules_summary": rules_summary
+    }
+
+def generate_performance_plots(benchmark_data: pd.DataFrame, output_dir: str, prefix: str) -> List[str]:
+    """Generate performance visualization plots"""
+    if benchmark_data.empty:
+        return []
+    
+    # Create output directory
+    os.makedirs(output_dir, exist_ok=True)
+    
+    generated_files = []
+    
+    try:
+        # 1. Runtime by rule
+        plt.figure(figsize=(10, 8))
+        rule_times = benchmark_data.groupby("rule")["s"].sum().sort_values(ascending=False)
+        rule_times.plot(kind="bar")
+        plt.title("Runtime by Rule")
+        plt.ylabel("Time (seconds)")
+        plt.xlabel("Rule")
+        plt.xticks(rotation=45, ha="right")
+        plt.tight_layout()
+        runtime_plot = os.path.join(output_dir, f"{prefix}_runtime_by_rule.png")
+        plt.savefig(runtime_plot)
+        plt.close()
+        generated_files.append(runtime_plot)
+        
+        # 2. Memory usage by rule
+        plt.figure(figsize=(10, 8))
+        rule_memory = benchmark_data.groupby("rule")["max_rss"].max().sort_values(ascending=False) / 1024  # Convert to MB
+        rule_memory.plot(kind="bar")
+        plt.title("Maximum Memory Usage by Rule")
+        plt.ylabel("Memory (MB)")
+        plt.xlabel("Rule")
+        plt.xticks(rotation=45, ha="right")
+        plt.tight_layout()
+        memory_plot = os.path.join(output_dir, f"{prefix}_memory_by_rule.png")
+        plt.savefig(memory_plot)
+        plt.close()
+        generated_files.append(memory_plot)
+        
+        # 3. CPU time vs. wall time
+        plt.figure(figsize=(10, 8))
+        benchmark_data["cpu_efficiency"] = (benchmark_data["cpu_time"] / benchmark_data["s"]) * 100
+        rule_efficiency = benchmark_data.groupby("rule")["cpu_efficiency"].mean().sort_values(ascending=False)
+        rule_efficiency.plot(kind="bar")
+        plt.title("CPU Efficiency by Rule (CPU Time / Wall Time)")
+        plt.ylabel("Efficiency (%)")
+        plt.xlabel("Rule")
+        plt.xticks(rotation=45, ha="right")
+        plt.axhline(y=100, color="r", linestyle="--", label="Ideal (100%)")
+        plt.legend()
+        plt.tight_layout()
+        efficiency_plot = os.path.join(output_dir, f"{prefix}_cpu_efficiency.png")
+        plt.savefig(efficiency_plot)
+        plt.close()
+        generated_files.append(efficiency_plot)
+        
+    except Exception as e:
+        logger.error(f"Error generating performance plots: {e}")
+    
+    return generated_files
+
+def generate_html_report(summary: Dict[str, Any], plots: List[str], output_file: str, params: Dict[str, Any]) -> bool:
+    """Generate an HTML dashboard with performance data"""
+    try:
+        # Convert plot paths to relative paths for HTML
+        plot_basenames = [os.path.basename(plot) for plot in plots]
+        
+        html_content = f"""
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Nextstrain Performance Report</title>
+            <style>
+                body {{
+                    font-family: Arial, sans-serif;
+                    line-height: 1.6;
+                    margin: 0;
+                    padding: 20px;
+                    color: #333;
+                }}
+                h1, h2, h3 {{
+                    color: #2c3e50;
+                }}
+                .container {{
+                    max-width: 1200px;
+                    margin: 0 auto;
+                }}
+                .summary-card {{
+                    background-color: #f8f9fa;
+                    border-radius: 5px;
+                    padding: 20px;
+                    margin-bottom: 20px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }}
+                .metric {{
+                    display: inline-block;
+                    margin-right: 30px;
+                    margin-bottom: 15px;
+                }}
+                .metric-value {{
+                    font-size: 24px;
+                    font-weight: bold;
+                    display: block;
+                }}
+                .metric-label {{
+                    font-size: 14px;
+                    color: #666;
+                }}
+                table {{
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 20px 0;
+                }}
+                th, td {{
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                    text-align: left;
+                }}
+                th {{
+                    background-color: #f2f2f2;
+                }}
+                tr:nth-child(even) {{
+                    background-color: #f9f9f9;
+                }}
+                .plot-container {{
+                    margin: 20px 0;
+                    text-align: center;
+                }}
+                .plot-container img {{
+                    max-width: 100%;
+                    height: auto;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>Nextstrain Performance Report</h1>
+                <p>
+                    <strong>Pathogen:</strong> {params.get('pathogen_name', 'Unknown')} ({params.get('pathogen', 'unknown')})<br>
+                    <strong>Generated:</strong> {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}<br>
+                    <strong>Segment Mode:</strong> {params.get('segment_mode', 'unknown')}
+                </p>
+                
+                <div class="summary-card">
+                    <h2>Performance Summary</h2>
+                    <div class="metric">
+                        <span class="metric-value">{summary['total_rules']}</span>
+                        <span class="metric-label">Total Rules</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">{summary['total_runtime_formatted']}</span>
+                        <span class="metric-label">Total Runtime</span>
+                    </div>
         """
-    
-    html += """
-            </table>
-        </div>
-    </body>
-    </html>
-    """
-    
-    # Write HTML file
-    with open(output_file, 'w') as f:
-        f.write(html)
-    
-    # Clean up
-    if os.path.exists('temp_performance_viz.png'):
-        os.remove('temp_performance_viz.png')
+        
+        # Add most time consuming rule if available
+        if summary.get('most_time_consuming_rule'):
+            html_content += f"""
+                    <div class="metric">
+                        <span class="metric-value">{summary['most_time_consuming_rule']['rule']}</span>
+                        <span class="metric-label">Most Time-Consuming Rule</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">{summary['most_time_consuming_rule']['runtime_formatted']}</span>
+                        <span class="metric-label">Runtime of Slowest Rule</span>
+                    </div>
+            """
+        
+        # Add highest memory rule if available
+        if summary.get('highest_memory_rule'):
+            html_content += f"""
+                    <div class="metric">
+                        <span class="metric-value">{summary['highest_memory_rule']['rule']}</span>
+                        <span class="metric-label">Highest Memory Rule</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">{summary['highest_memory_rule']['max_memory_mb']:.2f} MB</span>
+                        <span class="metric-label">Max Memory</span>
+                    </div>
+            """
+        
+        html_content += """
+                </div>
+                
+                <h2>Rule Performance</h2>
+                <table>
+                    <tr>
+                        <th>Rule</th>
+                        <th>Runtime</th>
+                        <th>Max Memory (MB)</th>
+                        <th>CPU Time (s)</th>
+                        <th>Instances</th>
+                    </tr>
+        """
+        
+        # Add rows for each rule
+        for rule in summary.get('rules_summary', []):
+            html_content += f"""
+                    <tr>
+                        <td>{rule['rule']}</td>
+                        <td>{rule['runtime_formatted']}</td>
+                        <td>{rule['max_memory_mb']:.2f}</td>
+                        <td>{rule['cpu_time']:.2f}</td>
+                        <td>{rule['instances']}</td>
+                    </tr>
+            """
+        
+        html_content += """
+                </table>
+                
+                <h2>Performance Visualizations</h2>
+        """
+        
+        # Add plots
+        for plot in plot_basenames:
+            html_content += f"""
+                <div class="plot-container">
+                    <img src="{plot}" alt="Performance Plot">
+                </div>
+            """
+        
+        html_content += """
+            </div>
+        </body>
+        </html>
+        """
+        
+        # Write HTML to file
+        with open(output_file, 'w') as f:
+            f.write(html_content)
+        
+        return True
+    except Exception as e:
+        logger.error(f"Error generating HTML report: {e}")
+        return False
 
 def main():
     start_time = time.time()
     
     try:
-        # Get benchmark files
+        # Get parameters from Snakemake
         benchmark_files = snakemake.input.benchmarks
-        logger.info(f"Processing {len(benchmark_files)} benchmark files")
+        output_report_json = snakemake.output.report
+        output_report_html = snakemake.output.html
+        params = {
+            "pathogen": snakemake.params.pathogen,
+            "pathogen_name": snakemake.params.pathogen_name,
+            "segment_mode": snakemake.params.segment_mode,
+            "segments": snakemake.params.segments
+        }
         
-        # Parse benchmark files
-        benchmarks = {}
-        for file_path in benchmark_files:
-            file_path = Path(file_path)
-            df = parse_benchmark_file(file_path)
-            if df is not None:
-                rule_name = df['rule'].iloc[0]
-                if rule_name in benchmarks:
-                    benchmarks[rule_name] = pd.concat([benchmarks[rule_name], df])
-                else:
-                    benchmarks[rule_name] = df
+        # Create output directories
+        os.makedirs(os.path.dirname(output_report_json), exist_ok=True)
+        os.makedirs(os.path.dirname(output_report_html), exist_ok=True)
         
-        logger.info(f"Successfully parsed {len(benchmarks)} rules' benchmark data")
+        # Convert to strings if Path objects
+        benchmark_files = [str(f) for f in benchmark_files]
         
-        # Generate JSON report
-        report = generate_json_report(benchmarks, snakemake.output.report)
-        logger.info(f"Generated JSON performance report at {snakemake.output.report}")
+        # Parse benchmark data
+        log_with_context(logger, "INFO", f"Parsing {len(benchmark_files)} benchmark files")
+        benchmark_data = parse_benchmark_files(benchmark_files)
         
-        # Generate HTML dashboard
-        generate_html_dashboard(benchmarks, snakemake.output.html, report)
-        logger.info(f"Generated HTML performance dashboard at {snakemake.output.html}")
+        # Generate summary
+        log_with_context(logger, "INFO", "Generating performance summary")
+        summary = generate_summary(benchmark_data)
         
-        # Log execution statistics
+        # Generate plots
+        log_with_context(logger, "INFO", "Generating performance plots")
+        plots_dir = os.path.dirname(output_report_html)
+        prefix = os.path.splitext(os.path.basename(output_report_html))[0]
+        plots = generate_performance_plots(benchmark_data, plots_dir, prefix)
+        
+        # Generate HTML report
+        log_with_context(logger, "INFO", "Generating HTML report")
+        html_generated = generate_html_report(summary, plots, output_report_html, params)
+        
+        # Write JSON report
+        with open(output_report_json, 'w') as f:
+            json.dump(summary, f, indent=2)
+        
         log_execution_stats(logger, start_time, {
             "operation": "generate_performance_report",
-            "rule_count": len(benchmarks),
-            "output_files": [str(snakemake.output.report), str(snakemake.output.html)]
+            "benchmark_files": len(benchmark_files),
+            "rules_analyzed": summary["total_rules"],
+            "plots_generated": len(plots),
+            "html_generated": html_generated
         })
+        
+        return 0
     
     except Exception as e:
-        logger.error(f"Error generating performance report: {str(e)}")
-        log_execution_stats(logger, start_time, {"operation": "generate_performance_report", "error": str(e)}, status="failed")
-        raise
+        log_with_context(logger, "ERROR", f"Error generating performance report: {e}")
+        log_execution_stats(logger, start_time, {
+            "operation": "generate_performance_report",
+            "error": str(e)
+        }, status="failed")
+        return 1
 
 if __name__ == "__main__":
     if "snakemake" not in globals():
-        logger.error("This script should be run via Snakemake")
+        logger.error("This script is designed to be run through Snakemake")
         sys.exit(1)
-    main()
+    
+    sys.exit(main())
