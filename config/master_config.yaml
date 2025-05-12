@@ -1,7 +1,7 @@
-# Master configuration file that points to pathogen-specific configurations
-active_pathogen: "rvf" # Change this to switch between pathogens (e.g., "rvf", "cholera")
+# Master configuration file with enhanced workflow options
+active_pathogen: "rvf"
 
-# Pathogen registry - add new pathogens here
+# Pathogen registry
 pathogens:
   rvf:
     name: "Rift Valley Fever virus"
@@ -18,12 +18,12 @@ pathogens:
   #   lat_longs_path: "pathogens/cholera/config/lat_longs.tsv"
   #   has_segments: false
 
-# Common configuration parameters (shared across pathogens)
+# Common configuration parameters
 common:
   filter:
     max_n: 100
     exclude_ids: []
-    exclude_where: [] # Conditions like: "host = ''", "date = ''"
+    exclude_where: []
 
   subsample:
     priorities:
@@ -32,10 +32,10 @@ common:
         field: "num_date"
 
   update:
-    frequency: "weekly" # daily, weekly, monthly
-    incremental: true # Enable incremental updates
+    frequency: "weekly"
+    incremental: true
     archive:
-      enabled: true # Enable versioned archiving
+      enabled: true
 
   qc:
     nextclade:
@@ -44,10 +44,19 @@ common:
       max_missing_data: 0.05
       max_mut_clusters: 3
       exclude_clades: []
-
     reporting:
       enabled: true
       output_dir: "results/qc_reports"
+
+  # New workflow management parameters
+  workflow:
+    strict_metadata: false # Whether to enforce strict metadata validation
+    fail_on_invalid: false # Whether to fail the workflow if invalid metadata found
+    create_combined_view: true # For multi-segment analyses, create a combined view
+    use_checkpoints: true # Enable checkpoint-based workflow control
+    save_intermediates: true # Save intermediate files for debugging
+    notification: # Notification settings for automated runs
+      { enabled: false, email: "", slack_webhook: "" }
 
   # Resource specifications for scaling
   resources:

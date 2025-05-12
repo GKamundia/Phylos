@@ -6,19 +6,40 @@ channels:
 dependencies:
   # Core Python
   - python=3.10
-  # Nextstrain tools
+  # Nextstrain tools with pinned versions
   - nextstrain-cli=5.0.0
   - augur=21.1.0
   - auspice=3.0.2
   - snakemake=7.32.4
-  # Dependencies for sequence analysis
+  # Tools for sequence analysis
   - mafft=7.520
   - iqtree=2.2.2.7
+  - fasttree=2.1.11
+  - raxml-ng=1.1.0
+  - treedist=2.0.3
   # Python libraries
   - biopython=1.82
   - pandas=2.1.2
+  - pyarrow=15.0.0
   - pyyaml=6.0.1
   - jsonschema=4.19.1
   - pytest=7.4.3
+  - pytest-cov=4.1.0
+  - matplotlib=3.8.0
+  - seaborn=0.13.0
+  - numpy=1.26.0
+  - scipy=1.12.0
   - requests=2.31.0
-  - git
+  # Development tools
+  - black=23.9.1
+  - flake8=6.1.0
+  - isort=5.12.0
+  # Generic tools
+  - git=2.41.0
+  - curl=8.4.0
+  - wget=1.21.4
+  - pip=23.2.1
+  # Additional packages via pip
+  - pip:
+      - nextclade==2.14.0
+      - geopy==2.4.1
