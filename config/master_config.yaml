@@ -35,3 +35,15 @@ common:
     incremental: true # Enable incremental updates
     archive:
       enabled: true # Enable versioned archiving
+
+  qc:
+    nextclade:
+      enabled: true
+      min_qc_score: 80
+      max_missing_data: 0.05
+      max_mut_clusters: 3
+      exclude_clades: []
+
+    reporting:
+      enabled: true
+      output_dir: "results/qc_reports"

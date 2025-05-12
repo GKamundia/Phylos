@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0.0",
+  "privateMutations": {
+    "enabled": true,
+    "cutoff": 2,
+    "weight": 1.0
+  },
+  "missingData": {
+    "enabled": true,
+    "scoreBias": 0,
+    "missingDataThreshold": 0.05,
+    "weight": 1.0
+  },
+  "snpClusters": {
+    "enabled": true,
+    "windowSize": 100,
+    "clusterCutOff": 3,
+    "scoreWeight": 1.0
+  },
+  "qcFilters": {
+    "overallScore": {
+      "enabled": true,
+      "name": "Quality score",
+      "minScore": 80
+    }
+  }
+}
