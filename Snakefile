@@ -4,19 +4,37 @@ This Snakefile supports multiple pathogens through the master_config.yaml
 """
 
 import os
+import sys
 import yaml
+from pathlib import Path
+
+# Function for safely loading YAML with error handling
+def load_yaml(yaml_file):
+    try:
+        with open(yaml_file) as f:
+            return yaml.safe_load(f)
+    except Exception as e:
+        print(f"Error loading {yaml_file}: {e}", file=sys.stderr)
+        sys.exit(1)
 
 # Load master configuration
-with open("config/master_config.yaml") as f:
-    master_config = yaml.safe_load(f)
+master_config = load_yaml("config/master_config.yaml")
 
 # Determine active pathogen
 active_pathogen = master_config["active_pathogen"]
-pathogen_config = master_config["pathogens"][active_pathogen]
+try:
+    pathogen_config = master_config["pathogens"][active_pathogen]
+except KeyError:
+    print(f"Error: Pathogen '{active_pathogen}' not found in master_config.yaml", file=sys.stderr)
+    sys.exit(1)
+
+# Ensure config path exists
+if not os.path.exists(pathogen_config["config_path"]):
+    print(f"Error: Pathogen config file {pathogen_config['config_path']} not found", file=sys.stderr)
+    sys.exit(1)
 
 # Load pathogen-specific configuration
-with open(pathogen_config["config_path"]) as f:
-    pathogen_specific_config = yaml.safe_load(f)
+pathogen_specific_config = load_yaml(pathogen_config["config_path"])
 
 # Merge configurations for use in the pipeline
 config = {
@@ -32,12 +50,16 @@ config = {
 # Define output prefix based on active pathogen
 output_prefix = active_pathogen
 
+# Create directories if they don't exist
+for directory in ["logs", "results", Path("data/sequences/raw"), Path("data/metadata/raw")]:
+    os.makedirs(directory, exist_ok=True)
+
 # Define final output target
 rule all:
     input:
         f"results/auspice/{output_prefix}.json"
 
-# Download data from NCBI
+# Download data from NCBI with archiving and incremental updates
 rule download_data:
     output:
         sequences = f"data/sequences/raw/{output_prefix}_sequences.fasta",
@@ -46,20 +68,15 @@ rule download_data:
         email = "your.email@example.com",
         search_term = config["data"]["search_term"],
         max_sequences = config["data"]["max_sequences"],
-        segment = config["data"].get("segment")
+        segment = config["data"].get("segment", ""),
+        tracking_file = "config/data_tracking.json",
+        archive = config["update"].get("archive", {}).get("enabled", False),
+        pathogen = config["pathogen"],
+        incremental = config["update"].get("incremental", False)
     log:
         f"logs/download_data_{output_prefix}.log"
-    shell:
-        """
-        python scripts/download_sequences.py \
-            --search-term "{params.search_term}" \
-            --max-sequences {params.max_sequences} \
-            --output-sequences {output.sequences} \
-            --output-metadata {output.metadata} \
-            --email {params.email} \
-            --segment {params.segment} \
-            > {log} 2>&1
-        """
+    script:
+        "scripts/run_download.py"
 
 # Clean and validate metadata
 rule prepare_metadata:
@@ -86,8 +103,8 @@ rule filter:
         sequences = f"results/filtered/{output_prefix}_filtered.fasta",
         metadata = f"results/filtered/{output_prefix}_metadata.tsv"
     params:
-        min_length = config["filter"]["min_length"],
-        max_n = config["filter"]["max_n"]
+        min_length = config["filter"].get("min_length", 0),
+        max_n = config["filter"].get("max_n", 100)
     log:
         f"logs/filter_{output_prefix}.log"
     shell:
@@ -192,8 +209,8 @@ rule export:
     output:
         auspice_json = f"results/auspice/{output_prefix}.json"
     params:
-        auspice_config = "config/auspice_config.json",
-        lat_longs = "config/lat_longs.tsv"
+        auspice_config = pathogen_config.get("auspice_config_path", "config/auspice_config.json"),
+        lat_longs = pathogen_config.get("lat_longs_path", "config/lat_longs.tsv")
     log:
         f"logs/export_{output_prefix}.log"
     shell:

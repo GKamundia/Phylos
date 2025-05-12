@@ -32,3 +32,6 @@ common:
 
   update:
     frequency: "weekly" # daily, weekly, monthly
+    incremental: true # Enable incremental updates
+    archive:
+      enabled: true # Enable versioned archiving
