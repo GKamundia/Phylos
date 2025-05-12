@@ -1,0 +1,37 @@
+# filepath: c:\Users\Anarchy\Documents\Data_Science\NextStrain\rvf-nextstrain\deployment\cache-server-docker-compose.yml
+version: '3'
+
+services:
+  auspice-cache-api:
+    build:
+      context: ../
+      dockerfile: deployment/Dockerfile.api
+    image: rvf-nextstrain-api:latest
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../results:/app/results:ro
+      - ../cache:/app/cache
+    environment:
+      - CACHE_DIR=cache/auspice
+      - SOURCE_DIR=results/auspice
+      - ENABLE_COMPRESSION=1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./ssl:/etc/nginx/ssl
+      - ../results/auspice:/usr/share/nginx/html/auspice:ro
+    depends_on:
+      - auspice-cache-api
