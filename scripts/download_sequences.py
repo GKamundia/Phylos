@@ -16,10 +16,14 @@ import shutil
 from typing import Dict, List, Optional, Union
 from Bio import Entrez
 from Bio import SeqIO
+import socket
+import urllib.error
+import http.client
 
 # Import our new logging utilities
 sys.path.append(os.path.join(os.path.dirname(__file__), '.'))
 from utils.log_utils import setup_logger, log_execution_stats, log_with_context
+from utils.retry_utils import retry
 
 # Configure logger
 logger = setup_logger(
@@ -113,6 +117,34 @@ class NCBIDataSource:
         self.email = email
         Entrez.email = email
         log_with_context(logger, "INFO", f"Initialized NCBI data source with email: {email}")
+    
+    @retry(
+        max_tries=5, 
+        exceptions=(
+            urllib.error.URLError, 
+            http.client.HTTPException,
+            socket.timeout, 
+            ConnectionError
+        ),
+        delay_seconds=2.0,
+        backoff=2.0,
+        jitter=0.2
+    )
+    def _fetch_from_ncbi(self, term, retmax=None, retstart=0, additional_params=None):
+        """
+        Internal method to fetch data from NCBI with retry logic for transient network issues
+        """
+        pass
+    
+    def fetch_sequences(self, search_term, max_sequences=None, from_date=None, segment=None):
+        """
+        Fetch sequences from NCBI based on search criteria
+        """
+        try:
+            pass
+        except Exception as e:
+            log_with_context(logger, "ERROR", f"Failed to fetch sequences: {e}")
+            raise
     
     def _search_sequences(self, query: str, max_results: int = 500, from_date: Optional[str] = None) -> List[str]:
         """
