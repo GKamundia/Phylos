@@ -1,19 +1,55 @@
-# Rift Valley Fever virus specific configuration
+# Pathogen-specific configuration for Rift Valley Fever virus
 
 # Data options
 data:
   search_term: "Rift Valley fever virus[organism]"
   max_sequences: 500
-  segment: "L" # L segment is typically most conserved
+  segment: "L" # Use "all" for multi-segment analysis, or "L", "M", or "S" for single segment
 
-# Filter parameters (pathogen-specific)
+  # Optional segment-specific reference sequences
+  reference_sequence:
+    L: "pathogens/rvf/references/L_reference.fasta"
+    M: "pathogens/rvf/references/M_reference.fasta"
+    S: "pathogens/rvf/references/S_reference.fasta"
+
+# Filter parameters
 filter:
-  min_length: 3000 # Minimum sequence length for RVF
+  min_length:
+    L: 6000 # Appropriate for L segment
+    M: 3500 # Appropriate for M segment
+    S: 1500 # Appropriate for S segment
+    default: 1000 # Used if segment not specified
 
-# Subsampling parameters (pathogen-specific)
+  exclude_where:
+    - "host = ''" # Exclude entries with empty host field
+    - "date = ''" # Exclude entries with empty date field
+
+# Refinement parameters
+refine:
+  coalescent: "opt"
+  clock_rate: "" # Leave empty for auto estimation, or specify value
+
+# Traits to reconstruct
+traits:
+  columns: ["country", "host"]
+
+# Subsampling parameters
 subsample:
   max_sequences: 300
   group_by: "country year"
   priorities:
-    country:
+    host:
       type: "categorical"
+      focus:
+        - "Homo sapiens"
+        - "Ovis aries"
+        - "Bos taurus"
+
+# Resources (pathogen-specific overrides)
+resources:
+  align:
+    threads: 8 # Use more threads for RVF alignment
+    mem_mb: 8000
+  tree:
+    threads: 8 # Use more threads for RVF tree building
+    mem_mb: 16000

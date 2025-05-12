@@ -23,6 +23,7 @@ common:
   filter:
     max_n: 100
     exclude_ids: []
+    exclude_where: [] # Conditions like: "host = ''", "date = ''"
 
   subsample:
     priorities:
@@ -47,3 +48,38 @@ common:
     reporting:
       enabled: true
       output_dir: "results/qc_reports"
+
+  # Resource specifications for scaling
+  resources:
+    download:
+      mem_mb: 2000
+      runtime: 60 # minutes
+    metadata:
+      mem_mb: 2000
+      runtime: 30
+    filter:
+      mem_mb: 2000
+    align:
+      threads: 4
+      mem_mb: 4000
+    tree:
+      threads: 4
+      mem_mb: 8000
+    refine:
+      threads: 2
+      mem_mb: 4000
+    traits:
+      mem_mb: 2000
+    export:
+      mem_mb: 2000
+    nextclade:
+      threads: 2
+      mem_mb: 4000
+    qc_report:
+      mem_mb: 2000
+    split_segments:
+      mem_mb: 2000
+    combine:
+      mem_mb: 2000
+    combined_qc:
+      mem_mb: 2000
