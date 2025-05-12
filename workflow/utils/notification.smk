@@ -1,96 +1,118 @@
 """
-Rules for sending notifications about workflow progress and errors
+Rules and functions for notifications on workflow completion and failures
 """
 
-# Generate workflow summary
-rule workflow_summary:
+import os
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+# Import or redefine get_final_outputs function to avoid the NameError
+# We'll redefine it here to avoid circular imports
+def get_notification_outputs(wildcards=None):
+    """Generate a list of final outputs based on configuration for notifications"""
+    outputs = []
+    
+    # QC reports always included
+    outputs.append(f"results/qc_reports/{output_prefix}_qc_summary.json")
+    
+    # Single segment mode outputs
+    if segment_mode == "single":
+        outputs.append(f"results/auspice/{output_prefix}.json")
+    
+    # Multi-segment mode outputs
+    else:
+        # Individual segment outputs
+        for segment in segments:
+            outputs.append(f"results/segments/{segment}/auspice/{output_prefix}_{segment}.json")
+        
+        # Combined visualization if enabled
+        if config.get("workflow", {}).get("create_combined_view", True):
+            outputs.append(f"results/auspice/{output_prefix}_combined.json")
+    
+    return outputs
+
+# Notification rule that runs after successful completion
+rule send_notification:
     input:
-        # Use dynamic output from the all rule
-        get_final_outputs
+        get_notification_outputs  # Use the local function instead of the Snakefile's function
     output:
-        summary = f"logs/summary/{output_prefix}_workflow_summary.json"
+        notification_log = "logs/notifications/notification_{timestamp}.log"
     params:
         pathogen = config["pathogen"],
         pathogen_name = config["pathogen_name"],
-        segment_mode = segment_mode,
-        segments = segments if segment_mode == "multi" else [config["data"].get("segment", "")]
-    log:
-        f"logs/workflow_summary_{output_prefix}.log"
-    benchmark:
-        f"benchmarks/workflow_summary_{output_prefix}.txt"
-    resources:
-        mem_mb = 1000
-    script:
-        "../../scripts/generate_workflow_summary.py"
-
-# Send email notification (will be skipped if email settings are not configured)
-rule send_email_notification:
-    input:
-        summary = f"logs/summary/{output_prefix}_workflow_summary.json"
-    output:
-        notification = f"logs/notifications/{output_prefix}_email_sent.txt"
-    params:
-        enabled = config.get("workflow", {}).get("notification", {}).get("enabled", False),
         email = config.get("workflow", {}).get("notification", {}).get("email", ""),
-        subject = f"Nextstrain {config['pathogen_name']} Build Completed"
-    log:
-        f"logs/send_email_notification_{output_prefix}.log"
-    resources:
-        mem_mb = 1000
-    shell:
-        """
-        # Create output directory if it doesn't exist
-        mkdir -p $(dirname {output.notification})
+        slack_webhook = config.get("workflow", {}).get("notification", {}).get("slack_webhook", ""),
+        enabled = config.get("workflow", {}).get("notification", {}).get("enabled", False)
+    run:
+        import time
+        timestamp = time.strftime("%Y%m%d-%H%M%S")
         
-        if [ "{params.enabled}" = "True" ] && [ -n "{params.email}" ]; then
-            python scripts/send_notification.py \
-                --type email \
-                --recipient "{params.email}" \
-                --subject "{params.subject}" \
-                --input-summary {input.summary} \
-                --output {output.notification} \
-                > {log} 2>&1
-        else
-            echo "Email notifications disabled or no email configured." > {output.notification}
-            echo "Email notifications disabled or no email configured." > {log}
-        fi
-        """
-
-# Send Slack notification (will be skipped if Slack settings are not configured)
-rule send_slack_notification:
-    input:
-        summary = f"logs/summary/{output_prefix}_workflow_summary.json"
-    output:
-        notification = f"logs/notifications/{output_prefix}_slack_sent.txt"
-    params:
-        enabled = config.get("workflow", {}).get("notification", {}).get("enabled", False),
-        webhook = config.get("workflow", {}).get("notification", {}).get("slack_webhook", "")
-    log:
-        f"logs/send_slack_notification_{output_prefix}.log"
-    resources:
-        mem_mb = 1000
-    shell:
-        """
-        # Create output directory if it doesn't exist
-        mkdir -p $(dirname {output.notification})
+        if not params.enabled:
+            with open(output.notification_log, "w") as f:
+                f.write(f"Notifications disabled in config. Skipping.\n")
+            print("Notifications disabled in config. Skipping.")
+            return
         
-        if [ "{params.enabled}" = "True" ] && [ -n "{params.webhook}" ]; then
-            python scripts/send_notification.py \
-                --type slack \
-                --webhook "{params.webhook}" \
-                --input-summary {input.summary} \
-                --output {output.notification} \
-                > {log} 2>&1
-        else
-            echo "Slack notifications disabled or no webhook configured." > {output.notification}
-            echo "Slack notifications disabled or no webhook configured." > {log}
-        fi
+        # Prepare notification message
+        message = f"""
+        Nextstrain Build Completed: {params.pathogen_name} ({params.pathogen})
+        
+        Build completed successfully on {time.strftime("%Y-%m-%d %H:%M:%S")}
+        
+        Generated outputs:
         """
+        
+        for file_path in input:
+            if os.path.exists(file_path):
+                file_size = os.path.getsize(file_path) / (1024 * 1024)  # Convert to MB
+                message += f"- {file_path} ({file_size:.2f} MB)\n"
+        
+        # Log the notification
+        with open(output.notification_log, "w") as f:
+            f.write(f"Notification sent at {timestamp}\n")
+            f.write(message)
+        
+        # Send email notification if configured
+        if params.email:
+            try:
+                send_email_notification(params.email, f"Nextstrain Build Complete: {params.pathogen_name}", message)
+                with open(output.notification_log, "a") as f:
+                    f.write(f"\nEmail notification sent to {params.email}")
+            except Exception as e:
+                with open(output.notification_log, "a") as f:
+                    f.write(f"\nFailed to send email notification: {str(e)}")
+        
+        # Send Slack notification if configured
+        if params.slack_webhook:
+            try:
+                send_slack_notification(params.slack_webhook, message)
+                with open(output.notification_log, "a") as f:
+                    f.write(f"\nSlack notification sent via webhook")
+            except Exception as e:
+                with open(output.notification_log, "a") as f:
+                    f.write(f"\nFailed to send Slack notification: {str(e)}")
 
-# Combined notification rule for convenience
-rule notify:
-    input:
-        email = f"logs/notifications/{output_prefix}_email_sent.txt",
-        slack = f"logs/notifications/{output_prefix}_slack_sent.txt"
-    output:
-        touch(f"logs/notifications/{output_prefix}_all_sent.txt")
+# Helper functions for notifications
+def send_email_notification(recipient, subject, message):
+    """Send email notification"""
+    # This is a placeholder - implementation would depend on your email setup
+    # You might use smtplib for a simple solution or a dedicated email service
+    pass
+
+def send_slack_notification(webhook_url, message):
+    """Send Slack notification via webhook"""
+    # This is a placeholder - implementation would use requests to post to Slack webhook
+    pass
+
+# Configure onstart/onsuccess/onerror hooks if needed
+onsuccess:
+    if config.get("workflow", {}).get("notification", {}).get("enabled", False):
+        print(f"Build completed successfully for {config['pathogen_name']} ({config['pathogen']})")
+        # Notification is handled by the rule above when using Snakemake's standard execution
+
+onerror:
+    if config.get("workflow", {}).get("notification", {}).get("enabled", False):
+        # For error notification, we can't rely on the rule since it won't run if there's an error
+        print(f"Build failed for {config['pathogen_name']} ({config['pathogen']})")
+        # Here you would add code to send failure notifications

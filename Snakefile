@@ -52,7 +52,8 @@ config = {
     "update": master_config["common"]["update"],
     "qc": master_config["common"].get("qc", {}),
     "resources": {**master_config["common"].get("resources", {}), **pathogen_specific_config.get("resources", {})},
-    "workflow": {**master_config["common"].get("workflow", {}), **pathogen_specific_config.get("workflow", {})}
+    "workflow": {**master_config["common"].get("workflow", {}), **pathogen_specific_config.get("workflow", {})},
+    "export": master_config["common"].get("export", {}),  # Add export configuration
 }
 
 # ==== Workflow Configuration ====
@@ -138,11 +139,7 @@ else:
 
 # ==== Output Target Rules ====
 
-rule all:
-    input:
-        # Dynamic output targets based on segment mode
-        get_final_outputs
-
+# Define get_final_outputs function BEFORE rule all
 def get_final_outputs(wildcards):
     """Generate a list of final outputs based on configuration"""
     outputs = []
@@ -165,6 +162,11 @@ def get_final_outputs(wildcards):
             outputs.append(f"results/auspice/{output_prefix}_combined.json")
     
     return outputs
+
+rule all:
+    input:
+        # Dynamic output targets based on segment mode
+        get_final_outputs
 
 # Define a target rule for validated outputs
 rule validate_outputs:

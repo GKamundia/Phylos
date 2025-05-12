@@ -36,7 +36,7 @@ checkpoint prepare_metadata:
         metadata = f"data/metadata/{output_prefix}_metadata.tsv",
         report = f"data/metadata/{output_prefix}_validation_report.json"
     params:
-        strict = config.get("workflow", {}).get("strict_metadata", False)
+        strict_flag = "--strict" if config.get("workflow", {}).get("strict_metadata", False) else ""
     log:
         f"logs/prepare_metadata_{output_prefix}.log"
     benchmark:
@@ -52,6 +52,6 @@ checkpoint prepare_metadata:
             --schema {input.schema} \
             --lat-longs {input.lat_longs} \
             --report {output.report} \
-            {params.strict and '--strict' or ''} \
+            {params.strict_flag} \
             > {log} 2>&1
         """

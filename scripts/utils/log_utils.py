@@ -11,64 +11,66 @@ import logging
 import time
 from datetime import datetime
 from typing import Dict, Any, Optional, Union
+from logging.handlers import RotatingFileHandler
+
+class JsonFormatter(logging.Formatter):
+    """
+    Custom JSON formatter for structured logging.
+    """
+    def format(self, record: logging.LogRecord) -> str:
+        log_record = {
+            "time": self.formatTime(record, self.datefmt),
+            "level": record.levelname,
+            "name": record.name,
+            "message": record.getMessage(),
+        }
+        if record.exc_info:
+            log_record["exception"] = self.formatException(record.exc_info)
+        return json.dumps(log_record)
 
 def setup_logger(
-    name: str, 
-    log_file: Optional[str] = None, 
+    name: str,
+    log_file: str = None,
     level: str = "INFO",
+    console_output: bool = True,
     json_output: bool = False,
-    include_timestamp: bool = True,
-    log_to_console: bool = True
+    max_bytes: int = 10*1024*1024, # 10 MB
+    backup_count: int = 5
 ) -> logging.Logger:
     """
-    Set up a logger with consistent formatting and optional JSON output
-    
-    Args:
-        name: Logger name
-        log_file: Path to log file (optional)
-        level: Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-        json_output: Whether to format logs as JSON
-        include_timestamp: Whether to include timestamp in log format
-        log_to_console: Whether to log to console in addition to file
-        
-    Returns:
-        Configured logger instance
+    Set up a logger with configurable handlers and formatting.
     """
     logger = logging.getLogger(name)
-    logger.setLevel(logging.getLevelName(level))
-    
-    # Clear any existing handlers
-    for handler in logger.handlers[:]:
-        logger.removeHandler(handler)
-    
-    # Create handlers
-    handlers = []
-    
-    # Add file handler if log_file is specified
+    logger.setLevel(getattr(logging, level.upper(), logging.INFO))
+    logger.propagate = False # Prevent duplicate logs if root logger is configured
+
+    # Clear existing handlers for this logger to avoid duplication if called multiple times
+    if logger.hasHandlers():
+        logger.handlers.clear()
+
+    formatter = JsonFormatter() if json_output else logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    )
+
     if log_file:
-        os.makedirs(os.path.dirname(log_file), exist_ok=True)
-        file_handler = logging.FileHandler(log_file)
-        handlers.append(file_handler)
-    
-    # Add console handler if requested
-    if log_to_console:
+        log_dir = os.path.dirname(log_file)
+        if log_dir and not os.path.exists(log_dir): # Check if log_dir is not empty before creating
+            os.makedirs(log_dir, exist_ok=True)
+        
+        # Use RotatingFileHandler for better log management
+        file_handler = RotatingFileHandler(
+            log_file, 
+            maxBytes=max_bytes, 
+            backupCount=backup_count
+        )
+        file_handler.setFormatter(formatter)
+        logger.addHandler(file_handler)
+
+    if console_output:
         console_handler = logging.StreamHandler(sys.stdout)
-        handlers.append(console_handler)
-    
-    # Set formatter based on output type
-    if json_output:
-        formatter = logging.Formatter('{"timestamp": "%(asctime)s", "name": "%(name)s", "level": "%(levelname)s", "message": %(message)s}')
-    else:
-        if include_timestamp:
-            formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        else:
-            formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
-    
-    # Add formatter to all handlers
-    for handler in handlers:
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
-    
+        console_handler.setFormatter(formatter)
+        logger.addHandler(console_handler)
+        
     return logger
 
 def log_with_context(

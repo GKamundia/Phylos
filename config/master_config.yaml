@@ -116,3 +116,12 @@ common:
       after_build: true
       weekly_full: true
       weekly_day: "Sunday"
+
+  # Add the export configuration
+  export:
+    node_data:
+      - "nt_muts"
+      - "branch_lengths"
+      - "traits"
+    extra_node_data: [] # Optional additional node data files
+    colors: null # Optional path to colors file

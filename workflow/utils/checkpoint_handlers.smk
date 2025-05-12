@@ -35,14 +35,14 @@ def get_metadata_result(wildcards):
     
     # Check validation report for strict mode decision
     if config.get("workflow", {}).get("strict_metadata", False):
-        report_file = metadata_output.report
+        validation_file = metadata_output.report  # Fixed: renamed from report_file
         try:
-            with open(report_file) as f:
-                report = json.load(f)
-                if report.get("invalid_records", 0) > 0:
-                    print(f"Warning: {report.get('invalid_records')} invalid metadata records found")
+            with open(validation_file) as f:
+                report_data = json.load(f)  # Renamed from 'report' to 'report_data'
+                if report_data.get("invalid_records", 0) > 0:
+                    print(f"Warning: {report_data.get('invalid_records')} invalid metadata records found")
                     if config.get("workflow", {}).get("fail_on_invalid", False):
-                        raise ValueError(f"Strict metadata validation failed. See {report_file} for details")
+                        raise ValueError(f"Strict metadata validation failed. See {validation_file} for details")
         except Exception as e:
             print(f"Warning: Could not validate metadata report: {e}")
     
