@@ -1,0 +1,39 @@
+{
+  "title": "Rift Valley Fever virus genomic surveillance",
+  "maintainers": [
+    {"name": "Your Name", "url": "https://your-website.com"}
+  ],
+  "colorings": [
+    {
+      "key": "country",
+      "title": "Country",
+      "type": "categorical"
+    },
+    {
+      "key": "host",
+      "title": "Host",
+      "type": "categorical"
+    },
+    {
+      "key": "segment",
+      "title": "Genome Segment",
+      "type": "categorical"
+    }
+  ],
+  "geo_resolutions": [
+    "country",
+    "division"
+  ],
+  "filters": [
+    "country",
+    "division",
+    "host",
+    "segment",
+    "author"
+  ],
+  "panels": [
+    "tree",
+    "map",
+    "entropy"
+  ]
+}

@@ -1,0 +1,34 @@
+# Master configuration file that points to pathogen-specific configurations
+active_pathogen: "rvf" # Change this to switch between pathogens (e.g., "rvf", "cholera")
+
+# Pathogen registry - add new pathogens here
+pathogens:
+  rvf:
+    name: "Rift Valley Fever virus"
+    config_path: "pathogens/rvf/config/config.yaml"
+    auspice_config_path: "pathogens/rvf/config/auspice_config.json"
+    lat_longs_path: "pathogens/rvf/config/lat_longs.tsv"
+    has_segments: true
+
+  # Template for adding a new pathogen (e.g., cholera)
+  # cholera:
+  #   name: "Vibrio cholerae"
+  #   config_path: "pathogens/cholera/config/config.yaml"
+  #   auspice_config_path: "pathogens/cholera/config/auspice_config.json"
+  #   lat_longs_path: "pathogens/cholera/config/lat_longs.tsv"
+  #   has_segments: false
+
+# Common configuration parameters (shared across pathogens)
+common:
+  filter:
+    max_n: 100
+    exclude_ids: []
+
+  subsample:
+    priorities:
+      recency:
+        type: "numeric"
+        field: "num_date"
+
+  update:
+    frequency: "weekly" # daily, weekly, monthly

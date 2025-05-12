@@ -1,0 +1,19 @@
+# TEMPLATE: Replace with your pathogen name
+# To use: Copy this directory to pathogens/your_pathogen_name/ and modify the files
+
+# Data options
+data:
+  search_term: "PATHOGEN_NAME[organism]" # Replace with appropriate NCBI search term
+  max_sequences: 500
+  segment: null # Set to segment name if your pathogen has genomic segments, or null if not
+
+# Filter parameters (pathogen-specific)
+filter:
+  min_length: 0 # Set appropriate minimum length for your pathogen
+  # max_n is defined in common configuration
+
+# Subsampling parameters (pathogen-specific)
+subsample:
+  max_sequences: 300
+  group_by: "country year" # Adjust grouping as needed for your pathogen
+  # Additional priorities can be added here

@@ -1,0 +1,19 @@
+# Rift Valley Fever virus specific configuration
+
+# Data options
+data:
+  search_term: "Rift Valley fever virus[organism]"
+  max_sequences: 500
+  segment: "L" # L segment is typically most conserved
+
+# Filter parameters (pathogen-specific)
+filter:
+  min_length: 3000 # Minimum sequence length for RVF
+
+# Subsampling parameters (pathogen-specific)
+subsample:
+  max_sequences: 300
+  group_by: "country year"
+  priorities:
+    country:
+      type: "categorical"
