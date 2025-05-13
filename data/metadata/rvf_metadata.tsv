@@ -1,2 +1,3 @@
-strain	date
-dummy_strain	2023-01-01
+strain	virus	accession	date	country	division	location	host	segment	length	latitude	longitude
+dummy_strain	Rift Valley fever virus	KJ123456	2023-01-01	Kenya	Nairobi	Nairobi	Bos taurus	L	7000	0.0236	37.9062
+another_strain	Rift Valley fever virus	KJ654321	2022-11-15	Egypt	Cairo	Cairo		M	500	26.8206	30.8025

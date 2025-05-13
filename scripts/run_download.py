@@ -45,9 +45,45 @@ print(f"Max sequences: {max_sequences}")
 # Example: Creating dummy output files for testing
 # Remove this section when you have your actual download logic
 with open(output_sequences_path, "w") as f_seq:
-    f_seq.write(">dummy_seq\nACGT\n")
+    f_seq.write(">dummy_strain\nACGT\n") # FASTA header is now just the strain name
+    f_seq.write(">another_strain\nNNNN\n") # FASTA header is now just the strain name
+
 with open(output_metadata_path, "w") as f_meta:
-    f_meta.write("strain\tdate\n")
-    f_meta.write("dummy_strain\t2023-01-01\n")
+    # Write header including all required and some optional fields
+    header_fields = [
+        "strain", "virus", "accession", "date", "country", 
+        "division", "location", "host", "segment", "length"
+    ]
+    f_meta.write("\t".join(header_fields) + "\n")
+    
+    # Write dummy data record 1
+    dummy_record_1 = [
+        "dummy_strain",                 # strain
+        "Rift Valley fever virus",      # virus
+        "KJ123456",                     # accession
+        "2023-01-01",                   # date
+        "Kenya",                        # country
+        "Nairobi",                      # division
+        "Nairobi",                      # location
+        "Bos taurus",                   # host
+        "L",                            # segment
+        "7000"                          # length
+    ]
+    f_meta.write("\t".join(dummy_record_1) + "\n")
+
+    # Write dummy data record 2 (example with missing host for testing filters)
+    dummy_record_2 = [
+        "another_strain",               # strain
+        "Rift Valley fever virus",      # virus
+        "KJ654321",                     # accession
+        "2022-11-15",                   # date
+        "Egypt",                        # country
+        "Cairo",                        # division
+        "Cairo",                        # location
+        "",                             # host (empty)
+        "M",                            # segment
+        "500"                           # length (to be filtered out by length < 6000)
+    ]
+    f_meta.write("\t".join(dummy_record_2) + "\n")
 
 print(f"Data download script finished: {datetime.now()}")

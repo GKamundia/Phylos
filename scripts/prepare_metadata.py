@@ -13,6 +13,12 @@ from datetime import datetime
 from pathlib import Path
 import pandas as pd
 import re
+from jsonschema import validate, ValidationError
+
+# Configure basic logging to stderr for Snakemake to capture
+logging.basicConfig(stream=sys.stderr, level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+logger = logging.getLogger(__name__)
 
 # Import our new logging utilities
 sys.path.append(os.path.join(os.path.dirname(__file__), '.'))
@@ -266,8 +272,9 @@ def main():
     start_time = time.time()
     args = parse_args()
     
-    # Set log level
-    logger.setLevel(logging.getLevelName(args.log_level))
+    # Ensure the logger level from args is applied if basicConfig set a default
+    if hasattr(args, 'log_level'):
+         logger.setLevel(logging.getLevelName(args.log_level))
     
     try:
         # Load schema
@@ -308,8 +315,24 @@ def main():
         # Add geographic coordinates
         metadata = add_geographic_coordinates(metadata, lat_longs)
         
-        # Fill missing values with empty strings
-        metadata = metadata.fillna("")
+        # Convert 'length' to numeric. Augur expects numeric types for numeric comparisons.
+        if 'length' in metadata.columns:
+            log_with_context(logger, "INFO", "Converting 'length' column to numeric.", 
+                             {"original_dtype": str(metadata['length'].dtype)})
+            metadata['length'] = pd.to_numeric(metadata['length'], errors='coerce')
+            # After this, 'length' column will be float type if NaNs were introduced by coercion, 
+            # or int if all were valid integers and no NaNs.
+            # Records that couldn't be converted will have NaN in 'length'.
+            # augur filter should handle NaNs correctly in numeric comparisons (e.g., NaN < X evaluates to False).
+            log_with_context(logger, "INFO", "Finished converting 'length' column to numeric.",
+                             {"new_dtype": str(metadata['length'].dtype), 
+                              "nan_count": int(metadata['length'].isna().sum())}) # Cast nan_count to int for JSON serialization
+
+        # Fill missing values in object/string columns with empty strings.
+        # For numeric columns (like 'length' which is now float/int), 
+        # NaNs will be handled by to_csv (written as empty strings by default if na_rep is not specified).
+        for col in metadata.select_dtypes(include=['object']).columns:
+            metadata[col] = metadata[col].fillna("")
         
         # Validate metadata
         validation_result = validate_metadata(metadata, schema)

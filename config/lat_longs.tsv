@@ -1,4 +1,4 @@
-# Country coordinates for RVF-affected regions
+type	location	latitude	longitude
 country	Kenya	0.0236	37.9062
 country	South Africa	-30.5595	22.9375
 country	Egypt	26.8206	30.8025
