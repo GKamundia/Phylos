@@ -36,7 +36,7 @@ python scripts/setup_nextclade_dataset.py --email your.email@example.com
 4. **Run the Nextclade pipeline:**
 
 ```bash
-nextstrain build . --docker
+nextstrain build --docker .
 ```
 
 5. **View the results:**
