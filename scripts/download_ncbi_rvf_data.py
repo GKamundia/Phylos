@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Script to download RVF virus sequences and metadata from NCBI
+Script to download RVF virus sequences and metadata from NCBI Virus
 """
 
 import os
@@ -12,13 +12,14 @@ from Bio import Entrez, SeqIO
 import pandas as pd
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Download RVF sequences from NCBI")
+    parser = argparse.ArgumentParser(description="Download RVF sequences from NCBI Virus")
     parser.add_argument("--email", required=True, help="Email for NCBI Entrez")
     parser.add_argument("--api-key", help="NCBI API key for higher rate limits")
-    parser.add_argument("--search-term", default="Rift Valley fever virus[orgn]", 
+    parser.add_argument("--search-term", 
+                        default="Rift Valley fever virus[organism] taxid:11588", 
                         help="Search term for NCBI Entrez")
-    parser.add_argument("--max-sequences", type=int, default=1000, 
-                        help="Maximum number of sequences to download")
+    parser.add_argument("--max-sequences", type=int, default=None, 
+                        help="Maximum number of sequences to download (default: all available)")
     parser.add_argument("--output-sequences", default="data/sequences/raw/rvf_sequences.fasta",
                         help="Output path for sequences FASTA file")
     parser.add_argument("--output-metadata", default="data/metadata/raw/rvf_metadata.tsv",
@@ -30,389 +31,526 @@ def parse_args():
                        help="Create dummy data if no real sequences are found")
     return parser.parse_args()
 
-def search_ncbi(search_term, max_results=1000, email=None, api_key=None):
+# Modified search_ncbi function with alternative search terms
+def search_ncbi(search_term, max_results=None, email=None, api_key=None):
     """Search NCBI for sequences matching the search term"""
     if email:
         Entrez.email = email
     else:
-        Entrez.email = "example@example.com"
+        # This should not happen due to argparse 'required=True'
+        print("Error: Email is required for NCBI Entrez.", file=sys.stderr)
+        sys.exit(1) 
     
     if api_key:
         Entrez.api_key = api_key
         print(f"Using provided NCBI API key")
     
-    print(f"Searching NCBI for: {search_term}")
-    try:
-        handle = Entrez.esearch(db="nucleotide", term=search_term, 
-                              retmax=max_results, usehistory="y")
-        record = Entrez.read(handle)
-        handle.close()
-        
-        id_list = record["IdList"]
-        web_env = record["WebEnv"]
-        query_key = record["QueryKey"]
-        
-        return id_list, web_env, query_key
-        
-    except Exception as e:
-        print(f"Error during NCBI search: {e}")
-        return [], None, None
+    search_terms = [
+        search_term,  # Original search term first
+        "Rift Valley fever virus[Organism]",  # Simpler organism search
+        "txid11588[Organism:exp]",  # Direct taxid search
+        "Rift Valley fever[Title] AND virus[Title]",  # Title-based search
+        "Rift Valley fever virus",  # Plain text search
+        "Rift Valley fever"  # Even broader search
+    ]
+    
+    for current_term in search_terms:
+        print(f"Searching NCBI for: {current_term}")
+        try:
+            # First, get the total count of records without retrieving them
+            count_handle = Entrez.esearch(db="nucleotide", term=current_term, retmax=0)
+            count_record = Entrez.read(count_handle)
+            count_handle.close()
+            
+            total_records = int(count_record["Count"])
+            print(f"Found {total_records} total records matching the search criteria")
+            
+            if total_records == 0:
+                if current_term == search_terms[-1]: # If this was the last term
+                    print("All search terms failed to return results.")
+                    return [], None, None
+                print("Trying alternative search term...")
+                continue  # Try next search term
+                
+            # Now retrieve all records (or up to max_results if specified)
+            actual_max = total_records if max_results is None else min(max_results, total_records)
+            
+            handle = Entrez.esearch(db="nucleotide", term=current_term, 
+                                  retmax=actual_max, usehistory="y")
+            record = Entrez.read(handle)
+            handle.close()
+            
+            id_list = record["IdList"]
+            web_env = record["WebEnv"]
+            query_key = record["QueryKey"]
+            
+            print(f"Preparing to download {len(id_list)} records")
+            return id_list, web_env, query_key
+            
+        except Exception as e:
+            print(f"Error during NCBI search with term '{current_term}': {e}")
+            if current_term == search_terms[-1]: # If this was the last term
+                 print("All search terms failed.")
+                 return [], None, None
+            continue  # Try next search term
+    
+    # Should be unreachable if logic above is correct
+    return [], None, None
 
-def fetch_sequences(id_list, web_env=None, query_key=None, batch_size=100, debug=False, heuristic_lookup=True):
+def fetch_sequences(id_list, web_env=None, query_key=None, batch_size=100, debug=False):
     """Fetch sequences by ID list"""
     sequences = []
     metadata_records = []
     segment_counts = {'L': 0, 'M': 0, 'S': 0, 'unknown': 0}
-    qualifier_values = []  # For debugging
-    batch_size = min(batch_size, len(id_list))
+    qualifier_values_debug_list = []
     
+    if not id_list:
+        print("No IDs to fetch.")
+        return sequences, metadata_records, (qualifier_values_debug_list if debug else None)
+
+    batch_size = min(batch_size, len(id_list)) if id_list else 1
+    if batch_size == 0 and len(id_list) > 0:
+        batch_size = 1
+
+    # Define headers based on sequences.csv
+    csv_headers = [
+        "Accession", "Organism_Name", "GenBank_RefSeq", "Assembly", "SRA_Accession",
+        "Submitters", "Organization", "Org_location", "Release_Date", "Isolate",
+        "Species", "Genus", "Family", "Molecule_type", "Length", "Nuc_Completeness",
+        "Genotype", "Segment", "Publications", "Geo_Location", "Country", "USA",
+        "Host", "Tissue_Specimen_Source", "Collection_Date", "BioSample", "BioProject",
+        "GenBank_Title"
+    ]
+
     print(f"Fetching {len(id_list)} sequences")
     for start in range(0, len(id_list), batch_size):
         end = min(start + batch_size, len(id_list))
         batch_ids = id_list[start:end]
         
-        print(f"Fetching batch {start//batch_size + 1} ({start}-{end})")
+        print(f"Fetching batch {start//batch_size + 1} ({start+1}-{end}) of {len(id_list)}")
         
         try:
-            # Use history if provided
             if web_env and query_key:
                 fetch_handle = Entrez.efetch(
-                    db="nucleotide",
-                    rettype="gb",
-                    retmode="text",
-                    retstart=start,
-                    retmax=batch_size,
-                    webenv=web_env,
-                    query_key=query_key
+                    db="nucleotide", rettype="gb", retmode="text",
+                    retstart=start, retmax=batch_size, webenv=web_env, query_key=query_key
                 )
             else:
                 fetch_handle = Entrez.efetch(
-                    db="nucleotide",
-                    rettype="gb",
-                    retmode="text",
-                    id=",".join(batch_ids)
+                    db="nucleotide", rettype="gb", retmode="text", id=",".join(batch_ids)
                 )
                 
-            # Parse GenBank records
-            for record in SeqIO.parse(fetch_handle, "genbank"):
-                accession = record.id
-                # Check if the accession is for the reference genome
-                is_reference = ("reference" in record.description.lower() or 
-                               "complete genome" in record.description.lower())
+            for record_idx, record in enumerate(SeqIO.parse(fetch_handle, "genbank")):
+                metadata = {key: "" for key in csv_headers}
+
+                metadata["Accession"] = record.id
+                metadata["Length"] = len(record.seq)
+                metadata["GenBank_Title"] = record.description
+                metadata["USA"] = "" # USA column is always empty in the provided CSV
+
+                if "date" in record.annotations:
+                    metadata["Release_Date"] = record.annotations["date"]
                 
-                # Extract metadata
-                metadata = {
-                    "strain": record.name or accession,
-                    "virus": "Rift Valley fever virus",
-                    "accession": accession,
-                    "date": "",
-                    "country": "",
-                    "division": "",
-                    "location": "",
-                    "host": "",
-                    "segment": "",
-                    "length": len(record.seq),
-                    "latitude": "",
-                    "longitude": ""
-                }
+                if "molecule_type" in record.annotations:
+                    metadata["Molecule_type"] = record.annotations["molecule_type"]
+                elif record.features:
+                    for feature in record.features: # Check mol_type in features
+                        if "mol_type" in feature.qualifiers:
+                            metadata["Molecule_type"] = feature.qualifiers["mol_type"][0]
+                            break
                 
-                # Extract details from features
-                all_qualifier_values = []  # Collect all values for debugging
-                segment_from_length = None
-                segment_from_definition = None
-                
-                # Check if segment info is in the definition line
-                if "segment l " in record.description.lower() or "l segment" in record.description.lower():
-                    segment_from_definition = "L"
-                elif "segment m " in record.description.lower() or "m segment" in record.description.lower():
-                    segment_from_definition = "M"
-                elif "segment s " in record.description.lower() or "s segment" in record.description.lower():
-                    segment_from_definition = "S"
-                
-                # Try to infer segment by sequence length if heuristic_lookup is enabled
-                if heuristic_lookup:
-                    seq_len = len(record.seq)
-                    if seq_len > 3500 and seq_len < 4500:
-                        segment_from_length = "S"  # S segment is typically ~1.7kb
-                    elif seq_len > 5500 and seq_len < 6500:
-                        segment_from_length = "M"  # M segment is typically ~3.9kb
-                    elif seq_len > 7000:
-                        segment_from_length = "L"  # L segment is typically ~6.4kb
-                
+                desc_lower = record.description.lower()
+                if "complete genome" in desc_lower:
+                    metadata["Nuc_Completeness"] = "complete"
+                else:
+                    metadata["Nuc_Completeness"] = "partial"
+
+                if record.id.startswith("NC_") or record.id.startswith("NG_") or \
+                   record.id.startswith("NM_") or record.id.startswith("NP_") or \
+                   record.id.startswith("NR_") or record.id.startswith("NT_") or \
+                   record.id.startswith("NW_") or record.id.startswith("NZ_"):
+                    metadata["GenBank_RefSeq"] = "RefSeq"
+                else:
+                    is_refseq_in_dbxrefs = False
+                    if record.dbxrefs:
+                        for xref in record.dbxrefs:
+                            if "RefSeq" in xref: # A bit broad, but might catch some cases
+                                is_refseq_in_dbxrefs = True; break
+                    if is_refseq_in_dbxrefs:
+                         metadata["GenBank_RefSeq"] = "RefSeq"
+                    else:
+                        metadata["GenBank_RefSeq"] = "GenBank"
+
+                if record.dbxrefs:
+                    for xref in record.dbxrefs:
+                        if xref.startswith("Assembly:"):
+                            metadata["Assembly"] = xref.split(":", 1)[1]
+                        elif xref.startswith("BioSample:"):
+                            metadata["BioSample"] = xref.split(":", 1)[1]
+                        elif xref.startswith("BioProject:"):
+                            metadata["BioProject"] = xref.split(":", 1)[1]
+                        elif xref.startswith("SRA:"):
+                            metadata["SRA_Accession"] = xref.split(":", 1)[1]
+
                 for feature in record.features:
                     if feature.type == "source":
-                        # Date
+                        if "organism" in feature.qualifiers:
+                            org_name = feature.qualifiers["organism"][0]
+                            metadata["Organism_Name"] = org_name
+                            metadata["Species"] = org_name 
+                            if "Rift Valley fever virus" in org_name or "Phlebovirus riftense" in org_name:
+                                metadata["Genus"] = "Phlebovirus"
+                                metadata["Family"] = "Phenuiviridae"
+                        
+                        if "isolate" in feature.qualifiers:
+                            metadata["Isolate"] = feature.qualifiers["isolate"][0]
+                        elif "strain" in feature.qualifiers and not metadata["Isolate"]:
+                            metadata["Isolate"] = feature.qualifiers["strain"][0]
+
                         if "collection_date" in feature.qualifiers:
-                            metadata["date"] = feature.qualifiers["collection_date"][0]
+                            metadata["Collection_Date"] = feature.qualifiers["collection_date"][0]
                         
-                        # Country
                         if "country" in feature.qualifiers:
-                            country_field = feature.qualifiers["country"][0]
-                            # Handle potential division information (country: division)
-                            if ":" in country_field:
-                                country, division = country_field.split(":", 1)
-                                metadata["country"] = country.strip()
-                                metadata["division"] = division.strip()
-                            else:
-                                metadata["country"] = country_field.strip()
+                            country_val = feature.qualifiers["country"][0]
+                            metadata["Geo_Location"] = country_val
+                            metadata["Country"] = country_val.split(":")[0].strip()
                         
-                        # Host
                         if "host" in feature.qualifiers:
-                            metadata["host"] = feature.qualifiers["host"][0]
-                    
-                    # Collect all qualifier values for this record for debugging
-                    for feature_qualifier in feature.qualifiers:
-                        for value in feature.qualifiers[feature_qualifier]:
-                            all_qualifier_values.append(f"{feature_qualifier}: {value}")
-                
-                # Segment identification - expanded to catch more variants
-                segment_found = False
-                segment_keywords = {
-                    "L": ["segment l", "l segment", "large", "rdrp", "polymerase", "l protein", "l gene", "l rna"],
-                    "M": ["segment m", "m segment", "medium", "glycoprotein", "gc", "gn", "m protein", "m gene", "m rna"],
-                    "S": ["segment s", "s segment", "small", "nucleocapsid", "np", "n protein", "s protein", "s gene", "s rna"]
-                }
-                
-                for qualifier in ["product", "note", "segment", "gene", "mol_type", "organism"]:
-                    if feature.type in ["CDS", "gene", "source"] and qualifier in feature.qualifiers:
-                        for value in feature.qualifiers[qualifier]:
-                            value_lower = value.lower()
+                            metadata["Host"] = feature.qualifiers["host"][0]
+                        elif "lab_host" in feature.qualifiers:
+                            metadata["Host"] = feature.qualifiers["lab_host"][0]
                             
-                            # Check for segment keywords
-                            for segment, keywords in segment_keywords.items():
-                                for keyword in keywords:
-                                    if keyword in value_lower:
-                                        metadata["segment"] = segment
-                                        segment_counts[segment] += 1
-                                        segment_found = True
-                                        break
-                                if segment_found:
+                        if "tissue_type" in feature.qualifiers:
+                            metadata["Tissue_Specimen_Source"] = feature.qualifiers["tissue_type"][0]
+                        elif "isolation_source" in feature.qualifiers and not metadata["Tissue_Specimen_Source"]:
+                            metadata["Tissue_Specimen_Source"] = feature.qualifiers["isolation_source"][0]
+
+                        if "genotype" in feature.qualifiers:
+                            metadata["Genotype"] = feature.qualifiers["genotype"][0]
+                        elif "note" in feature.qualifiers:
+                            for note_val in feature.qualifiers["note"]:
+                                if "genotype" in note_val.lower():
+                                    metadata["Genotype"] = note_val.split(":")[-1].strip() if ":" in note_val else note_val
                                     break
-                            if segment_found:
+                        
+                        if not metadata["Assembly"] and "db_xref" in feature.qualifiers:
+                            for xref in feature.qualifiers["db_xref"]:
+                                if xref.startswith("Assembly:"): metadata["Assembly"] = xref.split(":",1)[1]; break
+                        if not metadata["BioSample"] and "db_xref" in feature.qualifiers:
+                            for xref in feature.qualifiers["db_xref"]:
+                                if xref.startswith("BioSample:"): metadata["BioSample"] = xref.split(":",1)[1]; break
+                        if not metadata["BioProject"] and "db_xref" in feature.qualifiers:
+                            for xref in feature.qualifiers["db_xref"]:
+                                if xref.startswith("BioProject:"): metadata["BioProject"] = xref.split(":",1)[1]; break
+                        if not metadata["SRA_Accession"] and "db_xref" in feature.qualifiers:
+                            for xref in feature.qualifiers["db_xref"]:
+                                if xref.startswith("SRA:"): metadata["SRA_Accession"] = xref.split(":",1)[1]; break
+                        break 
+
+                if record.annotations.get("references"):
+                    first_ref = record.annotations["references"][0]
+                    metadata["Submitters"] = first_ref.authors
+
+                    journal_text = first_ref.journal
+                    org_loc_parsed_from_journal = False
+                    if "Submitted" in journal_text:
+                        submission_info_match = re.search(r"Submitted\s*\([\d\w-]+\)\s*(.*)", journal_text, re.IGNORECASE)
+                        if submission_info_match:
+                            submission_details = submission_info_match.group(1).strip()
+                            known_countries_map = { # Map for more robust matching, key is country name, value is part of address string
+                                "USA": ["USA"], "Austria": ["Austria"], "Kenya": ["Kenya"], 
+                                "Tanzania": ["Tanzania"], "Senegal": ["Senegal"], "Egypt": ["Egypt"],
+                                "Botswana": ["Botswana"], "Rwanda": ["Rwanda"], "Uganda": ["Uganda"]
+                            } # This can be expanded
+                            
+                            found_country_in_submission = ""
+                            for country_name_map, country_strings_map in known_countries_map.items():
+                                for country_str_map in country_strings_map:
+                                    if submission_details.endswith(country_str_map):
+                                        found_country_in_submission = country_name_map
+                                        break
+                                if found_country_in_submission:
+                                    break
+                            
+                            if found_country_in_submission:
+                                metadata["Org_location"] = found_country_in_submission
+                                # Attempt to get text before the address part as organization
+                                # This is a heuristic: find the last comma before a potential city name or long address string
+                                # For simplicity, if country is found, take text before that as org.
+                                # Example: "Org Name, Some Dept, City, Country" -> Org Name, Some Dept
+                                # Example: "Org Name, Country" -> Org Name
+                                # This needs to be robust. The CSV has very specific org names.
+                                # Let's try to find the part of the string that is the org.
+                                # The CSV for NC_014395.1 has "National Center for Biotechnology Information, NIH"
+                                # The journal is "Submitted (11-AUG-2010) National Center for Biotechnology Information, NIH, Bethesda, MD 20894, USA"
+                                # The CSV for PV231432.1 has "International Atomic Energy Agency, Animal Production and Health Laboratory, Joint FAO/IAEA Centre of Nuclear Techniques in Food and Agriculture, Department of Nuclear Sciences and Applications"
+                                # The journal is "Submitted (23-MAR-2025) International Atomic Energy Agency, Animal Production and Health Laboratory, Joint FAO/IAEA Centre of Nuclear Techniques in Food and Agriculture, Department of Nuclear Sciences and Applications, Vienna International Centre, PO Box 100, Vienna, A-1400, Austria"
+                                
+                                # A simple split: find the first occurrence of a city-like pattern or the country itself if it's at the end of a segment.
+                                # This is very hard to generalize perfectly.
+                                # For now, a placeholder or a simpler split:
+                                last_comma_before_country_guess = submission_details.rfind(',', 0, submission_details.lower().rfind(found_country_in_submission.lower()))
+                                if last_comma_before_country_guess != -1:
+                                     possible_org = submission_details[:last_comma_before_country_guess].strip()
+                                     # Further refine: if org ends with a state/zip, try to remove that too.
+                                     # e.g. "..., NIH, Bethesda, MD 20894" -> we want "..., NIH"
+                                     state_zip_pattern = r",\s*[A-Za-z\s]+,\s*[A-Z]{2}\s*\d{5}(-\d{4})?$" # Matches ", City, ST ZIP"
+                                     m_state_zip = re.search(state_zip_pattern, possible_org)
+                                     if m_state_zip:
+                                         possible_org = possible_org[:m_state_zip.start()]
+                                     metadata["Organization"] = possible_org
+
+                                else: # No comma before, maybe it's just "Org, Country"
+                                    first_comma = submission_details.find(',')
+                                    if first_comma != -1 and submission_details[first_comma+1:].strip().lower().startswith(found_country_in_submission.lower()):
+                                        metadata["Organization"] = submission_details[:first_comma].strip()
+                                    else:
+                                         metadata["Organization"] = submission_details # Fallback
+                                org_loc_parsed_from_journal = True
+
+                            if not org_loc_parsed_from_journal: # Fallback if country parsing failed
+                                metadata["Organization"] = submission_details
+                    
+                    has_publication = False
+                    if record.annotations.get("references"):
+                        for ref_item in record.annotations["references"]:
+                            if (hasattr(ref_item, 'pubmed_id') and ref_item.pubmed_id and ref_item.pubmed_id != "0") or \
+                               (hasattr(ref_item, 'title') and "direct submission" not in ref_item.title.lower()):
+                                has_publication = True
                                 break
-                    if segment_found:
-                        break
+                    if has_publication:
+                        metadata["Publications"] = "1"
                 
-                # Use alternative methods if segment not identified through qualifiers
+                # Segment determination (copied and adapted from original script)
+                current_segment = ""
+                segment_found = False
+                # 1. From feature qualifiers: "segment", "note", "product"
+                for feature in record.features:
+                    for qualifier_key in ["segment", "note", "product"]:
+                        if qualifier_key in feature.qualifiers:
+                            for value in feature.qualifiers[qualifier_key]:
+                                value_lower = value.lower()
+                                if "segment l" in value_lower or "l segment" in value_lower or "large segment" in value_lower:
+                                    current_segment = "L"; segment_found = True; break
+                                elif "segment m" in value_lower or "m segment" in value_lower or "medium segment" in value_lower:
+                                    current_segment = "M"; segment_found = True; break
+                                elif "segment s" in value_lower or "s segment" in value_lower or "small segment" in value_lower:
+                                    current_segment = "S"; segment_found = True; break
+                            if segment_found: break
+                    if segment_found: break
+                
+                # 2. From CDS product/gene names if not found
                 if not segment_found:
-                    # Try to use segment identified from definition line
-                    if segment_from_definition:
-                        metadata["segment"] = segment_from_definition
-                        segment_counts[segment_from_definition] += 1
-                        segment_found = True
-                    # Try to use segment identified from sequence length
-                    elif segment_from_length:
-                        metadata["segment"] = segment_from_length
-                        segment_counts[segment_from_length] += 1
-                        segment_found = True
-                    # For reference genomes, more likely to be L segment
-                    elif is_reference and len(record.seq) > 6000:
-                        metadata["segment"] = "L"
-                        segment_counts["L"] += 1
-                        segment_found = True
-                    else:
-                        metadata["segment"] = "unknown"
-                        segment_counts["unknown"] += 1
+                    for feature in record.features:
+                        if feature.type == "CDS":
+                            for qualifier_key in ["product", "gene"]:
+                                if qualifier_key in feature.qualifiers:
+                                    for value in feature.qualifiers[qualifier_key]:
+                                        value_lower = value.lower()
+                                        if any(k in value_lower for k in ["rdrp", "rna-dependent rna polymerase", "l protein", "polymerase"]):
+                                            current_segment = "L"; segment_found = True; break
+                                        elif any(k in value_lower for k in ["glycoprotein", "gc", "gn", "m protein", "envelope protein", "medium protein"]):
+                                            current_segment = "M"; segment_found = True; break
+                                        elif any(k in value_lower for k in ["nucleocapsid", "np", "n protein", "nss", "non-structural protein s", "small protein"]):
+                                            current_segment = "S"; segment_found = True; break
+                                    if segment_found: break
+                        if segment_found: break
                 
-                # Add to our collections
+                # 3. From record description if not found
+                if not segment_found and record.description:
+                    description_lower_seg = record.description.lower()
+                    if "segment l" in description_lower_seg or "l segment" in description_lower_seg or "large segment" in description_lower_seg:
+                        current_segment = "L"; segment_found = True
+                    elif "segment m" in description_lower_seg or "m segment" in description_lower_seg or "medium segment" in description_lower_seg:
+                        current_segment = "M"; segment_found = True
+                    elif "segment s" in description_lower_seg or "s segment" in description_lower_seg or "small segment" in description_lower_seg:
+                        current_segment = "S"; segment_found = True
+                
+                # 4. Fallback to length if still not found
+                if not segment_found:
+                    seq_len = len(record.seq)
+                    if seq_len > 5500 and seq_len < 7500: current_segment = "L"
+                    elif seq_len > 3000 and seq_len < 4500: current_segment = "M"
+                    elif seq_len > 800 and seq_len < 2500: current_segment = "S"
+                    else: current_segment = "unknown"
+                
+                metadata["Segment"] = current_segment
+                segment_counts[current_segment] = segment_counts.get(current_segment, 0) + 1
+
                 sequences.append(record)
                 metadata_records.append(metadata)
                 
                 if debug:
-                    qualifier_values.append({
-                        "accession": accession,
-                        "segment": metadata["segment"],
-                        "length": len(record.seq),
-                        "description": record.description,
-                        "values": all_qualifier_values
+                    all_qualifier_values_for_record = []
+                    for feature_debug in record.features:
+                        for qual_key, qual_vals in feature_debug.qualifiers.items():
+                            all_qualifier_values_for_record.extend([f"{qual_key}: {qv}" for qv in qual_vals])
+                    qualifier_values_debug_list.append({
+                        "accession": metadata["Accession"],
+                        "segment_identified": metadata["Segment"],
+                        "length": metadata["Length"],
+                        "description": metadata["GenBank_Title"],
+                        "completeness_identified": metadata["Nuc_Completeness"],
+                        "qualifiers_sample": all_qualifier_values_for_record[:10]
                     })
                 
             fetch_handle.close()
             
         except Exception as e:
-            print(f"Error fetching batch {start}-{end}: {e}")
-            continue
+            print(f"Error fetching or parsing batch {start+1}-{end}: {e}")
+            # import traceback
+            # traceback.print_exc() # For detailed error during debugging
+            continue 
     
     print(f"Segment counts: L={segment_counts['L']}, M={segment_counts['M']}, "
           f"S={segment_counts['S']}, unknown={segment_counts['unknown']}")
     
-    # Debug output
-    if debug and qualifier_values:
-        print("\nDebug: Sample of qualifier values from records:")
-        for i, record_data in enumerate(qualifier_values[:5]):  # Show first 5 for brevity
-            print(f"\nAccession: {record_data['accession']}")
-            print(f"Identified segment: {record_data['segment']}")
-            print(f"Sequence length: {record_data['length']}")
-            print(f"Description: {record_data['description']}")
+    if debug and qualifier_values_debug_list:
+        print("\nDebug: Sample of qualifier values from records (first 5):")
+        for i, record_data_debug in enumerate(qualifier_values_debug_list[:5]): # Renamed record_data
+            print(f"\nAccession: {record_data_debug['accession']}")
+            print(f"Identified segment: {record_data_debug['segment_identified']}")
+            print(f"Identified completeness: {record_data_debug['completeness_identified']}")
+            print(f"Sequence length: {record_data_debug['length']}")
+            print(f"Description: {record_data_debug['description']}")
             print("Sample qualifier values:")
-            for j, val in enumerate(record_data['values'][:10]):  # Show first 10 values
-                print(f"  {val}")
-            print("...")
-        
-        print("\nUnknown segment records:")
-        unknown_count = 0
-        for record_data in qualifier_values:
-            if record_data['segment'] == 'unknown':
-                unknown_count += 1
-                if unknown_count <= 3:  # Show first 3 unknown records
-                    print(f"\nAccession: {record_data['accession']}")
-                    print(f"Sequence length: {record_data['length']}")
-                    print(f"Description: {record_data['description']}")
-                    print("Sample qualifier values:")
-                    for j, val in enumerate(record_data['values'][:5]):
-                        print(f"  {val}")
-                    print("...")
+            # Check if 'qualifiers_sample' exists and is not empty
+            if record_data_debug.get('qualifiers_sample'):
+                for val in record_data_debug['qualifiers_sample']:
+                    print(f"  {val}")
+                # Check if all_qualifier_values_for_record is defined in this scope for comparison
+                # This comparison might be problematic if all_qualifier_values_for_record is not available here
+                # For simplicity, just indicate if there were more than sampled.
+                if len(record_data_debug['qualifiers_sample']) == 10 : print("  ...") 
+            else: 
+                print("  (No qualifiers found or sampled for this record)")
     
-    return sequences, metadata_records, qualifier_values if debug else None
+    return sequences, metadata_records, (qualifier_values_debug_list if debug else None)
 
-def create_dummy_data(segment, output_sequences, output_metadata):
+def create_dummy_data(segment_choice, output_sequences, output_metadata, headers):
     """Create dummy data for testing when no real sequences are found"""
+    segment = segment_choice if segment_choice != 'all' else 'L'
     print(f"Creating dummy {segment} segment data for pipeline testing")
     
-    # Create a dummy sequence for the specified segment
-    if segment == 'L':
-        seq_length = 6400
-    elif segment == 'M':
-        seq_length = 3885
-    elif segment == 'S':
-        seq_length = 1690
-    else:
-        seq_length = 1000
+    seq_length, nuc_completeness_val = 1000, "partial"
+    if segment == 'L': seq_length, nuc_completeness_val = 6404, "complete" # Assuming L is whole genome
+    elif segment == 'M': seq_length, nuc_completeness_val = 3885, "partial"
+    elif segment == 'S': seq_length, nuc_completeness_val = 1690, "partial"
     
-    # Write dummy sequence to FASTA
     with open(output_sequences, 'w') as f:
-        f.write(f">RVFV_{segment}_dummy\n")
+        f.write(f">DUMMY_{segment}_ACC|Rift Valley fever virus dummy {segment} segment|{nuc_completeness_val}\n")
         f.write("A" * seq_length + "\n")
     
-    # Write dummy metadata to TSV
     with open(output_metadata, 'w') as f:
-        headers = ["strain", "virus", "accession", "date", "country", 
-                  "division", "location", "host", "segment", "length",
-                  "latitude", "longitude"]
         f.write('\t'.join(headers) + '\n')
-        
-        metadata = [
-            f"RVFV_{segment}_dummy",
-            "Rift Valley fever virus",
-            f"DUMMY_{segment}",
-            datetime.now().strftime("%Y-%m-%d"),
-            "Kenya",
-            "Nairobi",
-            "Nairobi",
-            "Bos taurus",
-            segment,
-            str(seq_length),
-            "0.0236",
-            "37.9062"
-        ]
-        f.write('\t'.join(metadata) + '\n')
+        dummy_row = {key: "" for key in headers}
+        dummy_row.update({
+            "Accession": f"DUMMY_{segment}_ACC",
+            "Organism_Name": "Rift Valley fever virus",
+            "GenBank_RefSeq": "GenBank",
+            "Assembly": "DUMMY_ASM",
+            "Submitters": "Dummy Submitter",
+            "Organization": "Dummy Organization",
+            "Org_location": "DummyLocation",
+            "Release_Date": datetime.now().strftime("%Y-%m-%d"),
+            "Isolate": f"RVFV_dummy_{segment}_isolate",
+            "Species": "Phlebovirus riftense",
+            "Genus": "Phlebovirus",
+            "Family": "Phenuiviridae",
+            "Molecule_type": "ssRNA",
+            "Length": str(seq_length),
+            "Nuc_Completeness": nuc_completeness_val,
+            "Segment": segment,
+            "Geo_Location": "Kenya",
+            "Country": "Kenya",
+            "Host": "Bos taurus",
+            "Collection_Date": datetime.now().strftime("%Y-%m-%d"),
+            "BioSample": "DUMMY_BIOSAMPLE",
+            "BioProject": "DUMMY_BIOPROJECT",
+            "GenBank_Title": f"Rift Valley fever virus dummy {segment} segment, {nuc_completeness_val} sequence"
+        })
+        f.write('\t'.join([str(dummy_row.get(h, "")) for h in headers]) + '\n')
 
 def main():
     args = parse_args()
     
-    # Ensure output directories exist
     os.makedirs(os.path.dirname(args.output_sequences), exist_ok=True)
     os.makedirs(os.path.dirname(args.output_metadata), exist_ok=True)
-    
-    # Set up Entrez API key if provided
-    if args.api_key:
-        Entrez.api_key = args.api_key
-    
-    # Search NCBI
+        
     id_list, web_env, query_key = search_ncbi(
         args.search_term, args.max_sequences, args.email, args.api_key
     )
     
+    # Headers based on sequences.csv
+    csv_headers = [
+        "Accession", "Organism_Name", "GenBank_RefSeq", "Assembly", "SRA_Accession",
+        "Submitters", "Organization", "Org_location", "Release_Date", "Isolate",
+        "Species", "Genus", "Family", "Molecule_type", "Length", "Nuc_Completeness",
+        "Genotype", "Segment", "Publications", "Geo_Location", "Country", "USA",
+        "Host", "Tissue_Specimen_Source", "Collection_Date", "BioSample", "BioProject",
+        "GenBank_Title"
+    ]
+
     if not id_list:
-        print("No sequences found matching the search term")
+        print("No sequences found matching the search term.")
         if args.create_dummy:
-            create_dummy_data(args.segment if args.segment != 'all' else 'L', 
-                             args.output_sequences, args.output_metadata)
-            return 0
-        return 1
+            create_dummy_data(args.segment, args.output_sequences, args.output_metadata, csv_headers)
+        else: 
+            with open(args.output_sequences, 'w') as f: pass
+            with open(args.output_metadata, 'w') as f:
+                f.write('\t'.join(csv_headers) + '\n')
+        return 0 
     
-    # Fetch sequences and metadata
-    sequences, metadata_records, debug_data = fetch_sequences(
+    sequences, metadata_records, _ = fetch_sequences(
         id_list, web_env, query_key, debug=args.debug
     )
     
     if not sequences:
-        print("Failed to fetch any sequences")
+        print("Failed to fetch any sequences from the identified IDs.")
         if args.create_dummy:
-            create_dummy_data(args.segment if args.segment != 'all' else 'L', 
-                             args.output_sequences, args.output_metadata)
-            return 0
-        return 1
+            create_dummy_data(args.segment, args.output_sequences, args.output_metadata, csv_headers)
+        else: 
+            with open(args.output_sequences, 'w') as f: pass
+            with open(args.output_metadata, 'w') as f:
+                f.write('\t'.join(csv_headers) + '\n')
+        return 0 
     
-    # Filter by segment if requested
     if args.segment != 'all':
-        filtered_sequences = []
-        filtered_metadata = []
+        filtered_sequences = [
+            seq for seq, meta in zip(sequences, metadata_records) 
+            if meta.get("Segment") == args.segment # Updated key
+        ]
+        filtered_metadata = [
+            meta for meta in metadata_records 
+            if meta.get("Segment") == args.segment # Updated key
+        ]
         
-        for seq, meta in zip(sequences, metadata_records):
-            if meta["segment"] == args.segment:
-                filtered_sequences.append(seq)
-                filtered_metadata.append(meta)
-        
-        sequences = filtered_sequences
-        metadata_records = filtered_metadata
+        sequences, metadata_records = filtered_sequences, filtered_metadata
         print(f"Filtered to {len(sequences)} sequences of segment {args.segment}")
     
-    # If no sequences left after filtering but dummy creation is enabled
-    if not sequences and args.create_dummy:
-        create_dummy_data(args.segment if args.segment != 'all' else 'L', 
-                         args.output_sequences, args.output_metadata)
-        return 0
-    
-    # Even if filtering resulted in no sequences, still write empty output files for downstream pipeline
-    if not sequences:
-        print(f"No sequences found for segment {args.segment}. Creating empty output files.")
-        # Create empty FASTA
-        with open(args.output_sequences, 'w') as f:
-            f.write(f">RVFV_{args.segment}_dummy\n")
-            f.write("ACGT\n")  # Minimal sequence for pipeline to continue
-        
-        # Create minimal metadata
-        with open(args.output_metadata, 'w') as f:
-            headers = ["strain", "virus", "accession", "date", "country", 
-                      "division", "location", "host", "segment", "length",
-                      "latitude", "longitude"]
-            f.write('\t'.join(headers) + '\n')
-            
-            metadata = [
-                f"RVFV_{args.segment}_dummy",
-                "Rift Valley fever virus",
-                f"DUMMY_{args.segment}",
-                datetime.now().strftime("%Y-%m-%d"),
-                "Unknown",
-                "",
-                "",
-                "",
-                args.segment,
-                "4",
-                "",
-                ""
-            ]
-            f.write('\t'.join(metadata) + '\n')
-    else:
-        # Write sequences to FASTA
-        with open(args.output_sequences, 'w') as f:
-            SeqIO.write(sequences, f, 'fasta')
-        
-        # Write metadata to TSV
-        if metadata_records:
-            df = pd.DataFrame(metadata_records)
-            df.to_csv(args.output_metadata, sep='\t', index=False)
-        else:
-            # Create empty metadata file with headers
+    if not sequences: 
+        print(f"No sequences found for segment {args.segment} after filtering (if applicable).")
+        if args.create_dummy:
+            create_dummy_data(args.segment, args.output_sequences, args.output_metadata, csv_headers)
+        else: 
+            with open(args.output_sequences, 'w') as f: pass
             with open(args.output_metadata, 'w') as f:
-                headers = ["strain", "virus", "accession", "date", "country", 
-                          "division", "location", "host", "segment", "length",
-                          "latitude", "longitude"]
-                f.write('\t'.join(headers) + '\n')
+                f.write('\t'.join(csv_headers) + '\n')
+        return 0
+
+    with open(args.output_sequences, 'w') as f:
+        SeqIO.write(sequences, f, 'fasta')
+    
+    if metadata_records:
+        df = pd.DataFrame(metadata_records)
+        df = df.reindex(columns=csv_headers) 
+        df.to_csv(args.output_metadata, sep='\t', index=False, na_rep='') # Use empty string for NA as in CSV
+    else: 
+        with open(args.output_metadata, 'w') as f:
+            f.write('\t'.join(csv_headers) + '\n')
     
     print(f"Downloaded {len(sequences)} sequences to {args.output_sequences}")
-    print(f"Wrote metadata to {args.output_metadata}")
+    print(f"Wrote metadata for {len(metadata_records)} sequences to {args.output_metadata}")
     
     return 0
 
