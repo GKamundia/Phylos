@@ -2,6 +2,28 @@
 Common rules shared between single and multi-segment workflows
 """
 
+# Common helper functions
+def get_input_sequences(wildcards):
+    """Get filtered or subsampled sequences based on configuration"""
+    if config["subsample"].get("max_sequences", 0) > 0:
+        return f"results/subsampled/{output_prefix}_subsampled.fasta"
+    else:
+        return f"results/filtered/{output_prefix}_filtered.fasta"
+
+def get_input_metadata(wildcards):
+    """Get filtered or subsampled metadata based on configuration"""
+    if config["subsample"].get("max_sequences", 0) > 0:
+        return f"results/subsampled/{output_prefix}_metadata.tsv"
+    else:
+        return f"results/filtered/{output_prefix}_metadata.tsv"
+
+def get_alignment_input(wildcards):
+    """Get alignment input based on masking configuration"""
+    if config.get("mask", {}).get("sites") or config.get("mask", {}).get("from_beginning") or config.get("mask", {}).get("from_end"):
+        return f"results/masked/{output_prefix}_masked.fasta"
+    else:
+        return f"results/aligned/{output_prefix}_aligned.fasta"
+
 # Reconstruct ancestral traits (e.g., country)
 rule traits:
     input:

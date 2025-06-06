@@ -2,6 +2,36 @@
 Rules for data acquisition and initial metadata preparation
 """
 
+# Convert existing sequences.csv to Nextstrain format
+rule convert_sequences_csv:
+    input:
+        csv_file = "sequences.csv"
+    output:
+        sequences = f"data/sequences/converted/{output_prefix}_sequences.fasta",
+        metadata = f"data/metadata/converted/{output_prefix}_metadata.tsv"
+    params:
+        email = config.get("ncbi", {}).get("email", "your.email@example.com"),
+        api_key = config.get("ncbi", {}).get("api_key", ""),
+        segment = "all" if segment_mode == "multi" else config["data"].get("segment", "all")
+    log:
+        f"logs/convert_sequences_csv_{output_prefix}.log"
+    benchmark:
+        f"benchmarks/convert_sequences_csv_{output_prefix}.txt"
+    resources:
+        mem_mb = config["resources"].get("download", {}).get("mem_mb", 2000),
+        runtime = config["resources"].get("download", {}).get("runtime", 60)
+    shell:
+        """
+        python scripts/convert_sequences_csv.py \
+            --input-csv {input.csv_file} \
+            --output-fasta {output.sequences} \
+            --output-metadata {output.metadata} \
+            --email "{params.email}" \
+            --segment {params.segment} \
+            {params.api_key} \
+            > {log} 2>&1
+        """
+
 # Download sequence data from source
 rule download_data:
     output:

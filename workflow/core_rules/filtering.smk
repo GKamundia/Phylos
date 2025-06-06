@@ -24,7 +24,7 @@ rule update_segment_info:
 rule filter:
     input:
         sequences = f"data/sequences/raw/{output_prefix}_sequences.fasta",
-        metadata = f"data/metadata/{output_prefix}_metadata_with_segments.tsv"  # Use updated metadata
+        metadata = f"data/metadata/{output_prefix}_metadata_with_segments.tsv"
     output:
         sequences = f"results/filtered/{output_prefix}_filtered.fasta",
         metadata = f"results/filtered/{output_prefix}_metadata.tsv"
@@ -43,52 +43,7 @@ rule filter:
         mem_mb = config["resources"].get("filter", {}).get("mem_mb", 2000)
     shell:
         """
-        # Create output directory if it doesn't exist
-        mkdir -p $(dirname {output.sequences})
-        
-        # Try to filter with segment='L' first
-        augur filter \
-            --sequences {input.sequences} \
-            --metadata {input.metadata} \
-            --output-sequences {output.sequences}.temp \
-            --min-length 4 \
-            --exclude-where "host=''" \
-            --exclude-where "date=''" \
-            --output-metadata {output.metadata}.temp \
-            --include-where "segment='L'" \
-            > {log} 2>&1 || true
-            
-        # Check if we got any sequences from the first filter
-        if [ -s {output.sequences}.temp ] && [ $(grep -c ">" {output.sequences}.temp) -gt 0 ]; then
-            # If we have sequences with L segment, use those
-            mv {output.sequences}.temp {output.sequences}
-            mv {output.metadata}.temp {output.metadata}
-            echo "Successfully filtered for L segment sequences" >> {log}
-        else
-            # If no L segment sequences, try without segment filter
-            echo "No L segment sequences found, using all segments" >> {log}
-            augur filter \
-                --sequences {input.sequences} \
-                --metadata {input.metadata} \
-                --output-sequences {output.sequences} \
-                --min-length 4 \
-                --exclude-where "host=''" \
-                --exclude-where "date=''" \
-                --output-metadata {output.metadata} \
-                >> {log} 2>&1
-                
-            # Check if any sequences passed filtering
-            if [ ! -s {output.sequences} ] || [ $(grep -c ">" {output.sequences}) -eq 0 ]; then
-                echo "No sequences passed filtering criteria. Creating dummy data to allow pipeline to continue." >> {log}
-                echo ">dummy_L_sequence" > {output.sequences}
-                echo "ACGTAGCTAGCTGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCG" >> {output.sequences}
-                echo -e "strain\tvirus\taccession\tdate\tcountry\tdivision\tlocation\thost\tsegment\tlength\tlatitude\tlongitude" > {output.metadata}
-                echo -e "dummy_L_sequence\tRift Valley fever virus\tDUMMY_L\t2023-01-01\tUnknown\t\t\tUnknown\tL\t64\t\t" >> {output.metadata}
-            fi
-        fi
-        
-        # Clean up temp files
-        rm -f {output.sequences}.temp {output.metadata}.temp
+        python scripts/run_filter.py --sequences {input.sequences} --metadata {input.metadata} --output-sequences {output.sequences} --output-metadata {output.metadata} --log {log}
         """
 
 # Subsample sequences (optional, based on configuration)
@@ -117,50 +72,5 @@ rule subsample:
         mem_mb = config["resources"].get("subsample", {}).get("mem_mb", 2000)
     shell:
         """
-        # Create output directories if they don't exist
-        mkdir -p $(dirname {output.sequences})
-        mkdir -p $(dirname {output.metadata})
-        
-        # Count sequences in input file
-        SEQ_COUNT=$(grep -c "^>" {input.sequences} || echo "0")
-        
-        # For very small datasets, just copy the files
-        if [ "$SEQ_COUNT" -lt 2 ]; then
-            echo "Too few sequences to subsample ($SEQ_COUNT found). Copying input files to output." > {log}
-            cp {input.sequences} {output.sequences}
-            cp {input.metadata} {output.metadata}
-            exit 0
-        fi
-        
-        if [ "{params.max_sequences}" -gt 0 ]; then
-            # Properly quote parameters for the command
-            GROUP_BY='{params.group_by}'
-            
-            # Construct and execute the command
-            echo "Running subsampling with max_sequences={params.max_sequences}" > {log}
-            
-            # Extract priorities for safer handling
-            PRIORITIES="{params.priorities}"
-            
-            # Execute augur filter directly rather than via complex command construction
-            augur filter \\
-                --sequences {input.sequences} \\
-                --metadata {input.metadata} \\
-                --output-sequences {output.sequences} \\
-                --group-by "$GROUP_BY" \\
-                --subsample-max-sequences {params.max_sequences} \\
-                $PRIORITIES \\
-                --output-metadata {output.metadata} \\
-                >> {log} 2>&1 || {{
-                    # Fallback if augur filter fails
-                    echo "Augur filter failed. Copying input files as fallback." >> {log}
-                    cp {input.sequences} {output.sequences}
-                    cp {input.metadata} {output.metadata}
-                }}
-        else
-            # If max_sequences is 0 or negative, skip subsampling
-            cp {input.sequences} {output.sequences}
-            cp {input.metadata} {output.metadata}
-            echo "Subsampling skipped (max_sequences={params.max_sequences}). Copied files." > {log}
-        fi
+        python scripts/run_subsample.py --input-sequences {input.sequences} --input-metadata {input.metadata} --output-sequences {output.sequences} --output-metadata {output.metadata} --log {log}
         """

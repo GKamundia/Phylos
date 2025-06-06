@@ -35,8 +35,8 @@ rule nextclade_qc_single:
             echo "No sequences found in input file. Creating empty output files." > {log}
             echo "{{\"version\":\"2.0.0\",\"results\":[]}}" > {output.json}
             echo "seqName\tqc.overallScore\tqc.overallStatus" > {output.tsv}
-            cp {input.sequences} {output.aligned}
-            cp {input.sequences} {output.passed}
+            copy "{input.sequences}" "{output.aligned}"
+            copy "{input.sequences}" "{output.passed}"
             exit 0
         fi
         
@@ -47,8 +47,8 @@ rule nextclade_qc_single:
             # Create minimal outputs
             echo "{{\"version\":\"2.0.0\",\"results\":[]}}" > {output.json}
             echo "seqName\tqc.overallScore\tqc.overallStatus" > {output.tsv}
-            cp {input.sequences} {output.aligned}
-            cp {input.sequences} {output.passed}
+            copy "{input.sequences}" "{output.aligned}"
+            copy "{input.sequences}" "{output.passed}"
             exit 0
         fi
         
@@ -74,7 +74,7 @@ rule nextclade_qc_single:
         else
             # If Nextclade fails, create placeholder outputs
             echo "Nextclade failed. Using input sequences as passed sequences." >> {log}
-            cp {input.sequences} {output.passed}
+            copy "{input.sequences}" "{output.passed}"
             
             # Ensure other output files exist
             if [ ! -f "{output.json}" ]; then
@@ -84,7 +84,7 @@ rule nextclade_qc_single:
                 echo "seqName\tqc.overallScore\tqc.overallStatus" > {output.tsv}
             fi
             if [ ! -f "{output.aligned}" ]; then
-                cp {input.sequences} {output.aligned}
+                copy "{input.sequences}" "{output.aligned}"
             fi
         fi
         """

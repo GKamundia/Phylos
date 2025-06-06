@@ -15,6 +15,13 @@ def get_input_metadata(wildcards):
     else:
         return f"results/filtered/{output_prefix}_metadata.tsv"
 
+def get_alignment_input(wildcards):
+    """Get alignment input based on masking configuration"""
+    if config.get("mask", {}).get("sites") or config.get("mask", {}).get("from_beginning") or config.get("mask", {}).get("from_end"):
+        return f"results/masked/{output_prefix}_masked.fasta"
+    else:
+        return f"results/aligned/{output_prefix}_aligned.fasta"
+
 # Align sequences
 rule align:
     input:
@@ -34,27 +41,20 @@ rule align:
         mem_mb = config["resources"].get("align", {}).get("mem_mb", 4000)
     shell:
         """
-        # Create output directory if it doesn't exist
         mkdir -p $(dirname {output.alignment})
         
-        # Run alignment
         if [ "{params.method}" = "mafft" ]; then
-            augur align \
-                --sequences {input.sequences} \
-                --output {output.alignment} \
-                {f'--reference-sequence {params.reference}' if params.reference else ''} \
-                --nthreads {threads} \
-                --method mafft \
-                --mafft-options "{params.mafft_options}" \
-                > {log} 2>&1
+            if [ -n "{params.reference}" ]; then
+                augur align --sequences {input.sequences} --output {output.alignment} --reference-sequence {params.reference} --nthreads {threads} --method mafft --mafft-options "{params.mafft_options}" > {log} 2>&1
+            else
+                augur align --sequences {input.sequences} --output {output.alignment} --nthreads {threads} --method mafft --mafft-options "{params.mafft_options}" > {log} 2>&1
+            fi
         else
-            # Default to generic augur align (auto method)
-            augur align \
-                --sequences {input.sequences} \
-                --output {output.alignment} \
-                {f'--reference-sequence {params.reference}' if params.reference else ''} \
-                --nthreads {threads} \
-                > {log} 2>&1
+            if [ -n "{params.reference}" ]; then
+                augur align --sequences {input.sequences} --output {output.alignment} --reference-sequence {params.reference} --nthreads {threads} > {log} 2>&1
+            else
+                augur align --sequences {input.sequences} --output {output.alignment} --nthreads {threads} > {log} 2>&1
+            fi
         fi
         """
 
@@ -79,18 +79,9 @@ rule mask:
     resources:
         mem_mb = config["resources"].get("mask", {}).get("mem_mb", 2000)
     shell:
-        """
-        # Check if there are any masking parameters
-        if [ -n "{params.mask_sites}" ] || [ -n "{params.mask_from}" ] || [ -n "{params.mask_to}" ]; then
-            augur mask \
-                --sequences {input.alignment} \
-                --output {output.alignment} \
-                {params.mask_sites} \
-                {params.mask_from} \
-                {params.mask_to} \
-                > {log} 2>&1
+        """        if [ -n "{params.mask_sites}" ] || [ -n "{params.mask_from}" ] || [ -n "{params.mask_to}" ]; then
+            augur mask --sequences {input.alignment} --output {output.alignment} {params.mask_sites} {params.mask_from} {params.mask_to} > {log} 2>&1
         else
-            # If no masking parameters, just copy the alignment
-            cp {input.alignment} {output.alignment}
+            copy "{input.alignment}" "{output.alignment}"
         fi
         """

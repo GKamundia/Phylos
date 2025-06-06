@@ -38,39 +38,43 @@ def main():
     print(f"Reading metadata from {args.input_metadata}")
     metadata = pd.read_csv(args.input_metadata, sep='\t')
     
+    # Add strain column if it doesn't exist (required by Augur)
+    if 'strain' not in metadata.columns:
+        metadata['strain'] = metadata['Accession']
+        print("Added 'strain' column mapping to 'Accession' for Augur compatibility")
+    
     print(f"Reading sequences from {args.input_sequences}")
     seq_lengths = {}
     for record in SeqIO.parse(args.input_sequences, "fasta"):
         seq_lengths[record.id] = len(record.seq)
     
     print(f"Found {len(seq_lengths)} sequences")
-    
-    # Update segment information based on sequence length
+      # Update segment information based on sequence length
     updated_count = 0
     for idx, row in metadata.iterrows():
-        strain = row['strain']
+        # Use 'Accession' as the identifier (matching the sequence IDs)
+        strain = row['Accession']
         
         # If we have the strain in our sequences, use that length
         if strain in seq_lengths:
             length = seq_lengths[strain]
             segment = infer_segment_from_length(length)
-            metadata.at[idx, 'segment'] = segment
+            metadata.at[idx, 'Segment'] = segment
             updated_count += 1
-        # Otherwise, try to use the length from metadata
-        elif not pd.isna(row['length']) and row['length'] > 0:
-            length = row['length']
+        # Otherwise, try to use the length from metadata ('Length' column)
+        elif not pd.isna(row['Length']) and row['Length'] > 0:
+            length = row['Length']
             segment = infer_segment_from_length(length)
-            metadata.at[idx, 'segment'] = segment
+            metadata.at[idx, 'Segment'] = segment
             updated_count += 1
     
     # Write updated metadata
     metadata.to_csv(args.output_metadata, sep='\t', index=False)
-    
-    # Print summary
-    l_count = sum(metadata['segment'] == 'L')
-    m_count = sum(metadata['segment'] == 'M')
-    s_count = sum(metadata['segment'] == 'S')
-    unknown_count = sum(metadata['segment'] == 'unknown')
+      # Print summary
+    l_count = sum(metadata['Segment'] == 'L')
+    m_count = sum(metadata['Segment'] == 'M')
+    s_count = sum(metadata['Segment'] == 'S')
+    unknown_count = sum(metadata['Segment'] == 'unknown')
     
     print(f"Updated segment information for {updated_count} sequences")
     print(f"L segment: {l_count}")

@@ -2,6 +2,19 @@
 Rules for phylogenetic analysis and tree building
 """
 
+# Helper functions for input files
+def get_input_sequences(wildcards):
+    if config["subsample"].get("max_sequences", 0) > 0:
+        return f"results/subsampled/{output_prefix}_subsampled.fasta"
+    else:
+        return f"results/filtered/{output_prefix}_filtered.fasta"
+
+def get_input_metadata(wildcards):
+    if config["subsample"].get("max_sequences", 0) > 0:
+        return f"results/subsampled/{output_prefix}_metadata.tsv"
+    else:
+        return f"results/filtered/{output_prefix}_metadata.tsv"
+
 # Get alignment input based on whether masking is enabled
 def get_alignment_input(wildcards):
     if config.get("mask", {}).get("sites", []) or \

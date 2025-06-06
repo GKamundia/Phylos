@@ -13,7 +13,8 @@ rule generate_dynamic_auspice_config:
         "logs/generate_dynamic_config_{pathogen}.log" if segment_mode == "single" else "logs/generate_dynamic_config_{pathogen}_{segment}.log"
     shell:
         """
-        cp {input.base_config} {output.dynamic_config} > {log} 2>&1
+        if not exist "results\\configs" mkdir "results\\configs"
+        copy "{input.base_config}" "{output.dynamic_config}" > {log} 2>&1
         """
 
 rule export:
