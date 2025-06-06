@@ -52,10 +52,14 @@ def main():
         log_content.append(f"Sequences retained after filtering: {kept_count}\n")
         log_content.append(f"Sequences dropped due to 'Nuc_Completeness != complete': {dropped_count}\n")
         print(f"Sequences retained: {kept_count}, dropped: {dropped_count}")
-        
-        # Get the list of sequence IDs to keep
-        keep_ids = set(filtered_metadata['strain'])
-        print(f"Keeping {len(keep_ids)} unique strain IDs")
+          # Get the list of sequence IDs to keep (use Accession which matches FASTA headers)
+        if 'Accession' in filtered_metadata.columns:
+            keep_ids = set(filtered_metadata['Accession'])
+            print(f"Keeping {len(keep_ids)} unique accession IDs")
+        else:
+            # Fallback to strain if Accession not available
+            keep_ids = set(filtered_metadata['strain'])
+            print(f"Keeping {len(keep_ids)} unique strain IDs (fallback)")
         
         # Write filtered metadata
         print(f"Writing filtered metadata to {args.output_metadata}")

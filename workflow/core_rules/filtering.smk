@@ -2,29 +2,11 @@
 Rules for filtering sequences and metadata
 """
 
-# Update segment information in metadata
-rule update_segment_info:
-    input:
-        metadata = f"data/metadata/{output_prefix}_metadata.tsv",
-        sequences = f"data/sequences/raw/{output_prefix}_sequences.fasta"
-    output:
-        metadata = f"data/metadata/{output_prefix}_metadata_with_segments.tsv"
-    log:
-        f"logs/update_segment_info_{output_prefix}.log"
-    shell:
-        """
-        python scripts/update_segment_info.py \
-            --input-metadata {input.metadata} \
-            --input-sequences {input.sequences} \
-            --output-metadata {output.metadata} \
-            > {log} 2>&1
-        """
-
 # Filter sequences based on quality criteria and metadata
 rule filter:
     input:
         sequences = f"data/sequences/raw/{output_prefix}_sequences.fasta",
-        metadata = f"data/metadata/{output_prefix}_metadata_with_segments.tsv"
+        metadata = f"data/metadata/{output_prefix}_metadata.tsv"
     output:
         sequences = f"results/filtered/{output_prefix}_filtered.fasta",
         metadata = f"results/filtered/{output_prefix}_metadata.tsv"

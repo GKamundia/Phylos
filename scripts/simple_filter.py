@@ -8,7 +8,7 @@ import pandas as pd
 from Bio import SeqIO
 
 # Define file paths
-metadata_path = "data/metadata/rvf_metadata_with_segments.tsv"
+metadata_path = "data/metadata/rvf_metadata.tsv"
 sequences_path = "data/sequences/raw/rvf_sequences.fasta"
 output_metadata_path = "results/filtered/rvf_metadata.tsv"
 output_sequences_path = "results/filtered/rvf_filtered.fasta"

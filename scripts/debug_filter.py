@@ -18,7 +18,7 @@ def main():
         print(f"Current working directory: {os.getcwd()}")
         
         # Test file reading
-        metadata_path = "data/metadata/rvf_metadata_with_segments.tsv"
+        metadata_path = "data/metadata/rvf_metadata.tsv"
         sequences_path = "data/sequences/raw/rvf_sequences.fasta"
         
         # Check if files exist

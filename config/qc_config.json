@@ -1,0 +1,65 @@
+{
+  "quality_control": {
+    "sequence_qc": {
+      "min_length": 200,
+      "max_n_content": 5.0,
+      "expected_lengths": {
+        "L": 6404,
+        "M": 3885,
+        "S": 1690
+      },
+      "gc_content_range": [35, 55]
+    },
+    "metadata_qc": {
+      "required_fields": ["strain", "virus", "accession", "date", "country"],
+      "optional_fields": ["division", "location", "host", "segment", "latitude", "longitude"],
+      "date_formats": ["YYYY-MM-DD", "YYYY-MM", "YYYY"],
+      "min_completeness_rate": 0.8
+    },
+    "geographic_qc": {
+      "coordinate_validation": true,
+      "min_countries": 3,
+      "geographic_regions": ["Africa", "Middle East", "Asia"],
+      "coordinate_ranges": {
+        "latitude": [-90, 90],
+        "longitude": [-180, 180]
+      }
+    },
+    "nextclade_qc": {
+      "min_qc_score": 80,
+      "max_private_mutations": 20,
+      "max_missing_data": 1000,
+      "max_snp_clusters": 5
+    },
+    "phylogenetic_qc": {
+      "min_sequences": 10,
+      "max_branch_length": 0.1,
+      "min_bootstrap": 70,
+      "temporal_analysis": true
+    }
+  },
+  "thresholds": {
+    "quality_scores": {
+      "excellent": 85,
+      "good": 70,
+      "acceptable": 50,
+      "poor": 0
+    },
+    "data_retention": {
+      "min_filtered_sequences": 50,
+      "min_countries_represented": 3,
+      "min_temporal_span": 5
+    }
+  },
+  "reporting": {
+    "generate_plots": true,
+    "create_html_report": true,
+    "include_recommendations": true,
+    "detailed_statistics": true
+  },
+  "integration": {
+    "snakemake_compatible": true,
+    "checkpoint_files": true,
+    "validation_schemas": true
+  }
+}
