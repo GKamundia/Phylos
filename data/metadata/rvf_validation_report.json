@@ -1,8 +1,0 @@
-{
-  "valid": false,
-  "total_records": 1439,
-  "invalid_records": 1439,
-  "errors": [
-    "Required field 'accession' missing from metadata"
-  ]
-}

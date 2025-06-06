@@ -809,7 +809,7 @@ class ComprehensiveQC:
         if "sequence_qc" not in self.qc_results:
             return "<p>Sequence QC not performed.</p>"
         
-                qc = self.qc_results["sequence_qc"]
+        qc = self.qc_results["sequence_qc"]
         html = f"<p><strong>Quality Score:</strong> {qc['quality_score']:.1f}/100</p>"
         html += f"<p><strong>Total Sequences:</strong> {qc['total_sequences']}</p>"
         
