@@ -2,9 +2,9 @@
 
 # Data options
 data:
-  search_term: "Rift Valley fever virus[organism]"
+  search_term: "Rift Valley fever virus[organism] OR Phlebovirus riftense[organism]"
   max_sequences: 500
-  segment: "L" # Use "all" for multi-segment analysis, or "L", "M", or "S" for single segment
+  segment: "all" # Use "all" for multi-segment analysis, or "L", "M", or "S" for single segment
 
   # Optional segment-specific reference sequences
   reference_sequence:

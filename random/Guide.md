@@ -353,3 +353,22 @@ Periodically review runtimes (from logs or Snakemake reports) and dataset sizes 
 Implement User Feedback Loop (Conceptual):
 If others will use this dashboard, think about how you would collect feedback.
 This detailed plan should guide you through implementing your #Guide.md effectively, leveraging your existing project structure and focusing on the core goals of reproducibility and adaptability. Remember to tackle these steps iteratively.
+
+I would like to test if the code is working.
+What should happen:
+
+Data should be obtained from NCBI via Entrez API (https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/virus?SeqType_s=Nucleotide&VirusLineage_ss=Rift%20Valley%20fever%20virus,%20taxid:11588)
+Downloading all the data
+
+The data should be filtered to have the column "Nuc Completeness" = complete
+and the rest of data cleaning e.g. dates, Geo location being split to have Country and Location etc
+
+Quality control: nextclaude and reporting
+
+Phylogenetic analysis: align, tree, refine, ancestral and traits
+
+Exporting: generate_dynamic_auspice_config and Auspice JSON
+
+Auspice visualization on localhost:4000
+
+cd c:\Users\Anarchy\Documents\Data_Science\NextStrain\rvf-nextstrain; $env:PORT=4001; auspice view --datasetDir auspice

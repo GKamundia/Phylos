@@ -44,13 +44,12 @@ def search_ncbi(search_term, max_results=None, email=None, api_key=None):
     if api_key:
         Entrez.api_key = api_key
         print(f"Using provided NCBI API key")
-    
-    search_terms = [
+      search_terms = [
         search_term,  # Original search term first
-        "Rift Valley fever virus[Organism]",  # Simpler organism search
+        "Rift Valley fever virus[Organism] OR Phlebovirus riftense[Organism]",  # Include both organism names
         "txid11588[Organism:exp]",  # Direct taxid search
         "Rift Valley fever[Title] AND virus[Title]",  # Title-based search
-        "Rift Valley fever virus",  # Plain text search
+        "Rift Valley fever virus OR Phlebovirus riftense",  # Plain text search including both names
         "Rift Valley fever"  # Even broader search
     ]
     
@@ -193,14 +192,23 @@ def fetch_sequences(id_list, web_env=None, query_key=None, batch_size=100, debug
                             metadata["SRA_Accession"] = xref.split(":", 1)[1]
 
                 for feature in record.features:
-                    if feature.type == "source":
-                        if "organism" in feature.qualifiers:
+                    if feature.type == "source":                        if "organism" in feature.qualifiers:
                             org_name = feature.qualifiers["organism"][0]
                             metadata["Organism_Name"] = org_name
-                            metadata["Species"] = org_name 
-                            if "Rift Valley fever virus" in org_name or "Phlebovirus riftense" in org_name:
-                                metadata["Genus"] = "Phlebovirus"
-                                metadata["Family"] = "Phenuiviridae"
+                            
+                            # Standardize Species name regardless of how it appears in GenBank
+                            if "Phlebovirus riftense" in org_name:
+                                # For records using the newer name
+                                metadata["Species"] = "Phlebovirus riftense"
+                                # But add both names for compatibility
+                                metadata["Organism_Name"] = "Rift Valley fever virus (Phlebovirus riftense)"
+                            else:
+                                # For records using the traditional name
+                                metadata["Species"] = "Rift Valley fever virus"
+                                
+                            # Set genus and family consistently
+                            metadata["Genus"] = "Phlebovirus"
+                            metadata["Family"] = "Phenuiviridae"
                         
                         if "isolate" in feature.qualifiers:
                             metadata["Isolate"] = feature.qualifiers["isolate"][0]
@@ -320,59 +328,76 @@ def fetch_sequences(id_list, web_env=None, query_key=None, batch_size=100, debug
                                 break
                     if has_publication:
                         metadata["Publications"] = "1"
-                
-                # Segment determination (copied and adapted from original script)
+                  # Segment determination (enhanced detection for RVF virus)
                 current_segment = ""
                 segment_found = False
-                # 1. From feature qualifiers: "segment", "note", "product"
-                for feature in record.features:
-                    for qualifier_key in ["segment", "note", "product"]:
-                        if qualifier_key in feature.qualifiers:
-                            for value in feature.qualifiers[qualifier_key]:
-                                value_lower = value.lower()
-                                if "segment l" in value_lower or "l segment" in value_lower or "large segment" in value_lower:
-                                    current_segment = "L"; segment_found = True; break
-                                elif "segment m" in value_lower or "m segment" in value_lower or "medium segment" in value_lower:
-                                    current_segment = "M"; segment_found = True; break
-                                elif "segment s" in value_lower or "s segment" in value_lower or "small segment" in value_lower:
-                                    current_segment = "S"; segment_found = True; break
-                            if segment_found: break
-                    if segment_found: break
                 
-                # 2. From CDS product/gene names if not found
+                # 1. Look for segment in GenBank "segment" feature qualifier
+                for feature in record.features:
+                    if "segment" in feature.qualifiers:
+                        segment_value = feature.qualifiers["segment"][0].upper()
+                        if segment_value in ["L", "M", "S"]:
+                            current_segment = segment_value
+                            segment_found = True
+                            break
+                
+                # 2. From CDS product/gene names if segment qualifier not found
                 if not segment_found:
                     for feature in record.features:
-                        if feature.type == "CDS":
-                            for qualifier_key in ["product", "gene"]:
-                                if qualifier_key in feature.qualifiers:
-                                    for value in feature.qualifiers[qualifier_key]:
-                                        value_lower = value.lower()
-                                        if any(k in value_lower for k in ["rdrp", "rna-dependent rna polymerase", "l protein", "polymerase"]):
-                                            current_segment = "L"; segment_found = True; break
-                                        elif any(k in value_lower for k in ["glycoprotein", "gc", "gn", "m protein", "envelope protein", "medium protein"]):
-                                            current_segment = "M"; segment_found = True; break
-                                        elif any(k in value_lower for k in ["nucleocapsid", "np", "n protein", "nss", "non-structural protein s", "small protein"]):
-                                            current_segment = "S"; segment_found = True; break
-                                    if segment_found: break
+                        for qualifier_key in ["product", "gene", "note"]:
+                            if qualifier_key in feature.qualifiers:
+                                for value in feature.qualifiers[qualifier_key]:
+                                    value_lower = value.lower()
+                                    
+                                    # L segment detection patterns
+                                    if any(k in value_lower for k in ["rdrp", "rna-dependent rna polymerase", "l protein", 
+                                                                    "polymerase", "large", "l segment", "segment l"]):
+                                        current_segment = "L"
+                                        segment_found = True
+                                        break
+                                    
+                                    # M segment detection patterns
+                                    elif any(k in value_lower for k in ["glycoprotein", "gc", "gn", "m protein", 
+                                                                      "envelope protein", "medium", "m segment", "segment m"]):
+                                        current_segment = "M"
+                                        segment_found = True
+                                        break
+                                    
+                                    # S segment detection patterns
+                                    elif any(k in value_lower for k in ["nucleocapsid", "np", "n protein", "nss", 
+                                                                      "non-structural protein s", "small", "s segment", "segment s"]):
+                                        current_segment = "S"
+                                        segment_found = True
+                                        break
+                                if segment_found: break
                         if segment_found: break
                 
-                # 3. From record description if not found
+                # 3. From record description if not found yet
                 if not segment_found and record.description:
-                    description_lower_seg = record.description.lower()
-                    if "segment l" in description_lower_seg or "l segment" in description_lower_seg or "large segment" in description_lower_seg:
-                        current_segment = "L"; segment_found = True
-                    elif "segment m" in description_lower_seg or "m segment" in description_lower_seg or "medium segment" in description_lower_seg:
-                        current_segment = "M"; segment_found = True
-                    elif "segment s" in description_lower_seg or "s segment" in description_lower_seg or "small segment" in description_lower_seg:
-                        current_segment = "S"; segment_found = True
+                    description_lower = record.description.lower()
+                    
+                    # Check for segment identifiers in the description
+                    if any(pattern in description_lower for pattern in ["segment l", "l segment", "l rna", "large segment", "l protein gene"]):
+                        current_segment = "L"
+                        segment_found = True
+                    elif any(pattern in description_lower for pattern in ["segment m", "m segment", "m rna", "medium segment", "glycoprotein gene"]):
+                        current_segment = "M"
+                        segment_found = True
+                    elif any(pattern in description_lower for pattern in ["segment s", "s segment", "s rna", "small segment", "nucleocapsid gene"]):
+                        current_segment = "S"
+                        segment_found = True
                 
-                # 4. Fallback to length if still not found
+                # 4. Fallback to length-based identification if still not found
                 if not segment_found:
                     seq_len = len(record.seq)
-                    if seq_len > 5500 and seq_len < 7500: current_segment = "L"
-                    elif seq_len > 3000 and seq_len < 4500: current_segment = "M"
-                    elif seq_len > 800 and seq_len < 2500: current_segment = "S"
-                    else: current_segment = "unknown"
+                    if seq_len > 5500:  # L segment typical length
+                        current_segment = "L"
+                    elif seq_len > 3000:  # M segment typical length
+                        current_segment = "M"
+                    elif seq_len > 800:  # S segment typical length
+                        current_segment = "S"
+                    else:
+                        current_segment = "unknown"
                 
                 metadata["Segment"] = current_segment
                 segment_counts[current_segment] = segment_counts.get(current_segment, 0) + 1

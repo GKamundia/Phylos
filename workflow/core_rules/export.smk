@@ -11,11 +11,19 @@ rule generate_dynamic_auspice_config:
         dynamic_config = "results/configs/{pathogen}_auspice_config_dynamic.json" if segment_mode == "single" else "results/configs/{pathogen}_auspice_config_{segment}_dynamic.json"
     log:
         "logs/generate_dynamic_config_{pathogen}.log" if segment_mode == "single" else "logs/generate_dynamic_config_{pathogen}_{segment}.log"
-    shell:
-        """
-        if not exist "results\\configs" mkdir "results\\configs"
-        copy "{input.base_config}" "{output.dynamic_config}" > {log} 2>&1
-        """
+    run:
+        import os
+        import shutil
+        
+        # Create output directory if it doesn't exist
+        os.makedirs(os.path.dirname(output.dynamic_config), exist_ok=True)
+        
+        # Copy the base config to the dynamic config location
+        shutil.copy2(input.base_config, output.dynamic_config)
+        
+        # Log the operation
+        with open(log[0], "w") as log_file:
+            log_file.write(f"Copied {input.base_config} to {output.dynamic_config}\n")
 
 rule export:
     input:
