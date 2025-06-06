@@ -118,11 +118,12 @@ def standardize_date(date_str):
     if re.match(r'^\d{4}$', date_str):
         return date_str
     
-    # Try various formats
+    # Try various formats (enhanced for NCBI data)
     formats = [
         '%Y-%m-%d', '%Y/%m/%d', '%d-%m-%Y', '%d/%m/%Y', 
         '%m-%d-%Y', '%m/%d/%Y', '%d-%b-%Y', '%d %b %Y', 
-        '%b %d %Y', '%B %d %Y', '%d %B %Y'
+        '%b %d %Y', '%B %d %Y', '%d %B %Y', '%d-%B-%Y',
+        '%Y-%b-%d', '%Y %b %d'
     ]
     
     for fmt in formats:
@@ -132,9 +133,107 @@ def standardize_date(date_str):
         except ValueError:
             continue
     
+    # Try to extract year from string if formats fail
+    year_match = re.search(r'\b(19|20)\d{2}\b', date_str)
+    if year_match:
+        log_with_context(logger, "WARNING", f"Could only extract year from date: {date_str} -> {year_match.group()}")
+        return year_match.group()
+    
     # If all formats fail, log and return original
     log_with_context(logger, "WARNING", f"Could not standardize date: {date_str}")
     return date_str
+
+def extract_country_from_geo_location(geo_location):
+    """Extract country from Geo_Location field"""
+    if not geo_location or pd.isna(geo_location) or str(geo_location).strip() == "":
+        return ""
+    
+    geo_str = str(geo_location).strip()
+    
+    # If it contains a colon, take the part before the colon as country
+    if ":" in geo_str:
+        country = geo_str.split(":")[0].strip()
+        return country
+    
+    # Otherwise, assume the whole string is the country
+    return geo_str
+
+def extract_country_from_strain_or_title(isolate, title):
+    """Extract country information from strain name or title"""
+    
+    # Define common country patterns found in RVF data
+    country_patterns = {
+        r'\b(Kenya|Kenyan)\b': 'Kenya',
+        r'\b(South Africa|SA)\b': 'South Africa', 
+        r'\b(Egypt|Egyptian)\b': 'Egypt',
+        r'\b(Saudi Arabia|Saudi)\b': 'Saudi Arabia',
+        r'\b(Madagascar)\b': 'Madagascar',
+        r'\b(Senegal)\b': 'Senegal',
+        r'\b(Mauritania)\b': 'Mauritania',
+        r'\b(Tanzania)\b': 'Tanzania',
+        r'\b(Sudan)\b': 'Sudan',
+        r'\b(Niger)\b': 'Niger',
+        r'\b(Botswana)\b': 'Botswana',
+        r'\b(Namibia)\b': 'Namibia',
+        r'\b(Uganda)\b': 'Uganda',
+        r'\b(Chad)\b': 'Chad',
+        r'\b(Mali)\b': 'Mali',
+        r'\b(Morocco)\b': 'Morocco',
+        r'\b(Central African Republic|CAR)\b': 'Central African Republic',
+        r'\b(Rwanda)\b': 'Rwanda',
+        r'\b(Burundi)\b': 'Burundi',
+        r'\b(Ethiopia)\b': 'Ethiopia',
+        r'\b(Somalia)\b': 'Somalia',
+        r'\b(Djibouti)\b': 'Djibouti',
+        r'\b(Eritrea)\b': 'Eritrea',
+        r'\b(Gambia)\b': 'Gambia',
+        r'\b(Guinea)\b': 'Guinea',
+        r'\b(Ivory Coast|Cote d\'Ivoire)\b': 'Ivory Coast',
+        r'\b(Liberia)\b': 'Liberia',
+        r'\b(Sierra Leone)\b': 'Sierra Leone',
+        r'\b(Burkina Faso)\b': 'Burkina Faso',
+        r'\b(Ghana)\b': 'Ghana',
+        r'\b(Togo)\b': 'Togo',
+        r'\b(Benin)\b': 'Benin',
+        r'\b(Nigeria)\b': 'Nigeria',
+        r'\b(Cameroon)\b': 'Cameroon',
+        r'\b(Gabon)\b': 'Gabon',
+        r'\b(Republic of the Congo|Congo)\b': 'Republic of the Congo',
+        r'\b(Democratic Republic of the Congo|DRC)\b': 'Democratic Republic of the Congo',
+        r'\b(Angola)\b': 'Angola',
+        r'\b(Zambia)\b': 'Zambia',
+        r'\b(Zimbabwe)\b': 'Zimbabwe',
+        r'\b(Mozambique)\b': 'Mozambique',
+        r'\b(Malawi)\b': 'Malawi',
+        r'\b(Lesotho)\b': 'Lesotho',
+        r'\b(Swaziland|Eswatini)\b': 'Eswatini'
+    }
+    
+    # Check isolate/strain field first
+    if isolate and not pd.isna(isolate) and str(isolate).strip():
+        isolate_str = str(isolate).strip()
+        for pattern, country in country_patterns.items():
+            if re.search(pattern, isolate_str, re.IGNORECASE):
+                return country
+    
+    # Check title field if no match in isolate
+    if title and not pd.isna(title) and str(title).strip():
+        title_str = str(title).strip()
+        for pattern, country in country_patterns.items():
+            if re.search(pattern, title_str, re.IGNORECASE):
+                return country
+    
+    return ""
+
+def create_strain_field(row):
+    """Create strain field from available data"""
+    # Priority order: Isolate, then Accession
+    if 'Isolate' in row and row['Isolate'] and not pd.isna(row['Isolate']) and str(row['Isolate']).strip():
+        return str(row['Isolate']).strip()
+    elif 'Accession' in row and row['Accession'] and not pd.isna(row['Accession']):
+        return str(row['Accession']).strip()
+    else:
+        return ""
 
 def validate_metadata(metadata_df, schema):
     """
@@ -295,13 +394,29 @@ def main():
             return 1
         
         log_with_context(logger, "INFO", f"Loaded {len(metadata)} records")
-        
-        # Clean and standardize metadata
+          # Clean and standardize metadata
         log_with_context(logger, "INFO", "Standardizing metadata...")
         
-        # Standardize dates
-        if 'date' in metadata.columns:
+        # Create standard Nextstrain fields from existing data
+        log_with_context(logger, "INFO", "Creating standard Nextstrain fields...")
+        
+        # Create 'date' field from Collection_Date or standardize existing date
+        if 'date' not in metadata.columns:
+            if 'Collection_Date' in metadata.columns:
+                log_with_context(logger, "INFO", "Creating standardized 'date' field from 'Collection_Date'")
+                metadata['date'] = metadata['Collection_Date'].apply(standardize_date)
+            elif 'Release_Date' in metadata.columns:
+                log_with_context(logger, "INFO", "Creating standardized 'date' field from 'Release_Date'")
+                metadata['date'] = metadata['Release_Date'].apply(standardize_date)
+            else:
+                log_with_context(logger, "WARNING", "No date field found, creating empty 'date' column")
+                metadata['date'] = ""
+        else:
+            # Standardize existing date field
             metadata['date'] = metadata['date'].apply(standardize_date)
+        
+        # Log date standardization results
+        if 'date' in metadata.columns:
             date_stats = metadata['date'].str.len().value_counts()
             log_with_context(logger, "INFO", "Date standardization complete", {
                 "complete_dates": int(date_stats.get(10, 0)),  # YYYY-MM-DD (length 10)
@@ -311,6 +426,56 @@ def main():
                 },
                 "empty_dates": int(metadata['date'].isna().sum())
             })
+        
+        # Create 'country' field if missing or enhance existing one
+        if 'country' not in metadata.columns:
+            if 'Country' in metadata.columns and not metadata['Country'].isna().all():
+                metadata['country'] = metadata['Country']
+            elif 'Geo_Location' in metadata.columns:
+                log_with_context(logger, "INFO", "Extracting country from Geo_Location field")
+                metadata['country'] = metadata['Geo_Location'].apply(extract_country_from_geo_location)
+                # Also populate the Country field for consistency
+                metadata['Country'] = metadata['country']
+            else:
+                log_with_context(logger, "WARNING", "No geographic information found in standard fields")
+                metadata['country'] = ""
+                metadata['Country'] = ""
+        
+        # Enhance country extraction from strain names and titles if countries are still missing
+        if 'country' in metadata.columns:
+            missing_countries = metadata['country'].isna() | (metadata['country'] == "")
+            countries_to_extract = metadata[missing_countries]
+            
+            if len(countries_to_extract) > 0:
+                log_with_context(logger, "INFO", f"Attempting to extract countries from strain names and titles for {len(countries_to_extract)} records")
+                
+                # Extract countries from isolate and title fields
+                for idx, row in countries_to_extract.iterrows():
+                    isolate = row.get('Isolate', '')
+                    title = row.get('GenBank_Title', '')
+                    
+                    extracted_country = extract_country_from_strain_or_title(isolate, title)
+                    if extracted_country:
+                        metadata.at[idx, 'country'] = extracted_country
+                        if 'Country' in metadata.columns:
+                            metadata.at[idx, 'Country'] = extracted_country
+                
+                # Log results
+                final_missing = metadata['country'].isna() | (metadata['country'] == "")
+                extracted_count = len(countries_to_extract) - final_missing.sum()
+                log_with_context(logger, "INFO", f"Successfully extracted countries for {extracted_count} additional records")
+        
+        # Create 'strain' field if missing
+        if 'strain' not in metadata.columns:
+            log_with_context(logger, "INFO", "Creating strain field from available data")
+            metadata['strain'] = metadata.apply(create_strain_field, axis=1)
+          # Add virus field if missing (standard for RVF)
+        if 'virus' not in metadata.columns:
+            metadata['virus'] = 'rvf'
+        
+        # Create lowercase 'accession' field from 'Accession' if needed for schema compliance
+        if 'accession' not in metadata.columns and 'Accession' in metadata.columns:
+            metadata['accession'] = metadata['Accession']
         
         # Add geographic coordinates
         metadata = add_geographic_coordinates(metadata, lat_longs)

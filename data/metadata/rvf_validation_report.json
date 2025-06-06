@@ -1,12 +1,8 @@
 {
   "valid": false,
-  "total_records": 1535,
-  "invalid_records": 1535,
+  "total_records": 1439,
+  "invalid_records": 1439,
   "errors": [
-    "Required field 'strain' missing from metadata",
-    "Required field 'virus' missing from metadata",
-    "Required field 'accession' missing from metadata",
-    "Required field 'date' missing from metadata",
-    "Required field 'country' missing from metadata"
+    "Required field 'accession' missing from metadata"
   ]
 }
