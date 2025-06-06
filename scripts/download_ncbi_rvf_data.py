@@ -44,7 +44,7 @@ def search_ncbi(search_term, max_results=None, email=None, api_key=None):
     if api_key:
         Entrez.api_key = api_key
         print(f"Using provided NCBI API key")
-      search_terms = [
+    search_terms = [
         search_term,  # Original search term first
         "Rift Valley fever virus[Organism] OR Phlebovirus riftense[Organism]",  # Include both organism names
         "txid11588[Organism:exp]",  # Direct taxid search
@@ -136,8 +136,7 @@ def fetch_sequences(id_list, web_env=None, query_key=None, batch_size=100, debug
                 )
             else:
                 fetch_handle = Entrez.efetch(
-                    db="nucleotide", rettype="gb", retmode="text", id=",".join(batch_ids)
-                )
+                    db="nucleotide", rettype="gb", retmode="text", id=",".join(batch_ids)                )
                 
             for record_idx, record in enumerate(SeqIO.parse(fetch_handle, "genbank")):
                 metadata = {key: "" for key in csv_headers}
@@ -174,7 +173,8 @@ def fetch_sequences(id_list, web_env=None, query_key=None, batch_size=100, debug
                     if record.dbxrefs:
                         for xref in record.dbxrefs:
                             if "RefSeq" in xref: # A bit broad, but might catch some cases
-                                is_refseq_in_dbxrefs = True; break
+                                is_refseq_in_dbxrefs = True
+                                break
                     if is_refseq_in_dbxrefs:
                          metadata["GenBank_RefSeq"] = "RefSeq"
                     else:
@@ -192,7 +192,8 @@ def fetch_sequences(id_list, web_env=None, query_key=None, batch_size=100, debug
                             metadata["SRA_Accession"] = xref.split(":", 1)[1]
 
                 for feature in record.features:
-                    if feature.type == "source":                        if "organism" in feature.qualifiers:
+                    if feature.type == "source":
+                        if "organism" in feature.qualifiers:
                             org_name = feature.qualifiers["organism"][0]
                             metadata["Organism_Name"] = org_name
                             
