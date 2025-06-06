@@ -10,6 +10,12 @@ seaborn==0.13.0
 geopy==2.4.1
 nextclade==2.14.0
 
+# Advanced phylogenetic analysis dependencies
+ete3>=3.1.2
+dendropy>=4.5.2
+numpy>=1.24.0
+tqdm>=4.64.0
+
 # Nextstrain-specific dependencies
 nextstrain-cli>=5.0.0
 augur>=21.1.0

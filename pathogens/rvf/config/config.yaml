@@ -53,3 +53,31 @@ resources:
   tree:
     threads: 8 # Use more threads for RVF tree building
     mem_mb: 16000
+
+# Advanced phylogenetics configuration (RVF-specific)
+advanced_phylogenetics:
+  enabled: true
+  alignment:
+    methods: ["mafft", "muscle", "biopython"] # Prefer MAFFT for RVF
+    auto_select: true
+    quality_threshold: 0.8 # Higher threshold for RVF
+  tree_building:
+    methods: ["iqtree", "nj", "mp"] # Prefer IQ-TREE for RVF
+    auto_select: true
+    bootstrap_replicates: 1000 # More replicates for RVF
+  temporal_analysis:
+    enabled: true
+    molecular_clock: true
+    date_formats: ["YYYY-MM-DD", "DD-MMM-YYYY", "YYYY-MM", "YYYY"] # Support NCBI formats
+    temporal_resolution: "month"
+  quality_control:
+    min_sequences: 5 # Minimum for meaningful phylogenetic analysis
+    max_gaps: 0.9 # Allow some gaps for RVF sequences
+    alignment_length_threshold: 500 # Minimum alignment length
+  output:
+    save_intermediates: true
+    generate_reports: true
+    export_json: true
+
+# Segment-specific settings
+segments: ["L", "M", "S"]

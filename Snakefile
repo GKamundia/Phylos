@@ -51,9 +51,9 @@ config = {
     "refine": {**master_config["common"].get("refine", {}), **pathogen_specific_config.get("refine", {})},
     "update": master_config["common"]["update"],
     "qc": master_config["common"].get("qc", {}),
-    "resources": {**master_config["common"].get("resources", {}), **pathogen_specific_config.get("resources", {})},
-    "workflow": {**master_config["common"].get("workflow", {}), **pathogen_specific_config.get("workflow", {})},
+    "resources": {**master_config["common"].get("resources", {}), **pathogen_specific_config.get("resources", {})},    "workflow": {**master_config["common"].get("workflow", {}), **pathogen_specific_config.get("workflow", {})},
     "export": master_config["common"].get("export", {}),  # Add export configuration
+    "advanced_phylogenetics": {**master_config["common"].get("advanced_phylogenetics", {}), **pathogen_specific_config.get("advanced_phylogenetics", {})},  # Add advanced phylogenetics configuration
 }
 
 # ==== Workflow Configuration ====
@@ -93,10 +93,10 @@ config["segments"] = segments
 required_dirs = [
     "logs", 
     "results",
-    Path("data/sequences/raw"),
-    Path("data/metadata/raw"),
+    Path("data/sequences/raw"),    Path("data/metadata/raw"),
     "results/nextclade",
     "results/qc_reports",
+    "results/advanced_phylogenetics",  # Add advanced phylogenetics directory
     "benchmarks"
 ]
 
@@ -130,6 +130,9 @@ include: "workflow/core_rules/export.smk"
 include: "workflow/utils/checkpoint_handlers.smk"
 include: "workflow/utils/validation.smk"
 include: "workflow/utils/notification.smk"
+
+# Include advanced phylogenetics capabilities
+include: "workflow/core_rules/advanced_phylogenetics.smk"
 
 # Include segment-specific rule modules conditionally
 if segment_mode == "multi":

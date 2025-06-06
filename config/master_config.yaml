@@ -116,7 +116,6 @@ common:
       after_build: true
       weekly_full: true
       weekly_day: "Sunday"
-
   # Add the export configuration
   export:
     node_data:
@@ -125,6 +124,31 @@ common:
       - "traits"
     extra_node_data: [] # Optional additional node data files
     colors: null # Optional path to colors file
+
+  # Advanced phylogenetics configuration
+  advanced_phylogenetics:
+    enabled: true
+    alignment:
+      methods: ["mafft", "muscle", "clustalw", "biopython"]
+      auto_select: true
+      quality_threshold: 0.7
+    tree_building:
+      methods: ["iqtree", "fasttree", "raxml", "nj", "mp"]
+      auto_select: true
+      bootstrap_replicates: 100
+    temporal_analysis:
+      enabled: true
+      molecular_clock: true
+      date_formats: ["YYYY-MM-DD", "DD-MMM-YYYY", "YYYY-MM", "YYYY"]
+      temporal_resolution: "month"
+    quality_control:
+      min_sequences: 3
+      max_gaps: 0.95
+      alignment_length_threshold: 100
+    output:
+      save_intermediates: true
+      generate_reports: true
+      export_json: true
 
 ncbi:
   email: "gkamush50@gmail.com"
