@@ -53,8 +53,14 @@ rule download_data:
     resources:
         mem_mb = config["resources"].get("download", {}).get("mem_mb", 2000),
         runtime = config["resources"].get("download", {}).get("runtime", 60)
-    script:
-        "../../scripts/run_download.py"
+    shell:
+        """
+        python scripts/download_ncbi_virus_exact.py \
+            --email "{params.email}" \
+            --output-fasta {output.sequences} \
+            --output-metadata {output.metadata} \
+            > {log} 2>&1
+        """
 
 # Prepare and validate metadata
 checkpoint prepare_metadata:

@@ -9,11 +9,10 @@
       "type": "string",
       "description": "Unique identifier for the virus strain",
       "pattern": "^.+$"
-    },
-    "virus": {
+    },    "virus": {
       "type": "string",
       "description": "Virus name",
-      "enum": ["Rift Valley fever virus", "Pathogen"]
+      "enum": ["Rift Valley fever virus", "Pathogen", "rvf"]
     },
     "accession": {
       "type": "string",
