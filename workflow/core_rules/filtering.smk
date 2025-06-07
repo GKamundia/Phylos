@@ -32,7 +32,9 @@ rule filter:
 rule subsample:
     input:
         sequences = f"results/filtered/{output_prefix}_filtered.fasta",
-        metadata = f"results/filtered/{output_prefix}_metadata.tsv"
+        metadata = lambda wildcards: f"results/filtered/{output_prefix}_metadata_fixed.tsv" 
+                   if config.get("has_segments", False) and segment_mode == "multi" 
+                   else f"results/filtered/{output_prefix}_metadata.tsv"
     output:
         sequences = f"results/subsampled/{output_prefix}_subsampled.fasta",
         metadata = f"results/subsampled/{output_prefix}_metadata.tsv"

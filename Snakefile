@@ -67,21 +67,30 @@ if config["has_segments"]:
     segment_mode = config["data"].get("segment_mode", "single")
     specified_segment = config["data"].get("segment", "")
     
-    # Determine segments based on configuration
-    if segment_mode == "single" and specified_segment:
-        segments = [specified_segment]
-    elif segment_mode == "multi" or specified_segment == "all":
+    print(f"DEBUG: has_segments={config['has_segments']}")
+    print(f"DEBUG: segment_mode={segment_mode}")
+    print(f"DEBUG: specified_segment='{specified_segment}'")
+      # Determine segments based on configuration
+    if segment_mode == "multi" or specified_segment == "all":
         # Get segments from pathogen-specific config or use default
         segments = pathogen_specific_config.get("segments", ["L", "M", "S"])
         segment_mode = "multi"
+        print(f"DEBUG: Setting segment_mode to multi, segments={segments}")
+    elif segment_mode == "single" and specified_segment:
+        segments = [specified_segment]
+        print(f"DEBUG: Single segment mode with specific segment: {segments}")
     else:
         # Default to L segment if nothing specified
         segments = ["L"]
         segment_mode = "single"
+        print(f"DEBUG: Defaulting to single segment mode")
 else:
     # Non-segmented pathogen
     segments = [""]
     segment_mode = "single"
+    print(f"DEBUG: Non-segmented pathogen, single mode")
+
+print(f"DEBUG: Final segment_mode={segment_mode}, segments={segments}")
 
 # Export for use in rule files
 config["segment_mode"] = segment_mode

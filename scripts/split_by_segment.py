@@ -8,8 +8,6 @@ import pandas as pd
 from Bio import SeqIO
 import logging
 
-import snakemake
-
 # Set up logging
 logging.basicConfig(
     level=logging.INFO,
@@ -17,7 +15,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Get input parameters from Snakemake
+# Get input parameters from Snakemake (automatically available in script mode)
 sequences_file = snakemake.input.sequences
 metadata_file = snakemake.input.metadata
 segments = snakemake.params.segments
@@ -41,14 +39,17 @@ metadata = pd.read_csv(metadata_file, sep='\t')
 # Split metadata by segment
 segment_metadata = {}
 for segment in segments:
-    segment_metadata[segment] = metadata[metadata['segment'] == segment].copy()
+    # Make segment matching case-insensitive
+    segment_lower = segment.lower()
+    segment_metadata[segment] = metadata[metadata['segment'] == segment_lower].copy()
     os.makedirs(os.path.dirname(output_meta_map[segment]), exist_ok=True)
     segment_metadata[segment].to_csv(output_meta_map[segment], sep='\t', index=False)
     logger.info(f"Wrote {len(segment_metadata[segment])} records to {output_meta_map[segment]}")
 
 # Create segment-specific sequence files
 for segment in segments:
-    segment_ids = set(segment_metadata[segment]['strain'].tolist())
+    # Use accession IDs instead of strain names for matching sequence IDs
+    segment_ids = set(segment_metadata[segment]['accession'].tolist())
     segment_seqs = []
     
     # Create output directory
