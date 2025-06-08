@@ -99,12 +99,11 @@ def main():
                 
                 if check_augur.returncode != 0:
                     raise Exception("Augur not found in WSL virtual environment")
-                
-                # Construct WSL command with virtual environment activation
+                  # Construct WSL command with virtual environment activation
                 if args.method == "iqtree":
                     augur_cmd = f". /home/anarchy/augur-env/bin/activate && augur tree --alignment '{wsl_alignment}' --output '{wsl_output}' --method iqtree --substitution-model {args.substitution_model} --nthreads {args.threads}"
                     if args.iqtree_args:
-                        augur_cmd += f" {args.iqtree_args}"
+                        augur_cmd += f" --tree-builder-args '{args.iqtree_args}'"
                 else:
                     augur_cmd = f". /home/anarchy/augur-env/bin/activate && augur tree --alignment '{wsl_alignment}' --output '{wsl_output}' --method fasttree --nthreads {args.threads}"
                 
