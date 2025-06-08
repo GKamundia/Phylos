@@ -2,43 +2,21 @@
 Rules for phylogenetic analysis and tree building
 """
 
-# Helper functions for input files
-def get_input_sequences(wildcards):
-    if config["subsample"].get("max_sequences", 0) > 0:
-        return f"results/subsampled/{output_prefix}_subsampled.fasta"
-    else:
-        return f"results/filtered/{output_prefix}_filtered.fasta"
-
-def get_input_metadata(wildcards):
-    if config["subsample"].get("max_sequences", 0) > 0:
-        return f"results/subsampled/{output_prefix}_metadata.tsv"
-    else:
-        return f"results/filtered/{output_prefix}_metadata.tsv"
-
-# Get alignment input based on whether masking is enabled
-def get_alignment_input(wildcards):
-    if config.get("mask", {}).get("sites", []) or \
-       config.get("mask", {}).get("from_beginning") or \
-       config.get("mask", {}).get("from_end"):
-        return f"results/masked/{output_prefix}_masked.fasta"
-    else:
-        return f"results/aligned/{output_prefix}_aligned.fasta"
-
 # Build phylogenetic tree
 rule tree:
     input:
         alignment = get_alignment_input
     output:
-        tree = f"results/tree/{output_prefix}_tree.nwk"
+        tree = f"results/tree/{output_prefix}_tree.nwk" if segment_mode == "single" else "results/segments/{segment}/tree/rvf_{segment}_tree.nwk"
     params:
         method = config.get("tree", {}).get("method", "iqtree"),
         iqtree_args = config.get("tree", {}).get("iqtree_args", "-ninit 2 -n 2"),
         substitution_model = config.get("tree", {}).get("substitution_model", "GTR")
     threads: config["resources"].get("tree", {}).get("threads", 4)
     log:
-        f"logs/tree_{output_prefix}.log"
+        f"logs/tree_{output_prefix}.log" if segment_mode == "single" else "logs/tree_rvf_{segment}.log"
     benchmark:
-        f"benchmarks/tree_{output_prefix}.txt"
+        f"benchmarks/tree_{output_prefix}.txt" if segment_mode == "single" else "benchmarks/tree_rvf_{segment}.txt"
     resources:
         mem_mb = config["resources"].get("tree", {}).get("mem_mb", 8000)
     shell:
@@ -70,12 +48,12 @@ rule tree:
 # Refine tree with time and metadata
 rule refine:
     input:
-        tree = f"results/tree/{output_prefix}_tree.nwk",
+        tree = f"results/tree/{output_prefix}_tree.nwk" if segment_mode == "single" else "results/segments/{segment}/tree/rvf_{segment}_tree.nwk",
         alignment = get_alignment_input,
         metadata = get_input_metadata
     output:
-        tree = f"results/tree/{output_prefix}_refined.nwk",
-        node_data = f"results/node_data/{output_prefix}_branch_lengths.json"
+        tree = f"results/tree/{output_prefix}_refined.nwk" if segment_mode == "single" else "results/segments/{segment}/tree/rvf_{segment}_refined.nwk",
+        node_data = f"results/node_data/{output_prefix}_branch_lengths.json" if segment_mode == "single" else "results/segments/{segment}/node_data/rvf_{segment}_branch_lengths.json"
     params:
         coalescent = config["refine"].get("coalescent", "opt"),
         date_inference = config["refine"].get("date_inference", "marginal"),
@@ -85,9 +63,9 @@ rule refine:
         root = lambda w: f"--root {config['refine']['root']}" if config["refine"].get("root") else ""
     threads: config["resources"].get("refine", {}).get("threads", 2)
     log:
-        f"logs/refine_{output_prefix}.log"
+        f"logs/refine_{output_prefix}.log" if segment_mode == "single" else "logs/refine_rvf_{segment}.log"
     benchmark:
-        f"benchmarks/refine_{output_prefix}.txt"
+        f"benchmarks/refine_{output_prefix}.txt" if segment_mode == "single" else "benchmarks/refine_rvf_{segment}.txt"
     resources:
         mem_mb = config["resources"].get("refine", {}).get("mem_mb", 4000)
     shell:
@@ -112,17 +90,17 @@ rule refine:
 # Reconstruct ancestral sequences and mutations
 rule ancestral:
     input:
-        tree = f"results/tree/{output_prefix}_refined.nwk",
+        tree = f"results/tree/{output_prefix}_refined.nwk" if segment_mode == "single" else "results/segments/{segment}/tree/rvf_{segment}_refined.nwk",
         alignment = get_alignment_input
     output:
-        node_data = f"results/node_data/{output_prefix}_nt_muts.json"
+        node_data = f"results/node_data/{output_prefix}_nt_muts.json" if segment_mode == "single" else "results/segments/{segment}/node_data/rvf_{segment}_nt_muts.json"
     params:
         inference = config.get("ancestral", {}).get("inference", "joint")
     threads: config["resources"].get("ancestral", {}).get("threads", 1)
     log:
-        f"logs/ancestral_{output_prefix}.log"
+        f"logs/ancestral_{output_prefix}.log" if segment_mode == "single" else "logs/ancestral_rvf_{segment}.log"
     benchmark:
-        f"benchmarks/ancestral_{output_prefix}.txt"
+        f"benchmarks/ancestral_{output_prefix}.txt" if segment_mode == "single" else "benchmarks/ancestral_rvf_{segment}.txt"
     resources:
         mem_mb = config["resources"].get("ancestral", {}).get("mem_mb", 2000)
     shell:
@@ -132,30 +110,5 @@ rule ancestral:
             --alignment {input.alignment} \
             --output-node-data {output.node_data} \
             --inference {params.inference} \
-            > {log} 2>&1
-        """
-
-# Reconstruct ancestral traits (e.g., country, host)
-rule traits:
-    input:
-        tree = f"results/tree/{output_prefix}_refined.nwk",
-        metadata = get_input_metadata
-    output:
-        node_data = f"results/node_data/{output_prefix}_traits.json"
-    params:
-        columns = lambda w: ",".join(config.get("traits", {}).get("columns", ["country"]))
-    log:
-        f"logs/traits_{output_prefix}.log"
-    benchmark:
-        f"benchmarks/traits_{output_prefix}.txt"
-    resources:
-        mem_mb = config["resources"].get("traits", {}).get("mem_mb", 2000)
-    shell:
-        """
-        augur traits \
-            --tree {input.tree} \
-            --metadata {input.metadata} \
-            --output {output.node_data} \
-            --columns {params.columns} \
             > {log} 2>&1
         """

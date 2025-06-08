@@ -187,7 +187,8 @@ def fix_segment_identification():
             metadata.to_csv(backup_file, sep='\t', index=False)
             logger.info(f"Backup saved to: {backup_file}")
             
-            metadata.to_csv(metadata_file, sep='\t', index=False)            logger.info(f"Updated metadata saved to: {metadata_file}")
+            metadata.to_csv(metadata_file, sep='\t', index=False)
+            logger.info(f"Updated metadata saved to: {metadata_file}")
         
         return fixed_count
     else:
