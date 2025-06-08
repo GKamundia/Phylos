@@ -117,19 +117,22 @@ def standardize_date(date_str):
     # Check if just year
     if re.match(r'^\d{4}$', date_str):
         return date_str
-    
-    # Try various formats (enhanced for NCBI data)
+      # Try various formats (enhanced for NCBI data)
     formats = [
         '%Y-%m-%d', '%Y/%m/%d', '%d-%m-%Y', '%d/%m/%Y', 
         '%m-%d-%Y', '%m/%d/%Y', '%d-%b-%Y', '%d %b %Y', 
         '%b %d %Y', '%B %d %Y', '%d %B %Y', '%d-%B-%Y',
-        '%Y-%b-%d', '%Y %b %d'
+        '%Y-%b-%d', '%Y %b %d', '%b-%Y', '%B-%Y'  # Added month-year formats
     ]
     
     for fmt in formats:
         try:
             date_obj = datetime.strptime(date_str, fmt)
-            return date_obj.strftime('%Y-%m-%d')
+            # For month-year formats, return as YYYY-MM
+            if fmt in ['%b-%Y', '%B-%Y']:
+                return date_obj.strftime('%Y-%m')
+            else:
+                return date_obj.strftime('%Y-%m-%d')
         except ValueError:
             continue
     
