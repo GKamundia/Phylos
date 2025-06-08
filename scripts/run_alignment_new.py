@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Run sequence alignment using augur align with Windows WSL support
+Run sequence alignment using augur align with Windows conda support
 """
 
 import os
@@ -111,117 +111,57 @@ def main():
             # Try different approaches for Windows
             success = False
             
-            # Option 1: Try with WSL (Windows Subsystem for Linux)
+            # Option 1: Try with conda environment
             try:
                 with open(args.log, 'a') as log_file:
-                    log_file.write("Attempting alignment with WSL\n")
+                    log_file.write("Attempting alignment with conda environment\n")
                 
-                # Convert Windows paths to WSL paths
-                wsl_sequences = args.sequences.replace('C:', '/mnt/c').replace('\\', '/')
-                wsl_output = args.output.replace('C:', '/mnt/c').replace('\\', '/')
-                wsl_log = args.log.replace('C:', '/mnt/c').replace('\\', '/')
-                  # Check if WSL has augur in virtual environment
-                check_augur = subprocess.run([
-                    "wsl", "bash", "-c", ". /home/anarchy/augur-env/bin/activate && which augur"
-                ], capture_output=True, text=True)
-                if check_augur.returncode != 0:
-                    raise Exception("Augur not found in WSL virtual environment")
+                # Create conda environment with MAFFT if it doesn't exist
+                conda_env_name = "mafft-env"
                 
-                # Construct WSL command with virtual environment activation
-                augur_cmd = f". /home/anarchy/augur-env/bin/activate && augur align --sequences '{wsl_sequences}' --output '{wsl_output}' --nthreads {args.threads}"
+                # Check if environment exists
+                env_check = subprocess.run(
+                    ["conda", "env", "list"], 
+                    capture_output=True, text=True
+                )
                 
-                if args.method == "mafft":
-                    augur_cmd += " --method mafft"
-                
-                # Handle reference for WSL
-                if args.reference and os.path.exists(args.reference):
-                    wsl_reference = args.reference.replace('C:', '/mnt/c').replace('\\', '/')
-                    ref_name = None
-                    with open(args.reference, 'r') as ref_file:
-                        for line in ref_file:
-                            if line.startswith('>'):
-                                ref_name = line[1:].split()[0]
-                                break
+                if conda_env_name not in env_check.stdout:
+                    with open(args.log, 'a') as log_file:
+                        log_file.write("Creating conda environment with MAFFT\n")
                     
-                    if ref_name:
-                        with open(args.sequences, 'r') as seq_file:
-                            seq_content = seq_file.read()
-                            if ref_name in seq_content:
-                                augur_cmd += f" --reference-name '{ref_name}'"
-                            else:
-                                augur_cmd += f" --reference-sequence '{wsl_reference}'"
-                # Update the WSL command after building it
-                wsl_align_cmd = ["wsl", "bash", "-c", augur_cmd]
+                    # Create environment with mafft
+                    create_result = subprocess.run([
+                        "conda", "create", "-n", conda_env_name, 
+                        "-c", "conda-forge", "-c", "bioconda", 
+                        "python=3.9", "mafft", "augur", "-y"
+                    ], capture_output=True, text=True)
+                    
+                    if create_result.returncode != 0:
+                        raise Exception(f"Failed to create conda environment: {create_result.stderr}")
+                
+                # Run alignment in conda environment
+                conda_cmd = [
+                    "conda", "run", "-n", conda_env_name
+                ] + align_cmd
                 
                 with open(args.log, 'a') as log_file:
-                    log_file.write(f"WSL command: {' '.join(wsl_align_cmd)}\n")
+                    log_file.write(f"Conda command: {' '.join(conda_cmd)}\n")
                 
-                result = subprocess.run(wsl_align_cmd, capture_output=True, text=True, check=True)
+                result = subprocess.run(conda_cmd, capture_output=True, text=True, check=True)
                 success = True
                 
                 with open(args.log, 'a') as log_file:
-                    log_file.write("WSL alignment completed successfully\n")
+                    log_file.write("Conda environment alignment completed successfully\n")
                     if result.stdout:
                         log_file.write(f"STDOUT:\n{result.stdout}\n")
                     if result.stderr:
                         log_file.write(f"STDERR:\n{result.stderr}\n")
                         
-            except Exception as wsl_error:
+            except Exception as conda_error:
                 with open(args.log, 'a') as log_file:
-                    log_file.write(f"WSL approach failed: {wsl_error}\n")
+                    log_file.write(f"Conda environment approach failed: {conda_error}\n")
             
-            # Option 2: Try with conda environment (if WSL failed)
-            if not success:
-                try:
-                    with open(args.log, 'a') as log_file:
-                        log_file.write("Attempting alignment with conda environment\n")
-                    
-                    # Create conda environment with MAFFT if it doesn't exist
-                    conda_env_name = "mafft-env"
-                    
-                    # Check if environment exists
-                    env_check = subprocess.run(
-                        ["conda", "env", "list"], 
-                        capture_output=True, text=True
-                    )
-                    
-                    if conda_env_name not in env_check.stdout:
-                        with open(args.log, 'a') as log_file:
-                            log_file.write("Creating conda environment with MAFFT\n")
-                        
-                        # Create environment with mafft
-                        create_result = subprocess.run([
-                            "conda", "create", "-n", conda_env_name, 
-                            "-c", "conda-forge", "-c", "bioconda", 
-                            "python=3.9", "mafft", "augur", "-y"
-                        ], capture_output=True, text=True)
-                        
-                        if create_result.returncode != 0:
-                            raise Exception(f"Failed to create conda environment: {create_result.stderr}")
-                    
-                    # Run alignment in conda environment
-                    conda_cmd = [
-                        "conda", "run", "-n", conda_env_name
-                    ] + align_cmd
-                    
-                    with open(args.log, 'a') as log_file:
-                        log_file.write(f"Conda command: {' '.join(conda_cmd)}\n")
-                    
-                    result = subprocess.run(conda_cmd, capture_output=True, text=True, check=True)
-                    success = True
-                    
-                    with open(args.log, 'a') as log_file:
-                        log_file.write("Conda environment alignment completed successfully\n")
-                        if result.stdout:
-                            log_file.write(f"STDOUT:\n{result.stdout}\n")
-                        if result.stderr:
-                            log_file.write(f"STDERR:\n{result.stderr}\n")
-                            
-                except Exception as conda_error:
-                    with open(args.log, 'a') as log_file:
-                        log_file.write(f"Conda environment approach failed: {conda_error}\n")
-            
-            # Option 3: Try BioPython's simple alignment as fallback
+            # Option 2: Try BioPython's simple alignment as fallback
             if not success:
                 try:
                     with open(args.log, 'a') as log_file:
@@ -249,7 +189,7 @@ def main():
                     with open(args.log, 'a') as log_file:
                         log_file.write(f"BioPython fallback failed: {bio_error}\n")
             
-            # Option 4: Final fallback - copy sequences
+            # Option 3: Final fallback - copy sequences
             if not success:
                 with open(args.log, 'a') as log_file:
                     log_file.write("Using final fallback - copying sequences as aligned\n")

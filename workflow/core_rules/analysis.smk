@@ -12,37 +12,17 @@ rule tree:
         method = config.get("tree", {}).get("method", "iqtree"),
         iqtree_args = config.get("tree", {}).get("iqtree_args", "-ninit 2 -n 2"),
         substitution_model = config.get("tree", {}).get("substitution_model", "GTR")
-    threads: config["resources"].get("tree", {}).get("threads", 4)
+    threads: 
+        config["resources"].get("tree", {}).get("threads", 4)
     log:
         f"logs/tree_{output_prefix}.log" if segment_mode == "single" else "logs/tree_rvf_{segment}.log"
     benchmark:
-        f"benchmarks/tree_{output_prefix}.txt" if segment_mode == "single" else "benchmarks/tree_rvf_{segment}.txt"
+        f"benchmarks/tree_{output_prefix}.txt" if segment_mode == "single" else "benchmarks/tree_rvf_{segment}.txt"    
     resources:
         mem_mb = config["resources"].get("tree", {}).get("mem_mb", 8000)
     shell:
         """
-        # Create output directory if it doesn't exist
-        mkdir -p $(dirname {output.tree})
-        
-        # Run tree building
-        if [ "{params.method}" = "iqtree" ]; then
-            augur tree \
-                --alignment {input.alignment} \
-                --output {output.tree} \
-                --method iqtree \
-                --substitution-model {params.substitution_model} \
-                --nthreads {threads} \
-                {params.iqtree_args} \
-                > {log} 2>&1
-        else
-            # Default to FastTree
-            augur tree \
-                --alignment {input.alignment} \
-                --output {output.tree} \
-                --method fasttree \
-                --nthreads {threads} \
-                > {log} 2>&1
-        fi
+        python scripts/run_tree.py --alignment {input.alignment} --output {output.tree} --log {log} --method {params.method} --threads {threads} --substitution-model {params.substitution_model} --iqtree-args "{params.iqtree_args}"
         """
 
 # Refine tree with time and metadata
@@ -61,7 +41,8 @@ rule refine:
         clock_rate = lambda w: f"--clock-rate {config['refine']['clock_rate']}" if config["refine"].get("clock_rate") else "",
         clock_std_dev = lambda w: f"--clock-std-dev {config['refine']['clock_std_dev']}" if config["refine"].get("clock_std_dev") else "",
         root = lambda w: f"--root {config['refine']['root']}" if config["refine"].get("root") else ""
-    threads: config["resources"].get("refine", {}).get("threads", 2)
+    threads: 
+        config["resources"].get("refine", {}).get("threads", 2)
     log:
         f"logs/refine_{output_prefix}.log" if segment_mode == "single" else "logs/refine_rvf_{segment}.log"
     benchmark:

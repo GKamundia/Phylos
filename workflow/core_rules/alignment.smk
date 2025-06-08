@@ -2,6 +2,8 @@
 Rules for segment-aware sequence alignment
 """
 
+import os
+
 # Get filtered sequences directly (remove subsampling dependency)
 def get_input_sequences(wildcards):
     return f"results/filtered/{output_prefix}_filtered.fasta"
@@ -9,81 +11,41 @@ def get_input_sequences(wildcards):
 def get_input_metadata(wildcards):
     return f"results/filtered/{output_prefix}_metadata.tsv"
 
-# Split sequences by segment first
-checkpoint split_by_segment:
-    input:
-        sequences = get_input_sequences,
-        metadata = get_input_metadata
-    output:
-        sequences = expand("results/segments/{segment}/raw/{output_prefix}_{segment}_sequences.fasta", segment=["L", "M", "S"]),
-        metadata = expand("results/segments/{segment}/filtered/{output_prefix}_{segment}_metadata.tsv", segment=["L", "M", "S"])
-    params:
-        segments = ["L", "M", "S"]
-    log:
-        f"logs/split_segments_{output_prefix}.log"
-    benchmark:
-        f"benchmarks/split_segments_{output_prefix}.txt"
-    resources:
-        mem_mb = config["resources"].get("split_segments", {}).get("mem_mb", 2000)
-    script:
-        "../../scripts/split_by_segment.py"
+def get_alignment_input(wildcards):
+    """Get alignment input based on masking configuration and segment mode"""
+    if segment_mode == "single":
+        if config.get("mask", {}).get("sites") or config.get("mask", {}).get("from_beginning") or config.get("mask", {}).get("from_end"):
+            return f"results/masked/{output_prefix}_masked.fasta"
+        else:
+            return f"results/aligned/{output_prefix}_aligned.fasta"
+    else:
+        # Multi-segment mode
+        if config.get("mask", {}).get("sites") or config.get("mask", {}).get("from_beginning") or config.get("mask", {}).get("from_end"):
+            return f"results/segments/{wildcards.segment}/masked/{output_prefix}_{wildcards.segment}_masked.fasta"
+        else:
+            return f"results/segments/{wildcards.segment}/aligned/{output_prefix}_{wildcards.segment}_aligned.fasta"
 
 # Align each segment separately
 rule align_segment:
     input:
         sequences = "results/segments/{segment}/raw/{prefix}_{segment}_sequences.fasta"
     output:
-        alignment = "results/segments/{segment}/aligned/{prefix}_{segment}_aligned.fasta"
+        alignment = "results/segments/{segment}/aligned/{prefix}_{segment}_aligned.fasta"    
     params:
         reference = lambda wildcards: get_segment_reference(wildcards.segment),
         method = config.get("align", {}).get("method", "mafft"),
         mafft_options = config.get("align", {}).get("mafft_options", "--nomemsave --auto")
-    threads: config["resources"].get("align", {}).get("threads", 4)
+    threads:
+        config["resources"].get("align", {}).get("threads", 4)
     log:
-        "logs/align_{prefix}_{segment}.log"
+        "logs/align_{prefix}_{segment}.log"    
     benchmark:
         "benchmarks/align_{prefix}_{segment}.txt"
     resources:
         mem_mb = config["resources"].get("align", {}).get("mem_mb", 4000)
     shell:
         """
-        mkdir -p $(dirname {output.alignment})
-        
-        # Check if we have sequences to align
-        if [ ! -s {input.sequences} ]; then
-            echo "No sequences found for segment {wildcards.segment}" > {log}
-            touch {output.alignment}
-            exit 0
-        fi
-        
-        # Count sequences
-        seq_count=$(grep -c "^>" {input.sequences} || echo "0")
-        echo "Aligning $seq_count sequences for segment {wildcards.segment}" > {log}
-        
-        if [ "$seq_count" -eq 0 ]; then
-            echo "No sequences to align for segment {wildcards.segment}" >> {log}
-            touch {output.alignment}
-            exit 0
-        elif [ "$seq_count" -eq 1 ]; then
-            echo "Only one sequence found, copying as alignment" >> {log}
-            cp {input.sequences} {output.alignment}
-        else
-            if [ "{params.method}" = "mafft" ]; then
-                if [ -n "{params.reference}" ] && [ -f "{params.reference}" ]; then
-                    echo "Using reference sequence: {params.reference}" >> {log}
-                    augur align --sequences {input.sequences} --output {output.alignment} --reference-sequence {params.reference} --nthreads {threads} --method mafft --mafft-options "{params.mafft_options}" >> {log} 2>&1
-                else
-                    echo "No reference sequence, aligning without reference" >> {log}
-                    augur align --sequences {input.sequences} --output {output.alignment} --nthreads {threads} --method mafft --mafft-options "{params.mafft_options}" >> {log} 2>&1
-                fi
-            else
-                if [ -n "{params.reference}" ] && [ -f "{params.reference}" ]; then
-                    augur align --sequences {input.sequences} --output {output.alignment} --reference-sequence {params.reference} --nthreads {threads} >> {log} 2>&1
-                else
-                    augur align --sequences {input.sequences} --output {output.alignment} --nthreads {threads} >> {log} 2>&1
-                fi
-            fi
-        fi
+        python scripts/run_alignment.py --sequences {input.sequences} --output {output.alignment} --log {log} --segment {wildcards.segment} --method {params.method} --threads {threads} --mafft-options "{params.mafft_options}" --reference {params.reference}
         """
 
 # Helper function to get segment-specific reference sequences

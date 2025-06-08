@@ -5,15 +5,12 @@ Rules specific to handling multiple genome segments
 # Use checkpoint to determine how to split segments
 checkpoint split_by_segment:
     input:
-        sequences = lambda wildcards: f"results/subsampled/{wildcards.prefix}_subsampled.fasta" 
-                   if config["subsample"].get("max_sequences", 0) > 0 
-                   else f"results/filtered/{wildcards.prefix}_filtered.fasta",
-        metadata = lambda wildcards: f"results/subsampled/{wildcards.prefix}_metadata.tsv" 
-                  if config["subsample"].get("max_sequences", 0) > 0 
-                  else f"results/filtered/{wildcards.prefix}_metadata.tsv"
+        sequences = "results/filtered/{prefix}_filtered.fasta",
+        metadata = "results/filtered/{prefix}_metadata.tsv"
     output:
         sequences = expand("results/segments/{segment}/raw/{{prefix}}_{segment}_sequences.fasta", segment=segments),
-        metadata = expand("results/segments/{segment}/filtered/{{prefix}}_{segment}_metadata.tsv", segment=segments)
+        metadata = expand("results/segments/{segment}/filtered/{{prefix}}_{segment}_metadata.tsv", segment=segments),
+        done = "results/segments/split_by_segment_{prefix}.done"
     params:
         segments = segments
     log:
