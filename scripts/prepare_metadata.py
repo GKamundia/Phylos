@@ -399,17 +399,13 @@ def main():
         
         # Create standard Nextstrain fields from existing data
         log_with_context(logger, "INFO", "Creating standard Nextstrain fields...")
-        
-        # Create 'date' field from Collection_Date or standardize existing date
+          # Create 'date' field from Collection_Date only (no fallback to Release_Date)
         if 'date' not in metadata.columns:
             if 'Collection_Date' in metadata.columns:
-                log_with_context(logger, "INFO", "Creating standardized 'date' field from 'Collection_Date'")
+                log_with_context(logger, "INFO", "Creating standardized 'date' field from 'Collection_Date' only")
                 metadata['date'] = metadata['Collection_Date'].apply(standardize_date)
-            elif 'Release_Date' in metadata.columns:
-                log_with_context(logger, "INFO", "Creating standardized 'date' field from 'Release_Date'")
-                metadata['date'] = metadata['Release_Date'].apply(standardize_date)
             else:
-                log_with_context(logger, "WARNING", "No date field found, creating empty 'date' column")
+                log_with_context(logger, "WARNING", "No Collection_Date field found, creating empty 'date' column")
                 metadata['date'] = ""
         else:
             # Standardize existing date field
