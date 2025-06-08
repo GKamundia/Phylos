@@ -108,20 +108,7 @@ def identify_rvf_segment(title, length=None):
         if re.search(pattern, title_lower):
             return "S"
     
-    # Length-based hints (only if other methods fail)
-    if length:
-        try:
-            length_int = int(length)
-            if length_int >= 6000:  # Likely L segment
-                return "L"
-            elif length_int >= 3000:  # Likely M segment
-                return "M"  
-            elif length_int >= 1000:  # Likely S segment
-                return "S"
-        except (ValueError, TypeError):
-            pass
-    
-    return ""
+
 
 def fix_segment_identification():
     """Fix segment identification in the filtered metadata"""

@@ -364,11 +364,144 @@ def add_geographic_coordinates(metadata_df, lat_longs):
             records_with_coords += 1
         else:
             records_missing_coords += 1
-    
-    log_with_context(logger, "INFO", f"Added coordinates to {records_with_coords} records", 
+        log_with_context(logger, "INFO", f"Added coordinates to {records_with_coords} records", 
                    {"missing_coords": records_missing_coords})
     
     return metadata_df
+
+def identify_rvf_segment(title, length=None):
+    """
+    Enhanced segment identification for RVF virus
+    
+    Args:
+        title (str): GenBank title/description
+        length (int): Sequence length (optional, for additional validation)
+    
+    Returns:
+        str: Segment (L, M, S) or empty string if unclear
+    """
+    if not title or pd.isna(title):
+        return ""
+    
+    title_lower = str(title).lower()
+    
+    # Direct segment mentions (highest priority)
+    if re.search(r'\b(segment\s*s|s\s*segment)\b', title_lower):
+        return "S"
+    elif re.search(r'\b(segment\s*m|m\s*segment)\b', title_lower):
+        return "M"  
+    elif re.search(r'\b(segment\s*l|l\s*segment)\b', title_lower):
+        return "L"
+    
+    # M segment indicators (glycoproteins)
+    m_indicators = [
+        r'\bglycoprote?in\b',  # glycoprotein or glycoprotein
+        r'\bg[nc12]\b',        # Gn, Gc, G1, G2
+        r'\benvelope\s+protein\b',
+        r'\bsurface\s+protein\b',
+        r'\bmembrane\s+protein\b',
+        r'\bglycosylated\s+protein\b'
+    ]
+    
+    for pattern in m_indicators:
+        if re.search(pattern, title_lower):
+            return "M"
+    
+    # L segment indicators (polymerase)
+    l_indicators = [
+        r'\bpolymerase\b',
+        r'\brna\s+polymerase\b',
+        r'\bl\s+protein\b',
+        r'\blarge\s+protein\b',
+        r'\breplicase\b'
+    ]
+    
+    for pattern in l_indicators:
+        if re.search(pattern, title_lower):
+            return "L"
+    
+    # S segment indicators (nucleocapsid, NSs)
+    s_indicators = [
+        r'\bnucleocapsid\b',
+        r'\bn\s+protein\b',
+        r'\bnss?\s+protein\b',
+        r'\bsmall\s+protein\b',
+        r'\bstructural\s+protein\b'
+    ]
+    
+    for pattern in s_indicators:
+        if re.search(pattern, title_lower):
+            return "S"
+    
+    # No clear indicators found
+    return ""
+
+def identify_and_fix_rvf_segments(metadata):
+    """
+    Identify and fix RVF segments in metadata during preparation phase
+    
+    Args:
+        metadata (pd.DataFrame): Metadata dataframe
+    
+    Returns:
+        pd.DataFrame: Metadata with fixed segments
+    """
+    log_with_context(logger, "INFO", "Starting RVF segment identification and correction")
+      # Count current segment distribution
+    if 'Segment' in metadata.columns:
+        current_segments = metadata['Segment'].value_counts(dropna=False)
+        # Convert to regular Python int for JSON serialization
+        segment_dist = {str(k): int(v) for k, v in current_segments.items()}
+        log_with_context(logger, "INFO", "Current segment distribution", segment_dist)
+    else:
+        log_with_context(logger, "INFO", "No existing Segment column found, creating new one")
+        metadata['Segment'] = None
+    
+    # Create a standardized lowercase 'segment' column from the uppercase 'Segment' column
+    if 'Segment' in metadata.columns:
+        # Convert uppercase 'Segment' to lowercase 'segment'
+        metadata['segment'] = metadata['Segment'].str.lower()
+        log_with_context(logger, "INFO", "Created lowercase 'segment' column from 'Segment' column")
+    else:
+        # Create segment column if it doesn't exist
+        metadata['segment'] = None
+        log_with_context(logger, "INFO", "Created new 'segment' column")
+      # Find records with missing segments (check both uppercase and lowercase)
+    missing_segments = metadata['segment'].isna() | (metadata['segment'] == "")
+    missing_count = int(missing_segments.sum())  # Convert to regular Python int
+    log_with_context(logger, "INFO", f"Records with missing segments: {missing_count}")
+    
+    if missing_count > 0:
+        log_with_context(logger, "INFO", "Attempting to fix missing segments...")
+          # Fix missing segments
+        fixed_count = 0
+        for idx, row in metadata[missing_segments].iterrows():
+            title = row.get('GenBank_Title', '')
+            length = row.get('Length', None)
+            
+            # Try to identify segment
+            segment = identify_rvf_segment(title, length)
+            
+            if segment:
+                metadata.loc[idx, 'segment'] = segment.lower()  # Ensure lowercase
+                metadata.loc[idx, 'Segment'] = segment.upper()  # Also update uppercase version
+                fixed_count += 1
+                accession = row.get('Accession', 'Unknown')
+                log_with_context(logger, "DEBUG", f"Fixed segment for {accession}: {segment} (from: {title[:80]}...)")
+        
+        log_with_context(logger, "INFO", f"Fixed {fixed_count} out of {missing_count} missing segments")
+        
+        # Show new distribution (using lowercase segment column)
+        new_segments = metadata['segment'].value_counts(dropna=False)
+        # Convert to regular Python int for JSON serialization
+        new_segment_dist = {str(k): int(v) for k, v in new_segments.items()}
+        log_with_context(logger, "INFO", "New segment distribution", new_segment_dist)
+        
+    else:
+        log_with_context(logger, "INFO", "No missing segments to fix!")
+    
+    log_with_context(logger, "INFO", "RVF segment identification and correction completed")
+    return metadata
 
 def main():
     start_time = time.time()
@@ -478,8 +611,7 @@ def main():
         
         # Add geographic coordinates
         metadata = add_geographic_coordinates(metadata, lat_longs)
-        
-        # Convert 'length' to numeric. Augur expects numeric types for numeric comparisons.
+          # Convert 'length' to numeric. Augur expects numeric types for numeric comparisons.
         if 'length' in metadata.columns:
             log_with_context(logger, "INFO", "Converting 'length' column to numeric.", 
                              {"original_dtype": str(metadata['length'].dtype)})
@@ -491,6 +623,9 @@ def main():
             log_with_context(logger, "INFO", "Finished converting 'length' column to numeric.",
                              {"new_dtype": str(metadata['length'].dtype), 
                               "nan_count": int(metadata['length'].isna().sum())}) # Cast nan_count to int for JSON serialization
+
+        # Identify and fix RVF segments
+        metadata = identify_and_fix_rvf_segments(metadata)
 
         # Fill missing values in object/string columns with empty strings.
         # For numeric columns (like 'length' which is now float/int), 

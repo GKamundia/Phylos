@@ -2,22 +2,6 @@
 Rules specific to handling multiple genome segments
 """
 
-# Fix segment identification for sequences with missing or incorrect segment assignments
-rule fix_segment_identification:
-    input:
-        sequences = "results/filtered/{prefix}_filtered.fasta",
-        metadata = "results/filtered/{prefix}_metadata.tsv"
-    output:
-        metadata = "results/filtered/{prefix}_metadata_fixed.tsv"
-    log:
-        "logs/fix_segment_identification_{prefix}.log"
-    benchmark:
-        "benchmarks/fix_segment_identification_{prefix}.txt"
-    resources:
-        mem_mb = config["resources"].get("fix_segments", {}).get("mem_mb", 2000)
-    script:
-        "../../scripts/fix_segment_identification.py"
-
 # Use checkpoint to determine how to split segments
 checkpoint split_by_segment:
     input:
@@ -26,7 +10,7 @@ checkpoint split_by_segment:
                    else f"results/filtered/{wildcards.prefix}_filtered.fasta",
         metadata = lambda wildcards: f"results/subsampled/{wildcards.prefix}_metadata.tsv" 
                   if config["subsample"].get("max_sequences", 0) > 0 
-                  else f"results/filtered/{wildcards.prefix}_metadata_fixed.tsv"
+                  else f"results/filtered/{wildcards.prefix}_metadata.tsv"
     output:
         sequences = expand("results/segments/{segment}/raw/{{prefix}}_{segment}_sequences.fasta", segment=segments),
         metadata = expand("results/segments/{segment}/filtered/{{prefix}}_{segment}_metadata.tsv", segment=segments)

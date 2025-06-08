@@ -63,7 +63,7 @@ rule download_data:
         """
 
 # Prepare and validate metadata
-checkpoint prepare_metadata:
+checkpoint prepare_metadata:    
     input:
         metadata = f"data/metadata/raw/{output_prefix}_metadata.tsv",
         schema = "config/metadata_schema.json",

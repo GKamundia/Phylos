@@ -13,11 +13,8 @@ def get_input_metadata(wildcards):
     if config["subsample"].get("max_sequences", 0) > 0:
         return f"results/subsampled/{output_prefix}_metadata.tsv"
     else:
-        # For multi-segment workflows, use the fixed metadata
-        if config.get("has_segments", False) and segment_mode == "multi":
-            return f"results/filtered/{output_prefix}_metadata_fixed.tsv"
-        else:
-            return f"results/filtered/{output_prefix}_metadata.tsv"
+        # Always use filtered metadata (segment fixes are now in prepare_metadata)
+        return f"results/filtered/{output_prefix}_metadata.tsv"
 
 def get_alignment_input(wildcards):
     """Get alignment input based on masking configuration"""
