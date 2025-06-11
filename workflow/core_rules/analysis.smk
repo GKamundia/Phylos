@@ -57,7 +57,6 @@ rule refine:
             --metadata {input.metadata} \
             --output-tree {output.tree} \
             --output-node-data {output.node_data} \
-            --timetree \
             --coalescent {params.coalescent} \
             --date-inference {params.date_inference} \
             --clock-filter-iqd {params.clock_filter_iqd} \
@@ -65,6 +64,7 @@ rule refine:
             {params.clock_std_dev} \
             {params.root} \
             --date-confidence \
+            --keep-root \
             > {log} 2>&1
         """
 
@@ -81,7 +81,7 @@ rule ancestral:
     log:
         f"logs/ancestral_{output_prefix}.log" if segment_mode == "single" else "logs/ancestral_rvf_{segment}.log"
     benchmark:
-        f"benchmarks/ancestral_{output_prefix}.txt" if segment_mode == "single" else "benchmarks/ancestral_rvf_{segment}.txt"
+        f"benchmarks/ancestral_{output_prefix}.txt" if segment_mode == "single" else "benchmarks/benchmarks_rvf_{segment}.txt"
     resources:
         mem_mb = config["resources"].get("ancestral", {}).get("mem_mb", 2000)
     shell:
@@ -91,5 +91,33 @@ rule ancestral:
             --alignment {input.alignment} \
             --output-node-data {output.node_data} \
             --inference {params.inference} \
+            > {log} 2>&1
+        """
+
+# Reconstruct ancestral traits (e.g., country, division)
+rule traits:
+    input:
+        tree = f"results/tree/{output_prefix}_refined.nwk" if segment_mode == "single" else "results/segments/{segment}/tree/rvf_{segment}_refined.nwk",
+        metadata = get_input_metadata
+    output:
+        node_data = f"results/node_data/{output_prefix}_traits.json" if segment_mode == "single" else "results/segments/{segment}/node_data/rvf_{segment}_traits.json"
+    params:
+        columns = lambda w: ",".join(config.get("traits", {}).get("columns", ["country"]))
+    threads: 
+        config["resources"].get("traits", {}).get("threads", 1)
+    log:
+        f"logs/traits_{output_prefix}.log" if segment_mode == "single" else "logs/traits_rvf_{segment}.log"    
+    benchmark:
+        f"benchmarks/traits_{output_prefix}.txt" if segment_mode == "single" else "benchmarks/traits_rvf_{segment}.txt"
+    resources:
+        mem_mb = config["resources"].get("traits", {}).get("mem_mb", 2000)
+    shell:
+        """
+        augur traits \
+            --tree {input.tree} \
+            --metadata {input.metadata} \
+            --metadata-id-columns Accession \
+            --output {output.node_data} \
+            --columns {params.columns} \
             > {log} 2>&1
         """

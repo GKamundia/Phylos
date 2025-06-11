@@ -5,7 +5,7 @@ Rules for exporting data to Auspice JSON format
 # Dynamically get auspice_config based on pathogen
 rule generate_dynamic_auspice_config:
     input:
-        base_config = lambda wildcards: pathogen_config.get("auspice_config_path", "config/auspice_config.json"),
+        base_config = lambda wildcards: pathogen_config.get("auspice_config_path", "config/auspice_config_clean.json"),
         metadata = "data/metadata/{pathogen}_metadata.tsv" if segment_mode == "single" else "data/metadata/{pathogen}_metadata_{segment}.tsv"
     output:
         dynamic_config = "results/configs/{pathogen}_auspice_config_dynamic.json" if segment_mode == "single" else "results/configs/{pathogen}_auspice_config_{segment}_dynamic.json"
@@ -25,11 +25,11 @@ rule generate_dynamic_auspice_config:
         with open(log[0], "w") as log_file:
             log_file.write(f"Copied {input.base_config} to {output.dynamic_config}\n")
 
-rule export:
+rule export:    
     input:
         # Get input files based on segment mode
         tree = "results/tree/{pathogen}_refined.nwk" if segment_mode == "single" else "results/segments/{segment}/tree/{pathogen}_{segment}_refined.nwk",
-        metadata = "data/metadata/{pathogen}_metadata.tsv" if segment_mode == "single" else "data/metadata/{pathogen}_metadata.tsv",
+        metadata = "data/metadata/{pathogen}_metadata.tsv" if segment_mode == "single" else "data/metadata/{pathogen}_metadata_{segment}.tsv",
         node_data = expand(
             "results/node_data/{pathogen}_{node_data}.json" if segment_mode == "single" else "results/segments/{segment}/node_data/{pathogen}_{segment}_{node_data}.json",
             node_data=config["export"]["node_data"],
@@ -41,7 +41,7 @@ rule export:
     params:
         node_data_files = lambda wildcards, input: " ".join([f"--node-data {file}" for file in input.node_data]),
         lat_longs = pathogen_config.get("lat_longs_path", "config/lat_longs.tsv"),
-        title = lambda wildcards: f"{config['pathogen_name']} Genomic Surveillance" if segment_mode == "single" else f"{config['pathogen_name']} {wildcards.segment} Segment Surveillance"
+        title = lambda wildcards: f"{config['pathogen_name']} Genomic Surveillance" if segment_mode == "single" else f"{config['pathogen_name']} {wildcards.segment} Segment Surveillance"    
     log:
         "logs/export_{pathogen}.log" if segment_mode == "single" else "logs/export_{pathogen}_{segment}.log"
     benchmark:
@@ -53,6 +53,7 @@ rule export:
         augur export v2 \
             --tree {input.tree} \
             --metadata {input.metadata} \
+            --metadata-id-columns Accession \
             {params.node_data_files} \
             --auspice-config {input.dynamic_config} \
             --lat-longs {params.lat_longs} \

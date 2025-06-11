@@ -1,0 +1,36 @@
+{
+  "title": "Rift Valley Fever Virus Genomic Surveillance",
+  "maintainers": [
+    {"name": "RVF Analysis Team", "url": "https://nextstrain.org"}
+  ],
+  "build_url": "https://github.com/nextstrain/rvf-nextstrain",
+  "colorings": [
+    {
+      "key": "country",
+      "title": "Country",
+      "type": "categorical"
+    },
+    {
+      "key": "date",
+      "title": "Date",
+      "type": "continuous"
+    },
+    {
+      "key": "host",
+      "title": "Host",
+      "type": "categorical"
+    }
+  ],
+  "geo_resolutions": [
+    "country"
+  ],
+  "display_defaults": {
+    "map_triplicate": true,
+    "color_by": "country"
+  },
+  "filters": [
+    "country",
+    "date",
+    "host"
+  ]
+}
