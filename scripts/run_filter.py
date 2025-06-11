@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
 Run filtering for RVF virus sequences to keep only complete sequences
+with exact reference lengths for better phylogenetic analysis.
 """
 
 import sys
@@ -8,6 +9,13 @@ import os
 import argparse
 import pandas as pd
 from Bio import SeqIO
+
+# Define exact reference lengths for filtering
+REFERENCE_LENGTHS = {
+    'L': 6404,  # L segment exact reference length  
+    'M': 3885,  # M segment exact reference length
+    'S': 1690   # S segment exact reference length
+}
 
 def main():
     print("Starting run_filter.py script")
@@ -41,8 +49,7 @@ def main():
             error_msg = f"Error: 'Nuc_Completeness' column not found in metadata. Available columns: {list(metadata.columns)}"
             print(error_msg)
             log_content.append(f"{error_msg}\n")
-            raise ValueError(error_msg)
-          # Filter metadata to keep only complete sequences
+            raise ValueError(error_msg)        # Filter metadata to keep only complete sequences
         print("Filtering metadata for complete sequences")
         filtered_metadata = metadata[metadata['Nuc_Completeness'] == 'complete']
         kept_count_complete = len(filtered_metadata)
@@ -51,6 +58,72 @@ def main():
         log_content.append(f"Sequences after completeness filtering: {kept_count_complete}\n")
         log_content.append(f"Sequences dropped due to 'Nuc_Completeness != complete': {dropped_count_complete}\n")
         print(f"After completeness filter - retained: {kept_count_complete}, dropped: {dropped_count_complete}")
+        
+        # Apply exact length filtering based on segment and reference lengths
+        print("Applying exact length filtering based on reference lengths")
+        length_filter_stats = {}
+        
+        # Read sequences to get actual lengths
+        print(f"Reading sequences to validate lengths from {args.sequences}")
+        sequence_lengths = {}
+        for record in SeqIO.parse(args.sequences, "fasta"):
+            sequence_lengths[record.id] = len(record.seq)
+        
+        # Apply length filtering by segment
+        before_length_filter = len(filtered_metadata)
+        valid_accessions = set()
+        
+        for segment in ['L', 'M', 'S']:
+            if segment in REFERENCE_LENGTHS:
+                reference_length = REFERENCE_LENGTHS[segment]
+                
+                # Get metadata for this segment
+                segment_meta = filtered_metadata[
+                    filtered_metadata['Segment'].str.upper() == segment.upper()
+                ]
+                
+                # Check sequence lengths for this segment
+                segment_valid = []
+                segment_total = len(segment_meta)
+                
+                for _, row in segment_meta.iterrows():
+                    accession = row['Accession']
+                    if accession in sequence_lengths:
+                        seq_length = sequence_lengths[accession]
+                        if seq_length == reference_length:
+                            segment_valid.append(accession)
+                            valid_accessions.add(accession)
+                
+                length_filter_stats[segment] = {
+                    'total': segment_total,
+                    'kept': len(segment_valid),
+                    'reference_length': reference_length
+                }
+                
+                log_content.append(f"Segment {segment} length filtering:\n")
+                log_content.append(f"  Total sequences: {segment_total}\n")
+                log_content.append(f"  Reference length: {reference_length} bp\n")
+                log_content.append(f"  Exact matches: {len(segment_valid)}\n")
+                log_content.append(f"  Retention rate: {len(segment_valid)/segment_total*100 if segment_total > 0 else 0:.1f}%\n")
+                
+                print(f"Segment {segment}: {len(segment_valid)}/{segment_total} sequences match reference length {reference_length}bp")
+        
+        # Filter metadata to only include sequences with exact reference lengths
+        filtered_metadata = filtered_metadata[
+            filtered_metadata['Accession'].isin(valid_accessions)
+        ]
+        
+        after_length_filter = len(filtered_metadata)
+        dropped_length = before_length_filter - after_length_filter
+        
+        log_content.append(f"Sequences after length filtering: {after_length_filter}\n")
+        log_content.append(f"Sequences dropped due to non-reference lengths: {dropped_length}\n")
+        print(f"Length filter - retained: {after_length_filter}, dropped: {dropped_length}")
+        
+        # Log overall length filtering impact
+        total_kept_by_length = sum(stats['kept'] for stats in length_filter_stats.values())
+        log_content.append(f"Total sequences with exact reference lengths: {total_kept_by_length}\n")
+        print(f"Total sequences with exact reference lengths: {total_kept_by_length}")
         
         # Additional filtering for missing country and date
         print("Applying additional filters for missing country and date")
@@ -118,15 +191,25 @@ def main():
         
         log_content.append(f"Filtering complete. Written {sequence_count} sequences to {args.output_sequences}\n")
         print(f"Filtering complete. Written {sequence_count} sequences to {args.output_sequences}")
-        
-        # Segment distribution
+          # Segment distribution with length statistics
         if 'Segment' in filtered_metadata.columns:
             segment_counts = filtered_metadata['Segment'].value_counts().to_dict()
-            log_content.append("Segment distribution in filtered data:\n")
-            print("Segment distribution in filtered data:")
+            log_content.append("Final segment distribution (after all filtering):\n")
+            print("Final segment distribution (after all filtering):")
             for segment, count in segment_counts.items():
-                log_content.append(f"  {segment}: {count}\n")
-                print(f"  {segment}: {count}")
+                if segment.upper() in length_filter_stats:
+                    ref_length = length_filter_stats[segment.upper()]['reference_length']
+                    log_content.append(f"  {segment}: {count} sequences (reference length: {ref_length}bp)\n")
+                    print(f"  {segment}: {count} sequences (reference length: {ref_length}bp)")
+                else:
+                    log_content.append(f"  {segment}: {count} sequences\n")
+                    print(f"  {segment}: {count} sequences")
+            
+            # Add length filtering summary
+            log_content.append("\nLength filtering summary:\n")
+            for segment, stats in length_filter_stats.items():
+                retention_rate = stats['kept']/stats['total']*100 if stats['total'] > 0 else 0
+                log_content.append(f"  {segment}: {stats['kept']}/{stats['total']} sequences ({retention_rate:.1f}% retention)\n")
         
         # Write log content to file
         print(f"Writing log to {args.log}")

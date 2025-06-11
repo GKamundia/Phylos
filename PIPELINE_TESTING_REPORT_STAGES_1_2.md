@@ -46,7 +46,7 @@
 - **Output:** 1,811 prepared metadata records with 35 fields (+7 enhanced fields)
 - **Validation:** 197 invalid records (10.9%) identified but processed
 - **Enhanced Fields Added:**
-  - `date` (standardized from Collection_Date/Release_Date)
+  - `date` (standardized from Collection_Date)
   - `country` (extracted from geographic fields and strain names)
   - `strain` (created from Isolate/Accession)
   - `virus` (standardized to "rvf")

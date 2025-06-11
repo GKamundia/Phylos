@@ -142,3 +142,10 @@ The multi-segment phylogenetic analysis infrastructure is now fully operational 
 **Status**: ✅ PHASE 3 COMPLETE  
 **Environment**: Windows 11 + WSL Ubuntu-24.04  
 **Pipeline Version**: RVF Nextstrain Multi-Segment v3.0
+
+Filtering exact reference lengths during segment splitting:
+
+L segment: 210/239 sequences kept (87.9% retention) - exact 6404bp
+M segment: 213/239 sequences kept (89.1% retention) - exact 3885bp
+S segment: 149/298 sequences kept (50.0% retention) - exact 1690bp
+Updating metadata to match filtered sequences - metadata records are reduced to match the sequences that passed length filtering
