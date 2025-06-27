@@ -10,8 +10,7 @@ rule tree:
         tree = f"results/tree/{output_prefix}_tree.nwk" if segment_mode == "single" else "results/segments/{segment}/tree/rvf_{segment}_tree.nwk"
     params:
         method = config.get("tree", {}).get("method", "iqtree"),
-        iqtree_args = config.get("tree", {}).get("iqtree_args", "-ninit 2 -n 2"), #add bootstraps, 
-        substitution_model = config.get("tree", {}).get("substitution_model", "GTR") #AUTO
+        iqtree_args = config.get("tree", {}).get("iqtree_args", "-m MFP -bb 1000 -alrt 1000 -ninit 20 -n 20 -nt AUTO")
     threads: 
         config["resources"].get("tree", {}).get("threads", 4)
     log:
@@ -37,16 +36,13 @@ rule refine:
     params:
         coalescent = config["refine"].get("coalescent", "opt"),
         date_inference = config["refine"].get("date_inference", "marginal"),
-        clock_filter_iqd = config["refine"].get("clock_filter_iqd", 4),
-        clock_rate = lambda w: f"--clock-rate {config['refine']['clock_rate']}" if config["refine"].get("clock_rate") else "",
-        clock_std_dev = lambda w: f"--clock-std-dev {config['refine']['clock_std_dev']}" if config["refine"].get("clock_std_dev") else "",
-        root = lambda w: f"--root {config['refine']['root']}" if config["refine"].get("root") else ""
+        clock_filter_iqd = config["refine"].get("clock_filter_iqd", 4)
     threads: 
         config["resources"].get("refine", {}).get("threads", 2)
     log:
-        f"logs/refine_{output_prefix}.log" if segment_mode == "single" else "logs/refine_rvf_{segment}.log"
+        f"logs/refine_{output_prefix}.log" if segment_mode == "single" else f"logs/refine_rvf_{segment}.log"
     benchmark:
-        f"benchmarks/refine_{output_prefix}.txt" if segment_mode == "single" else "benchmarks/refine_rvf_{segment}.txt"
+        f"benchmarks/refine_{output_prefix}.txt" if segment_mode == "single" else f"benchmarks/refine_rvf_{segment}.txt"
     resources:
         mem_mb = config["resources"].get("refine", {}).get("mem_mb", 4000)
     shell:
@@ -61,9 +57,6 @@ rule refine:
             --date-inference {params.date_inference} \
             --date-format "%Y-%m-%d" \
             --clock-filter-iqd {params.clock_filter_iqd} \
-            {params.clock_rate} \
-            {params.clock_std_dev} \
-            {params.root} \
             --date-confidence \
             --keep-root \
             > {log} 2>&1

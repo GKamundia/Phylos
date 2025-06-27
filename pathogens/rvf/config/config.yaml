@@ -20,8 +20,12 @@ filter:
 
 # Refinement parameters
 refine:
-  coalescent: "opt"
-  clock_rate: "" # Leave empty for auto estimation, or specify value
+  coalescent: opt
+  date_inference: marginal
+  clock_filter_iqd: 4
+#  clock_rate: [not set, let Augur estimate]
+#  clock_std_dev: [not set]
+#  root: [not set]
 
 # Traits to reconstruct
 traits:
@@ -47,6 +51,9 @@ resources:
   tree:
     threads: 8 # Use more threads for RVF tree building
     mem_mb: 16000
+  refine:
+    threads: 2
+    mem_mb: 4000
 
 # Advanced phylogenetics configuration (RVF-specific)
 advanced_phylogenetics:
@@ -56,7 +63,8 @@ advanced_phylogenetics:
     auto_select: true
     quality_threshold: 0.8 # Higher threshold for RVF
   tree_building:
-    methods: ["iqtree", "nj", "mp"] # Prefer IQ-TREE for RVF
+    method: "iqtree"
+    iqtree_args: "-m MFP -bb 1000 -alrt 1000 -ninit 20 -n 20 -nt AUTO"
     auto_select: true
     bootstrap_replicates: 1000 # More replicates for RVF
   temporal_analysis:

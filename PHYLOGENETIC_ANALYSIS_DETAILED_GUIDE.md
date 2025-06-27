@@ -739,38 +739,6 @@ Refined tree:
 Example: "Virus A and B diverged around January 2023"
 ```
 
-## 📊 **Visual Transformation Example**
-
-**Raw Tree (mutations only):**
-
-```
-                    ┌─ Virus_A (collected: 2023-03-15)
-    ┌───────────────┤
-    │               └─ Virus_B (collected: 2023-03-20)
-────┤
-    │               ┌─ Virus_C (collected: 2023-02-10)
-    └───────────────┤
-                    └─ Virus_D (collected: 2023-01-05)
-
-Branch lengths = mutations (0.001, 0.003, etc.)
-Internal nodes = no dates
-```
-
-**Refined Tree (time-calibrated):**
-
-```
-                         ┌─ Virus_A (2023-03-15)
-    ┌────────────────────┤
-    │    ~2023-02-01     └─ Virus_B (2023-03-20)
-────┤
-    │    ~2022-12-15     ┌─ Virus_C (2023-02-10)
-    └────────────────────┤
-                         └─ Virus_D (2023-01-05)
-
-Branch lengths = time periods (days/months)
-Internal nodes = estimated divergence dates
-```
-
 ## 📥 **Inputs - Detailed Breakdown**
 
 ```python
@@ -2225,3 +2193,44 @@ traits:
 ```
 
 This ensures your Rift Valley Fever phylogenetic analysis meets the standards expected by virology and epidemiology journals for peer-reviewed publication.
+
+---
+
+### **Optimum IQ-TREE Settings for Publication**
+
+For the most robust, publication-quality phylogenetic inference, use the following IQ-TREE settings:
+
+```yaml
+tree:
+  method: "iqtree"
+  iqtree_args: "-m MFP -bb 1000 -alrt 1000 -ninit 20 -n 20 -nt AUTO"
+```
+
+**Command-line equivalent:**
+
+```
+iqtree2 -s alignment.fasta -m MFP -bb 1000 -alrt 1000 -ninit 20 -n 20 -nt AUTO
+```
+
+- `-m MFP`: ModelFinder Plus (automatic best-fit model selection)
+- `-bb 1000`: 1000 ultrafast bootstrap replicates (robust branch support)
+- `-alrt 1000`: 1000 SH-aLRT replicates (additional support)
+- `-ninit 20 -n 20`: Thorough search for best tree
+- `-nt AUTO`: Use all available CPU threads (recommended for modern CPUs)
+
+**Hardware notes:**
+
+- IQ-TREE does not support GPU/CUDA acceleration. It is highly optimized for multicore CPUs.
+- Your system (i7-9750H, 24GB RAM) is well-suited for these settings.
+
+**When to use:**
+
+- Final, publication-quality trees
+- Datasets up to several thousand sequences
+
+**References:**
+
+- [IQ-TREE 2 documentation](https://github.com/iqtree/iqtree2)
+- [ModelFinder Plus](http://www.iqtree.org/doc/ModelFinder)
+
+---
