@@ -14,12 +14,6 @@ data:
 
 # Filter parameters
 filter:
-  min_length:
-    L: 6000 # Appropriate for L segment
-    M: 3500 # Appropriate for M segment
-    S: 1500 # Appropriate for S segment
-    default: 1000 # Used if segment not specified
-
   exclude_where:
     - "host = ''" # Exclude entries with empty host field
     - "date = ''" # Exclude entries with empty date field

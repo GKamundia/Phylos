@@ -98,8 +98,10 @@ def load_lat_longs(lat_longs_file):
 
 def standardize_date(date_str):
     """
-    Convert various date formats to YYYY-MM-DD
-    If only year or year-month is provided, keep as is
+    Convert various date formats to YYYY-MM-DD for Nextstrain compatibility
+    - YYYY -> YYYY-01-01 (assume January 1st)
+    - YYYY-MM -> YYYY-MM-01 (assume 1st of month)  
+    - YYYY-MM-DD -> keep as is
     """
     if not date_str or pd.isna(date_str):
         return ""
@@ -110,14 +112,15 @@ def standardize_date(date_str):
     if re.match(r'^\d{4}-\d{2}-\d{2}$', date_str):
         return date_str
     
-    # Check if in YYYY-MM format
+    # Check if in YYYY-MM format - convert to YYYY-MM-01
     if re.match(r'^\d{4}-\d{2}$', date_str):
-        return date_str
+        return date_str + "-01"
     
-    # Check if just year
+    # Check if just year - convert to YYYY-01-01
     if re.match(r'^\d{4}$', date_str):
-        return date_str
-      # Try various formats (enhanced for NCBI data)
+        return date_str + "-01-01"
+        
+    # Try various formats (enhanced for NCBI data)
     formats = [
         '%Y-%m-%d', '%Y/%m/%d', '%d-%m-%Y', '%d/%m/%Y', 
         '%m-%d-%Y', '%m/%d/%Y', '%d-%b-%Y', '%d %b %Y', 
@@ -128,23 +131,21 @@ def standardize_date(date_str):
     for fmt in formats:
         try:
             date_obj = datetime.strptime(date_str, fmt)
-            # For month-year formats, return as YYYY-MM
-            if fmt in ['%b-%Y', '%B-%Y']:
-                return date_obj.strftime('%Y-%m')
-            else:
-                return date_obj.strftime('%Y-%m-%d')
+            # Always return as YYYY-MM-DD for consistency
+            return date_obj.strftime('%Y-%m-%d')
         except ValueError:
             continue
     
     # Try to extract year from string if formats fail
     year_match = re.search(r'\b(19|20)\d{2}\b', date_str)
     if year_match:
-        log_with_context(logger, "WARNING", f"Could only extract year from date: {date_str} -> {year_match.group()}")
-        return year_match.group()
+        year = year_match.group()
+        log_with_context(logger, "WARNING", f"Could only extract year from date: {date_str} -> {year}-01-01")
+        return year + "-01-01"
     
-    # If all formats fail, log and return original
+    # If all formats fail, log and return empty string for filtering
     log_with_context(logger, "WARNING", f"Could not standardize date: {date_str}")
-    return date_str
+    return ""
 
 def extract_country_from_geo_location(geo_location):
     """Extract country from Geo_Location field"""

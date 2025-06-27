@@ -9,8 +9,8 @@ data:
 
 # Filter parameters (pathogen-specific)
 filter:
-  min_length: 0 # Set appropriate minimum length for your pathogen
   # max_n is defined in common configuration
+  # Note: For exact reference length filtering, define REFERENCE_LENGTHS in the filtering script
 
 # Subsampling parameters (pathogen-specific)
 subsample:

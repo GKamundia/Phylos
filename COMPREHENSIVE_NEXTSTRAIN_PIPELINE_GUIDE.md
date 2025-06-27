@@ -64,7 +64,7 @@ data:
 **Process**:
 
 1. **Segment Identification**: Analyzes sequence headers and lengths to classify segments
-2. **Metadata Enhancement**: Adds computed fields (sequence length, GC content, etc.)
+2. **Metadata Enhancement**: Adds computed fields (additional columns)
 3. **Date Parsing**: Converts collection dates to decimal format for temporal analysis
 4. **Geographic Standardization**: Normalizes country and location fields
 
@@ -128,7 +128,7 @@ def filter_sequences(sequences, metadata):
 - **S segment**: 149/298 sequences (50.0%) - all exactly 1,690 bp
 - **Overall retention**: 73.7% with 100% sequence uniformity
 
-#### 2.3 Nextclade Quality Control (`nextclade_qc`)
+#### 2.3 Nextclade Quality Control (`nextclade_qc`) - Not Yet
 
 **Location**: `workflow/common_rules.smk`
 

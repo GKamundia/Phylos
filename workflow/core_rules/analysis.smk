@@ -10,8 +10,8 @@ rule tree:
         tree = f"results/tree/{output_prefix}_tree.nwk" if segment_mode == "single" else "results/segments/{segment}/tree/rvf_{segment}_tree.nwk"
     params:
         method = config.get("tree", {}).get("method", "iqtree"),
-        iqtree_args = config.get("tree", {}).get("iqtree_args", "-ninit 2 -n 2"),
-        substitution_model = config.get("tree", {}).get("substitution_model", "GTR")
+        iqtree_args = config.get("tree", {}).get("iqtree_args", "-ninit 2 -n 2"), #add bootstraps, 
+        substitution_model = config.get("tree", {}).get("substitution_model", "GTR") #AUTO
     threads: 
         config["resources"].get("tree", {}).get("threads", 4)
     log:
@@ -59,6 +59,7 @@ rule refine:
             --output-node-data {output.node_data} \
             --coalescent {params.coalescent} \
             --date-inference {params.date_inference} \
+            --date-format "%Y-%m-%d" \
             --clock-filter-iqd {params.clock_filter_iqd} \
             {params.clock_rate} \
             {params.clock_std_dev} \

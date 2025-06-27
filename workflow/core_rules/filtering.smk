@@ -11,10 +11,6 @@ rule filter:
         sequences = f"results/filtered/{output_prefix}_filtered.fasta",
         metadata = f"results/filtered/{output_prefix}_metadata.tsv"
     params:
-        min_length = lambda w: config["filter"].get("min_length", {}).get(
-            config["data"].get("segment", "default"), 
-            config["filter"].get("min_length", 0) if isinstance(config["filter"].get("min_length"), int) else 0
-        ),
         max_n = config["filter"].get("max_n", 100),
         exclude_ids = lambda w: config["filter"].get("exclude_ids", [])
     log:

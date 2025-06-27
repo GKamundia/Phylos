@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 """
 Run filtering for RVF virus sequences to keep only complete sequences
-with exact reference lengths for better phylogenetic analysis.
+based on metadata criteria and exact reference lengths for each segment.
+
+Filtering criteria:
+1. Nuc_Completeness == 'complete' 
+2. Exact reference length matching: L=6404bp, M=3885bp, S=1690bp
+3. Non-empty country and date fields
 """
 
 import sys
