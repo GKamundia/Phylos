@@ -25,6 +25,7 @@ The RVF Nextstrain pipeline now supports complete segment-specific phylogenetic 
 - **Installed WSL Ubuntu-24.04**: Set up complete Linux environment
 - **Installed MAFFT 7.505-1**: For sequence alignment via apt packages
 - **Created Python virtual environment**: `/home/anarchy/augur-env` with full nextstrain-augur 31.2.0 installation
+  (root@Anarchy:/mnt/c/Users/Anarchy/Documents/Data_Science/NextStrain/rvf-nextstrain# . /home/anarchy/augur-env/bin/activate)
 - **Installed IQ-TREE 2.0.7**: For phylogenetic tree building
 
 ### 4. ✅ Alignment Workflow

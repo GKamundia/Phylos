@@ -1,0 +1,8642 @@
+Channels:
+ - defaults
+Platform: linux-64
+Collecting package metadata (repodata.json): - \ | / - \ | / - \ | / - \ | done
+Solving environment: - done
+
+## Package Plan ##
+
+  environment location: /root/miniconda3/envs/nextstrain-py39
+
+  added / updated specs:
+    - matplotlib
+    - numpy
+    - scipy
+
+
+The following packages will be downloaded:
+
+    package                    |            build
+    ---------------------------|-----------------
+    blas-1.0                   |              mkl           6 KB
+    brotli-python-1.0.9        |   py39h6a678d5_9         357 KB
+    contourpy-1.2.1            |   py39hdb19cb5_1         245 KB
+    cycler-0.11.0              |     pyhd3eb1b0_0          12 KB
+    cyrus-sasl-2.1.28          |       h52b45da_1         237 KB
+    fontconfig-2.14.1          |       h55d465d_3         281 KB
+    fonttools-4.55.3           |   py39h5eee18b_0         2.4 MB
+    freetype-2.13.3            |       h4a9f257_0         686 KB
+    importlib_resources-6.4.0  |   py39h06a4308_0          61 KB
+    intel-openmp-2023.1.0      |   hdb19cb5_46306        17.2 MB
+    jpeg-9e                    |       h5eee18b_3         262 KB
+    kiwisolver-1.4.4           |   py39h6a678d5_0          76 KB
+    lcms2-2.16                 |       h92b89f2_1         269 KB
+    lerc-4.0.0                 |       h6a678d5_0         261 KB
+    libabseil-20250127.0       | cxx17_h6a678d5_0         1.3 MB
+    libcups-2.4.2              |       h2d74bed_1         4.5 MB
+    libdeflate-1.22            |       h5eee18b_0          68 KB
+    libgfortran-ng-11.2.0      |       h00389a5_1          20 KB
+    libgfortran5-11.2.0        |       h1234567_1         2.0 MB
+    libglib-2.78.4             |       hdc74915_0         1.5 MB
+    libiconv-1.16              |       h5eee18b_3         759 KB
+    libpng-1.6.39              |       h5eee18b_0         304 KB
+    libpq-17.4                 |       hdbd6064_0         2.8 MB
+    libprotobuf-5.29.3         |       h3cdef7c_1         3.5 MB
+    libtiff-4.7.0              |       hde9077f_0         447 KB
+    libwebp-base-1.3.2         |       h5eee18b_1         425 KB
+    libxkbcommon-1.9.1         |       h69220b7_0         732 KB
+    matplotlib-3.9.2           |   py39h06a4308_1           7 KB
+    matplotlib-base-3.9.2      |   py39hbfdbfaf_1         7.0 MB
+    mkl-2023.1.0               |   h213fc3f_46344       171.5 MB
+    mkl-service-2.4.0          |   py39h5eee18b_2          68 KB
+    mkl_fft-1.3.11             |   py39h5eee18b_0         199 KB
+    mkl_random-1.2.8           |   py39h1128e8f_0         319 KB
+    mysql-8.4.0                |       h721767e_2        56.5 MB
+    numpy-2.0.2                |   py39h5f9d8c6_0          11 KB
+    numpy-base-2.0.2           |   py39hb5e798b_0         7.9 MB
+    openjpeg-2.5.2             |       h0d4d230_1         373 KB
+    openldap-2.6.4             |       h42fbc30_0         804 KB
+    packaging-24.2             |   py39h06a4308_0         167 KB
+    pillow-11.1.0              |   py39hac6e08b_1         809 KB
+    pybind11-abi-4             |       hd3eb1b0_1          14 KB
+    pyparsing-3.2.0            |   py39h06a4308_0         421 KB
+    pyqt-6.7.1                 |   py39h6a678d5_1         5.0 MB
+    pyqt6-sip-13.9.1           |   py39h5eee18b_1          78 KB
+    python-dateutil-2.9.0post0 |   py39h06a4308_2         279 KB
+    qtbase-6.7.3               |       hdaa5aa8_0        16.1 MB
+    qtdeclarative-6.7.3        |       h6a678d5_0        16.2 MB
+    qtsvg-6.7.3                |       he621ea3_0         290 KB
+    qttools-6.7.3              |       h80c7b02_0         6.6 MB
+    qtwebchannel-6.7.3         |       h6a678d5_0         151 KB
+    qtwebsockets-6.7.3         |       h6a678d5_0         134 KB
+    scipy-1.13.1               |   py39h5f9d8c6_1        22.0 MB
+    setuptools-72.1.0          |   py39h06a4308_0         2.4 MB
+    sip-6.10.0                 |   py39h6a678d5_0         563 KB
+    six-1.17.0                 |   py39h06a4308_0          31 KB
+    tbb-2021.8.0               |       hdb19cb5_0         1.6 MB
+    tomli-2.0.1                |   py39h06a4308_0          24 KB
+    tornado-6.5.1              |   py39h5eee18b_0         667 KB
+    unicodedata2-15.1.0        |   py39h5eee18b_1         519 KB
+    xcb-util-0.4.1             |       h5eee18b_2          19 KB
+    xcb-util-cursor-0.1.5      |       h5eee18b_0          19 KB
+    xcb-util-image-0.4.0       |       h5eee18b_2          23 KB
+    xcb-util-renderutil-0.3.10 |       h5eee18b_0          16 KB
+    xkeyboard-config-2.44      |       h5eee18b_0         411 KB
+    zipp-3.21.0                |   py39h06a4308_0          26 KB
+    ------------------------------------------------------------
+                                           Total:       359.8 MB
+
+The following NEW packages will be INSTALLED:
+
+  blas               pkgs/main/linux-64::blas-1.0-mkl 
+  brotli-python      pkgs/main/linux-64::brotli-python-1.0.9-py39h6a678d5_9 
+  c-ares             pkgs/main/linux-64::c-ares-1.19.1-h5eee18b_0 
+  contourpy          pkgs/main/linux-64::contourpy-1.2.1-py39hdb19cb5_1 
+  cycler             pkgs/main/noarch::cycler-0.11.0-pyhd3eb1b0_0 
+  cyrus-sasl         pkgs/main/linux-64::cyrus-sasl-2.1.28-h52b45da_1 
+  fontconfig         pkgs/main/linux-64::fontconfig-2.14.1-h55d465d_3 
+  fonttools          pkgs/main/linux-64::fonttools-4.55.3-py39h5eee18b_0 
+  freetype           pkgs/main/linux-64::freetype-2.13.3-h4a9f257_0 
+  icu                pkgs/main/linux-64::icu-73.1-h6a678d5_0 
+  importlib_resourc~ pkgs/main/linux-64::importlib_resources-6.4.0-py39h06a4308_0 
+  intel-openmp       pkgs/main/linux-64::intel-openmp-2023.1.0-hdb19cb5_46306 
+  jpeg               pkgs/main/linux-64::jpeg-9e-h5eee18b_3 
+  kiwisolver         pkgs/main/linux-64::kiwisolver-1.4.4-py39h6a678d5_0 
+  krb5               pkgs/main/linux-64::krb5-1.20.1-h143b758_1 
+  lcms2              pkgs/main/linux-64::lcms2-2.16-h92b89f2_1 
+  lerc               pkgs/main/linux-64::lerc-4.0.0-h6a678d5_0 
+  libabseil          pkgs/main/linux-64::libabseil-20250127.0-cxx17_h6a678d5_0 
+  libcups            pkgs/main/linux-64::libcups-2.4.2-h2d74bed_1 
+  libcurl            pkgs/main/linux-64::libcurl-8.12.1-hc9e6f67_0 
+  libdeflate         pkgs/main/linux-64::libdeflate-1.22-h5eee18b_0 
+  libedit            pkgs/main/linux-64::libedit-3.1.20230828-h5eee18b_0 
+  libev              pkgs/main/linux-64::libev-4.33-h7f8727e_1 
+  libgfortran-ng     pkgs/main/linux-64::libgfortran-ng-11.2.0-h00389a5_1 
+  libgfortran5       pkgs/main/linux-64::libgfortran5-11.2.0-h1234567_1 
+  libglib            pkgs/main/linux-64::libglib-2.78.4-hdc74915_0 
+  libiconv           pkgs/main/linux-64::libiconv-1.16-h5eee18b_3 
+  libnghttp2         pkgs/main/linux-64::libnghttp2-1.57.0-h2d74bed_0 
+  libpng             pkgs/main/linux-64::libpng-1.6.39-h5eee18b_0 
+  libpq              pkgs/main/linux-64::libpq-17.4-hdbd6064_0 
+  libprotobuf        pkgs/main/linux-64::libprotobuf-5.29.3-h3cdef7c_1 
+  libssh2            pkgs/main/linux-64::libssh2-1.11.1-h251f7ec_0 
+  libtiff            pkgs/main/linux-64::libtiff-4.7.0-hde9077f_0 
+  libuuid            pkgs/main/linux-64::libuuid-1.41.5-h5eee18b_0 
+  libwebp-base       pkgs/main/linux-64::libwebp-base-1.3.2-h5eee18b_1 
+  libxkbcommon       pkgs/main/linux-64::libxkbcommon-1.9.1-h69220b7_0 
+  libxml2            pkgs/main/linux-64::libxml2-2.13.8-hfdd30dd_0 
+  lz4-c              pkgs/main/linux-64::lz4-c-1.9.4-h6a678d5_1 
+  matplotlib         pkgs/main/linux-64::matplotlib-3.9.2-py39h06a4308_1 
+  matplotlib-base    pkgs/main/linux-64::matplotlib-base-3.9.2-py39hbfdbfaf_1 
+  mkl                pkgs/main/linux-64::mkl-2023.1.0-h213fc3f_46344 
+  mkl-service        pkgs/main/linux-64::mkl-service-2.4.0-py39h5eee18b_2 
+  mkl_fft            pkgs/main/linux-64::mkl_fft-1.3.11-py39h5eee18b_0 
+  mkl_random         pkgs/main/linux-64::mkl_random-1.2.8-py39h1128e8f_0 
+  mysql              pkgs/main/linux-64::mysql-8.4.0-h721767e_2 
+  numpy              pkgs/main/linux-64::numpy-2.0.2-py39h5f9d8c6_0 
+  numpy-base         pkgs/main/linux-64::numpy-base-2.0.2-py39hb5e798b_0 
+  openjpeg           pkgs/main/linux-64::openjpeg-2.5.2-h0d4d230_1 
+  openldap           pkgs/main/linux-64::openldap-2.6.4-h42fbc30_0 
+  packaging          pkgs/main/linux-64::packaging-24.2-py39h06a4308_0 
+  pcre2              pkgs/main/linux-64::pcre2-10.42-hebb0a14_1 
+  pillow             pkgs/main/linux-64::pillow-11.1.0-py39hac6e08b_1 
+  pybind11-abi       pkgs/main/noarch::pybind11-abi-4-hd3eb1b0_1 
+  pyparsing          pkgs/main/linux-64::pyparsing-3.2.0-py39h06a4308_0 
+  pyqt               pkgs/main/linux-64::pyqt-6.7.1-py39h6a678d5_1 
+  pyqt6-sip          pkgs/main/linux-64::pyqt6-sip-13.9.1-py39h5eee18b_1 
+  python-dateutil    pkgs/main/linux-64::python-dateutil-2.9.0post0-py39h06a4308_2 
+  qtbase             pkgs/main/linux-64::qtbase-6.7.3-hdaa5aa8_0 
+  qtdeclarative      pkgs/main/linux-64::qtdeclarative-6.7.3-h6a678d5_0 
+  qtsvg              pkgs/main/linux-64::qtsvg-6.7.3-he621ea3_0 
+  qttools            pkgs/main/linux-64::qttools-6.7.3-h80c7b02_0 
+  qtwebchannel       pkgs/main/linux-64::qtwebchannel-6.7.3-h6a678d5_0 
+  qtwebsockets       pkgs/main/linux-64::qtwebsockets-6.7.3-h6a678d5_0 
+  scipy              pkgs/main/linux-64::scipy-1.13.1-py39h5f9d8c6_1 
+  setuptools         pkgs/main/linux-64::setuptools-72.1.0-py39h06a4308_0 
+  sip                pkgs/main/linux-64::sip-6.10.0-py39h6a678d5_0 
+  six                pkgs/main/linux-64::six-1.17.0-py39h06a4308_0 
+  tbb                pkgs/main/linux-64::tbb-2021.8.0-hdb19cb5_0 
+  tomli              pkgs/main/linux-64::tomli-2.0.1-py39h06a4308_0 
+  tornado            pkgs/main/linux-64::tornado-6.5.1-py39h5eee18b_0 
+  unicodedata2       pkgs/main/linux-64::unicodedata2-15.1.0-py39h5eee18b_1 
+  xcb-util           pkgs/main/linux-64::xcb-util-0.4.1-h5eee18b_2 
+  xcb-util-cursor    pkgs/main/linux-64::xcb-util-cursor-0.1.5-h5eee18b_0 
+  xcb-util-image     pkgs/main/linux-64::xcb-util-image-0.4.0-h5eee18b_2 
+  xcb-util-renderut~ pkgs/main/linux-64::xcb-util-renderutil-0.3.10-h5eee18b_0 
+  xkeyboard-config   pkgs/main/linux-64::xkeyboard-config-2.44-h5eee18b_0 
+  zipp               pkgs/main/linux-64::zipp-3.21.0-py39h06a4308_0 
+  zstd               pkgs/main/linux-64::zstd-1.5.6-hc292b87_0 
+
+
+Proceed ([y]/n)? 
+
+Downloading and Extracting Packages: ...working...mkl-2023.1.0         | 171.5 MB  |            |   0% 
+mysql-8.4.0          | 56.5 MB   |            |   0% [A
+
+scipy-1.13.1         | 22.0 MB   |            |   0% [A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   |            |   0% [A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   |            |   0% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   |            |   0% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    |            |   0% [A[A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    |            |   0% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    |            |   0% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    |            |   0% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.55.3     | 2.4 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tbb-2021.8.0         | 1.6 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libglib-2.78.4       | 1.5 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libabseil-20250127.0 | 1.3 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | 7          |   8% [A
+
+scipy-1.13.1         | 22.0 MB   | #8         |  19% [A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ###5       |  36% [A[A[Amkl-2023.1.0         | 171.5 MB  | 2          |   2% 
+
+
+intel-openmp-2023.1. | 17.2 MB   | ####9      |  49% [A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ###5       |  36% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ##6        |  27% [A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ##8        |  28% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ####3      |  44% [A[A
+mysql-8.4.0          | 56.5 MB   | #5         |  15% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ##8        |  29% [A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ##9        |  29% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ####8      |  48% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ##9        |  30% [A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###        |  30% [A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###        |  30% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #####1     |  51% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###        |  31% [A[A[A[Amkl-2023.1.0         | 171.5 MB  | 2          |   3% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###        |  31% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #####3     |  54% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###1       |  31% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #8         |  19% [A
+
+scipy-1.13.1         | 22.0 MB   | #####5     |  55% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###1       |  32% [A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###1       |  32% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #####6     |  57% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###2       |  32% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #####7     |  58% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###2       |  33% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #####9     |  59% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###2       |  33% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #####9     |  60% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###3       |  33% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ######     |  61% [A[A
+mysql-8.4.0          | 56.5 MB   | ##         |  21% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###3       |  33% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ######1    |  62% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###3       |  34% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ######2    |  62% [A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | #####5     |  56% [A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###4       |  34% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ######3    |  63% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###4       |  34% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ######3    |  64% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###4       |  35% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ######4    |  65% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###4       |  35% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ######5    |  65% [A[A
+
+scipy-1.13.1         | 22.0 MB   | ######6    |  66% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###5       |  35% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ##1        |  22% [A
+
+scipy-1.13.1         | 22.0 MB   | ######6    |  67% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###5       |  36% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ######7    |  67% [A[Amkl-2023.1.0         | 171.5 MB  | 2          |   3% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###5       |  36% [A[A[A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | #####9     |  59% [A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ######8    |  68% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###6       |  36% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ######8    |  69% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###6       |  36% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ######9    |  70% [A[A
+mysql-8.4.0          | 56.5 MB   | ##2        |  23% [A
+
+scipy-1.13.1         | 22.0 MB   | #######    |  70% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###6       |  37% [A[A[A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ######1    |  62% [A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #######1   |  71% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###6       |  37% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #######2   |  72% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###7       |  37% [A[A[A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ######3    |  64% [A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #######2   |  73% [A[A
+mysql-8.4.0          | 56.5 MB   | ##3        |  23% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###7       |  38% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #######3   |  74% [A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ######4    |  65% [A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###7       |  38% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #######4   |  74% [A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ######6    |  66% [A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #######4   |  75% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###8       |  38% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #######5   |  75% [A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ######7    |  67% [A[A[A
+mysql-8.4.0          | 56.5 MB   | ##3        |  24% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###8       |  39% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #######6   |  76% [A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ######8    |  68% [A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #######6   |  77% [A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ######9    |  69% [A[A[Amkl-2023.1.0         | 171.5 MB  | 2          |   3% 
+
+scipy-1.13.1         | 22.0 MB   | #######7   |  78% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###8       |  39% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ##4        |  24% [A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ######9    |  70% [A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #######8   |  78% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###9       |  39% [A[A[A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | #######    |  71% [A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #######8   |  79% [A[A
+mysql-8.4.0          | 56.5 MB   | ##4        |  24% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###9       |  39% [A[A[A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | #######1   |  71% [A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #######9   |  80% [A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | #######2   |  72% [A[A[Amkl-2023.1.0         | 171.5 MB  | 2          |   3% 
+
+scipy-1.13.1         | 22.0 MB   | ########   |  80% [A[A
+mysql-8.4.0          | 56.5 MB   | ##4        |  25% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###9       |  40% [A[A[A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | #######3   |  73% [A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ########   |  81% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ###9       |  40% [A[A[A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | #######3   |  74% [A[A[A
+mysql-8.4.0          | 56.5 MB   | ##4        |  25% [A
+
+scipy-1.13.1         | 22.0 MB   | ########1  |  82% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####       |  40% [A[A[A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | #######4   |  74% [A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ########2  |  82% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####       |  40% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ##4        |  25% [A
+
+
+intel-openmp-2023.1. | 17.2 MB   | #######5   |  75% [A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ########3  |  83% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####       |  40% [A[A[A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | #######5   |  76% [A[A[A
+mysql-8.4.0          | 56.5 MB   | ##5        |  25% [A
+
+scipy-1.13.1         | 22.0 MB   | ########3  |  84% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####       |  41% [A[A[A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | #######6   |  77% [A[A[A
+mysql-8.4.0          | 56.5 MB   | ##5        |  25% [A
+
+scipy-1.13.1         | 22.0 MB   | ########4  |  85% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####       |  41% [A[A[A[Amkl-2023.1.0         | 171.5 MB  | 2          |   3% 
+
+
+intel-openmp-2023.1. | 17.2 MB   | #######7   |  77% [A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ########5  |  85% [A[A
+mysql-8.4.0          | 56.5 MB   | ##5        |  25% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####1      |  41% [A[A[A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | #######8   |  78% [A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ########6  |  86% [A[A
+mysql-8.4.0          | 56.5 MB   | ##5        |  26% [A
+
+scipy-1.13.1         | 22.0 MB   | ########6  |  87% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####1      |  41% [A[A[A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | #######8   |  79% [A[A[Amkl-2023.1.0         | 171.5 MB  | 2          |   3% 
+mysql-8.4.0          | 56.5 MB   | ##5        |  26% [A
+
+scipy-1.13.1         | 22.0 MB   | ########7  |  88% [A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | #######9   |  79% [A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####1      |  42% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ########8  |  88% [A[A
+mysql-8.4.0          | 56.5 MB   | ##5        |  26% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####1      |  42% [A[A[A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ########   |  80% [A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ########9  |  89% [A[A
+mysql-8.4.0          | 56.5 MB   | ##5        |  26% [A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ########   |  81% [A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #########  |  90% [A[Amkl-2023.1.0         | 171.5 MB  | 2          |   3% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####1      |  42% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ##6        |  26% [A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ########1  |  81% [A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #########  |  91% [A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ########1  |  82% [A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####2      |  42% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #########1 |  92% [A[A
+mysql-8.4.0          | 56.5 MB   | ##6        |  26% [Amkl-2023.1.0         | 171.5 MB  | 2          |   3% 
+
+
+intel-openmp-2023.1. | 17.2 MB   | ########2  |  83% [A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #########2 |  93% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####2      |  42% [A[A[A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ########3  |  83% [A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #########3 |  94% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####2      |  43% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #########4 |  95% [A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ########3  |  84% [A[A[Amkl-2023.1.0         | 171.5 MB  | 2          |   3% 
+mysql-8.4.0          | 56.5 MB   | ##6        |  26% [A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ########4  |  85% [A[A[A
+
+scipy-1.13.1         | 22.0 MB   | #########5 |  96% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####2      |  43% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ##6        |  26% [A
+
+scipy-1.13.1         | 22.0 MB   | #########6 |  97% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####2      |  43% [A[A[A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ########5  |  85% [A[A[A
+mysql-8.4.0          | 56.5 MB   | ##6        |  26% [A
+
+scipy-1.13.1         | 22.0 MB   | #########7 |  98% [A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ########5  |  86% [A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####3      |  43% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ##6        |  27% [A
+
+scipy-1.13.1         | 22.0 MB   | #########8 |  99% [A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ########6  |  86% [A[A[Amkl-2023.1.0         | 171.5 MB  | 2          |   3% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####3      |  43% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ##6        |  27% [A
+
+scipy-1.13.1         | 22.0 MB   | #########9 | 100% [A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ########6  |  87% [A[A[A
+mysql-8.4.0          | 56.5 MB   | ##6        |  27% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####3      |  44% [A[A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ########## | 100% [A[Amkl-2023.1.0         | 171.5 MB  | 2          |   3% 
+
+
+intel-openmp-2023.1. | 17.2 MB   | ########7  |  88% [A[A[A
+mysql-8.4.0          | 56.5 MB   | ##6        |  27% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####3      |  44% [A[A[A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ########8  |  89% [A[A[A
+mysql-8.4.0          | 56.5 MB   | ##7        |  27% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####4      |  44% [A[A[A[Amkl-2023.1.0         | 171.5 MB  | 2          |   3% 
+
+
+intel-openmp-2023.1. | 17.2 MB   | ########9  |  90% [A[A[A
+mysql-8.4.0          | 56.5 MB   | ##7        |  27% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####4      |  44% [A[A[A[A
+
+
+intel-openmp-2023.1. | 17.2 MB   | #########1 |  91% [A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   3% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####4      |  45% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ##7        |  27% [A
+
+
+intel-openmp-2023.1. | 17.2 MB   | #########2 |  93% [A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####4      |  45% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ##7        |  27% [A
+
+
+intel-openmp-2023.1. | 17.2 MB   | #########4 |  94% [A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   3% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####5      |  45% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ##7        |  28% [A
+
+
+intel-openmp-2023.1. | 17.2 MB   | #########6 |  96% [A[A[A
+
+scipy-1.13.1         | 22.0 MB   | ########## | 100% [A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####5      |  46% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ##7        |  28% [A
+
+
+intel-openmp-2023.1. | 17.2 MB   | #########7 |  98% [A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####6      |  46% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ##8        |  28% [A
+
+
+intel-openmp-2023.1. | 17.2 MB   | #########9 |  99% [A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####6      |  47% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ##8        |  28% [A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ########## | 100% [A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####7      |  47% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ##8        |  29% [Amkl-2023.1.0         | 171.5 MB  | 3          |   3% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####7      |  48% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ##8        |  29% [A
+
+
+intel-openmp-2023.1. | 17.2 MB   | ########## | 100% [A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   3% 
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   |            |   0% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####8      |  48% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ##9        |  29% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####8      |  49% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ##9        |  30% [Amkl-2023.1.0         | 171.5 MB  | 3          |   3% 
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   |            |   0% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###        |  30% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####9      |  49% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###        |  31% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   |            |   1% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###1       |  31% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ####9      |  50% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | 1          |   1% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###1       |  32% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #####      |  50% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | 1          |   2% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###2       |  32% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | 2          |   2% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #####      |  51% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###2       |  33% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | 2          |   3% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #####1     |  51% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###3       |  33% [Amkl-2023.1.0         | 171.5 MB  | 3          |   3% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #####1     |  51% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | 3          |   3% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###3       |  34% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    |            |   0% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #####1     |  52% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###4       |  34% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | 3          |   4% [A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   3% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #####2     |  52% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###4       |  34% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | 4          |   4% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    |            |   1% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #####2     |  53% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###4       |  35% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | 1          |   2% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | 4          |   5% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###5       |  35% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | 2          |   3% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #####3     |  53% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | 5          |   5% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###5       |  36% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | 3          |   4% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #####3     |  54% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | 5          |   6% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | 5          |   6% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###5       |  36% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #####4     |  54% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | 6          |   7% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | 6          |   6% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###6       |  36% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | 8          |   8% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #####4     |  55% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | 6          |   6% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###6       |  37% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #          |  10% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #####5     |  55% [A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   3% 
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #1         |  12% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | 6          |   7% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###6       |  37% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #####5     |  56% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #3         |  14% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | 7          |   7% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###7       |  37% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #####6     |  56% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #5         |  15% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | 7          |   8% [A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   3% 
+mysql-8.4.0          | 56.5 MB   | ###7       |  37% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | 8          |   8% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #6         |  17% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #####6     |  57% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###7       |  38% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | 8          |   9% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #8         |  18% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #####6     |  57% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###7       |  38% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | 8          |   9% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #9         |  20% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #####7     |  57% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###7       |  38% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | 9          |   9% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ##1        |  21% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #####7     |  58% [A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   3% 
+mysql-8.4.0          | 56.5 MB   | ###8       |  38% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | 9          |  10% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ##2        |  23% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #####8     |  58% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###8       |  39% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #          |  10% [A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   3% 
+mysql-8.4.0          | 56.5 MB   | ###8       |  39% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #####8     |  59% [A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   3% 
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #          |  11% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ##4        |  24% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###9       |  39% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ##5        |  25% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #####9     |  59% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #          |  11% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###9       |  40% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ##6        |  27% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #####9     |  60% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #1         |  11% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ###9       |  40% [Amkl-2023.1.0         | 171.5 MB  | 3          |   3% 
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ##7        |  28% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####       |  40% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######     |  60% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #1         |  12% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####       |  41% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ##8        |  29% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######     |  61% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #2         |  12% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####       |  41% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######1    |  61% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ###        |  30% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #2         |  13% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####1      |  41% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######1    |  62% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ###1       |  31% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #2         |  13% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####1      |  42% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ###2       |  32% [A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   3% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######1    |  62% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####1      |  42% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #3         |  13% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ###3       |  33% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####2      |  42% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #3         |  14% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######2    |  62% [A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   3% 
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ###4       |  34% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######3    |  63% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####2      |  43% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #3         |  14% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ###5       |  35% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####2      |  43% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######3    |  64% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #4         |  14% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ###5       |  36% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####3      |  43% [Amkl-2023.1.0         | 171.5 MB  | 3          |   3% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######3    |  64% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ###6       |  37% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #4         |  14% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####3      |  44% [Amkl-2023.1.0         | 171.5 MB  | 3          |   3% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######4    |  64% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ###7       |  38% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####4      |  44% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #4         |  15% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######4    |  65% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ###8       |  39% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####4      |  44% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######5    |  65% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ####       |  40% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #5         |  15% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####4      |  45% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ####1      |  42% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######5    |  66% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #5         |  15% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####5      |  45% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ####2      |  43% [A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   3% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######6    |  66% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####5      |  45% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #5         |  16% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ####3      |  44% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####5      |  46% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######6    |  67% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ####5      |  45% [A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   3% 
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #5         |  16% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####6      |  46% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######7    |  67% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ####6      |  47% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #6         |  16% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####6      |  46% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ####7      |  48% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####6      |  47% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #6         |  16% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######7    |  68% [A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   3% 
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ####8      |  49% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####7      |  47% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######8    |  68% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #####      |  50% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #6         |  17% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####7      |  47% [Amkl-2023.1.0         | 171.5 MB  | 3          |   3% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######8    |  68% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####7      |  48% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #####1     |  51% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #7         |  17% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######8    |  69% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####8      |  48% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #####2     |  53% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #7         |  17% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #####3     |  54% [A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######9    |  69% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####8      |  48% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #7         |  18% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####8      |  49% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #8         |  18% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #####4     |  55% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######9    |  70% [A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+mysql-8.4.0          | 56.5 MB   | ####9      |  49% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #####6     |  56% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ######9    |  70% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #8         |  19% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####9      |  50% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #####7     |  57% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #8         |  19% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #######    |  70% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ####9      |  50% [Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #####8     |  58% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####      |  50% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #9         |  19% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #######    |  70% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #####9     |  59% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####      |  51% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #9         |  20% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ######     |  61% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####      |  51% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #######    |  71% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##         |  20% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ######1    |  62% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####1     |  51% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #######1   |  71% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##         |  21% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ######3    |  63% [A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+mysql-8.4.0          | 56.5 MB   | #####1     |  52% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #######1   |  72% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ######4    |  65% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##         |  21% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####1     |  52% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ######6    |  66% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##1        |  21% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####2     |  52% [Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #######1   |  72% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ######7    |  68% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####2     |  53% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #######2   |  72% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #######    |  70% [A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+mysql-8.4.0          | 56.5 MB   | #####2     |  53% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #######2   |  73% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #######1   |  72% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##1        |  22% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #######3   |  73% [A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #######3   |  73% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##1        |  22% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #######3   |  74% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####3     |  53% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #######4   |  75% [A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##2        |  22% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #######4   |  74% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####3     |  54% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #######4   |  75% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #######6   |  76% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##2        |  23% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####3     |  54% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #######7   |  78% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #######5   |  75% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##3        |  23% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #######6   |  76% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####4     |  54% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #######9   |  79% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####4     |  54% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #######6   |  77% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ########   |  80% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##3        |  24% [A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+mysql-8.4.0          | 56.5 MB   | #####4     |  55% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #######7   |  77% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ########2  |  82% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##4        |  24% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####4     |  55% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #######8   |  78% [A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ########3  |  84% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####5     |  55% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #######8   |  79% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ########4  |  85% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##4        |  24% [A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+mysql-8.4.0          | 56.5 MB   | #####5     |  55% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #######9   |  79% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##4        |  25% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ########6  |  86% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####5     |  56% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #######9   |  80% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##5        |  25% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ########7  |  88% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####5     |  56% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ########   |  81% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##5        |  25% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ########8  |  89% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####6     |  56% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##5        |  26% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ########1  |  81% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #########  |  90% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####6     |  56% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##5        |  26% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ########1  |  82% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #########1 |  91% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####6     |  57% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ########2  |  82% [A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##6        |  26% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #########2 |  92% [A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####6     |  57% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ########3  |  83% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #########3 |  94% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##6        |  27% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####7     |  57% [Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ########3  |  84% [A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #########4 |  95% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##6        |  27% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####7     |  57% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #########5 |  96% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ########4  |  84% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####7     |  58% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##7        |  27% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ########4  |  85% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####8     |  58% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #########6 |  97% [A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##7        |  28% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####8     |  58% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #########8 |  98% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ########5  |  85% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##7        |  28% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####8     |  59% [A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | #########9 |  99% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ########6  |  86% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##8        |  28% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####8     |  59% [Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ########## | 100% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ########6  |  87% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##8        |  29% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####9     |  59% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ##9        |  30% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ########7  |  87% [A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+mysql-8.4.0          | 56.5 MB   | #####9     |  60% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ###        |  30% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ########7  |  88% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #####9     |  60% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ###1       |  31% [A[A[A[A[A
+
+
+
+
+
+numpy-base-2.0.2     | 7.9 MB    | ########## | 100% [A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ########8  |  88% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######     |  60% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ###2       |  32% [A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+mysql-8.4.0          | 56.5 MB   | ######     |  60% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ########8  |  89% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ###3       |  33% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ########8  |  89% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######     |  61% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ###4       |  34% [A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ########9  |  89% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######     |  61% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    |            |   0% [A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ###5       |  35% [A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ########9  |  90% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######1    |  61% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ###6       |  36% [A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    |            |   1% [A[A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########  |  90% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ###7       |  37% [A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | 1          |   1% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######1    |  62% [Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########  |  91% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######1    |  62% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ###8       |  38% [A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | 2          |   2% [A[A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########  |  91% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ###9       |  39% [A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | 2          |   3% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######2    |  62% [Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ####       |  40% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########1 |  91% [A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | 3          |   4% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######2    |  62% [Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ####       |  41% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########1 |  92% [A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | 4          |   5% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######2    |  63% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ####1      |  42% [A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########2 |  92% [A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | 5          |   6% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######2    |  63% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ####2      |  43% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########2 |  93% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######3    |  63% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | 6          |   7% [A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ####3      |  44% [A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | 7          |   8% [A[A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########2 |  93% [A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ####4      |  45% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######3    |  63% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | 8          |   9% [A[A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########3 |  93% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######3    |  64% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ####5      |  45% [A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | 9          |  10% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######3    |  64% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########3 |  94% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ####6      |  46% [A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########4 |  94% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ####7      |  47% [A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #          |  10% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######4    |  64% [A
+mysql-8.4.0          | 56.5 MB   | ######4    |  64% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #1         |  11% [A[A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########4 |  94% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ####8      |  48% [A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########4 |  95% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ####9      |  49% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######4    |  65% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #2         |  12% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######4    |  65% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########5 |  95% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #####      |  50% [A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #3         |  13% [A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #####      |  51% [A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #4         |  14% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######5    |  65% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########5 |  96% [A[A[A[Amkl-2023.1.0         | 171.5 MB  | 3          |   4% 
+mysql-8.4.0          | 56.5 MB   | ######5    |  65% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #####1     |  52% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########5 |  96% [A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #4         |  15% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######5    |  66% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #####2     |  53% [A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #5         |  16% [A[A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########6 |  96% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #####3     |  53% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######5    |  66% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########6 |  96% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######6    |  66% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #6         |  16% [A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #####4     |  54% [A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########6 |  97% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #####5     |  55% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######6    |  67% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #7         |  17% [A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #####5     |  56% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######6    |  67% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #8         |  18% [A[A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########7 |  97% [A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+mysql-8.4.0          | 56.5 MB   | ######7    |  67% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #####6     |  57% [A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #9         |  19% [A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########7 |  97% [A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ##         |  20% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######7    |  67% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #####7     |  57% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########7 |  98% [A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ##1        |  21% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######7    |  68% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #####8     |  58% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######7    |  68% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ##2        |  23% [A[A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########8 |  98% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #####9     |  59% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######8    |  68% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ##3        |  24% [A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #####9     |  60% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######8    |  68% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########8 |  98% [A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ##4        |  25% [A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ######     |  61% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######8    |  69% [Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ##6        |  26% [A[A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########8 |  99% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ######1    |  61% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######8    |  69% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ##7        |  27% [A[A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########8 |  99% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ######2    |  62% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######9    |  69% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ##8        |  28% [A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ######3    |  63% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########8 |  99% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######9    |  69% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ##9        |  29% [A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ######3    |  64% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ######9    |  70% [A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########9 |  99% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ######4    |  65% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######    |  70% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ###        |  31% [A[A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########9 | 100% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ######5    |  66% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######    |  70% [Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ###1       |  32% [A[A[A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | #########9 | 100% [A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ######6    |  67% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ########## | 100% [A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######    |  70% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ###3       |  33% [A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ######7    |  68% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######    |  71% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ###4       |  34% [A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ######8    |  69% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######    |  71% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ###5       |  35% [A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ######9    |  69% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######1   |  71% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ###6       |  37% [A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #######    |  70% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######1   |  72% [Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ###8       |  38% [A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #######    |  71% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######1   |  72% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ###9       |  39% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######2   |  72% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #######1   |  72% [A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ####       |  41% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    |            |   0% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######2   |  72% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #######2   |  73% [A[A[A[A[A
+
+
+
+qtdeclarative-6.7.3  | 16.2 MB   | ########## | 100% [A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ####1      |  42% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    |            |   1% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######2   |  73% [Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #######3   |  73% [A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ####3      |  43% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######2   |  73% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ####4      |  44% [A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #######4   |  74% [A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | 1          |   1% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######3   |  73% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #######5   |  75% [A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ####5      |  45% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######3   |  73% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | 2          |   2% [A[A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #######5   |  76% [A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ####6      |  46% [A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+mysql-8.4.0          | 56.5 MB   | #######3   |  74% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | 2          |   3% [A[A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #######6   |  77% [A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ####7      |  47% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######3   |  74% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #######7   |  77% [A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | 3          |   3% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ####8      |  49% [A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+mysql-8.4.0          | 56.5 MB   | #######4   |  74% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #######8   |  78% [A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ####9      |  50% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | 4          |   4% [A[A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #######9   |  79% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######4   |  74% [Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #####      |  51% [A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ########   |  80% [A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | 4          |   5% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######4   |  75% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ########1  |  81% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######4   |  75% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | 4          |   5% [A[A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ########2  |  82% [A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #####1     |  52% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######5   |  75% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | 5          |   5% [A[A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ########3  |  83% [A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+mysql-8.4.0          | 56.5 MB   | #######5   |  75% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #####2     |  53% [A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ########4  |  84% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######5   |  76% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #####4     |  54% [A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ########5  |  85% [A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | 5          |   6% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######5   |  76% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ########6  |  86% [A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #####5     |  56% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######6   |  76% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | 6          |   7% [A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #####7     |  57% [A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ########7  |  87% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######6   |  76% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #####8     |  58% [A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ########8  |  88% [A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ######     |  60% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | 7          |   7% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######6   |  77% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ########9  |  89% [A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ######1    |  62% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######6   |  77% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ########9  |  90% [A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | 7          |   8% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######7   |  77% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ######3    |  63% [A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #########  |  91% [A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | 8          |   8% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######7   |  77% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ######5    |  66% [A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #########1 |  92% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######7   |  78% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ######7    |  68% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | 8          |   9% [A[A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #########2 |  92% [A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+mysql-8.4.0          | 56.5 MB   | #######7   |  78% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #########3 |  93% [A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ######9    |  69% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | 9          |   9% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######7   |  78% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #########4 |  94% [A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #######    |  70% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | 9          |  10% [A[A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #########5 |  95% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######8   |  78% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #######1   |  72% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | 9          |  10% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######8   |  78% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #########5 |  96% [A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #######3   |  73% [A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+mysql-8.4.0          | 56.5 MB   | #######8   |  79% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #########6 |  97% [A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #######4   |  75% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #          |  10% [A[A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #########7 |  98% [A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+mysql-8.4.0          | 56.5 MB   | #######8   |  79% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #######6   |  76% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #          |  11% [A[A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #########8 |  98% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######9   |  79% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #######7   |  78% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #1         |  11% [A[A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #########9 |  99% [A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #1         |  12% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######9   |  79% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #######8   |  79% [A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | #########9 | 100% [A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #2         |  12% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######9   |  79% [A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ########## | 100% [A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ########   |  81% [A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #2         |  13% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######9   |  80% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ########2  |  82% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #######9   |  80% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #3         |  14% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ########4  |  84% [A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+mysql-8.4.0          | 56.5 MB   | ########   |  80% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ########5  |  86% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #4         |  14% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ########   |  80% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #4         |  15% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ########7  |  87% [A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+mysql-8.4.0          | 56.5 MB   | ########   |  81% [Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #5         |  16% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ########8  |  89% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ########   |  81% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #6         |  16% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #########  |  91% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ########1  |  81% [Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #7         |  17% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #########2 |  93% [A[A[A[A[A[A[A
+
+
+
+
+qtbase-6.7.3         | 16.1 MB   | ########## | 100% [A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ########1  |  82% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #8         |  18% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #########5 |  95% [A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   4% 
+mysql-8.4.0          | 56.5 MB   | ########2  |  82% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #9         |  19% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | #########8 |  98% [A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+mysql-8.4.0          | 56.5 MB   | ########2  |  82% [A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ########## | 100% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ##         |  20% [A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+mysql-8.4.0          | 56.5 MB   | ########2  |  83% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ##1        |  22% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ########3  |  83% [A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    |            |   0% [A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ##3        |  23% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+matplotlib-base-3.9. | 7.0 MB    | ########## | 100% [A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ########3  |  84% [Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ##4        |  25% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ########4  |  84% [A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | 1          |   1% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ##6        |  27% [A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+mysql-8.4.0          | 56.5 MB   | ########5  |  85% [A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | 2          |   2% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ##8        |  29% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ########5  |  86% [A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | 3          |   3% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ###        |  30% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | 4          |   5% [A[A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ########6  |  86% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ###1       |  32% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | 6          |   7% [A[A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ########6  |  87% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ###3       |  34% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | 8          |   8% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ###5       |  35% [A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+mysql-8.4.0          | 56.5 MB   | ########7  |  87% [A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | 9          |  10% [A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+mysql-8.4.0          | 56.5 MB   | ########7  |  88% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ###6       |  37% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | #1         |  12% [A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+mysql-8.4.0          | 56.5 MB   | ########8  |  88% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ###8       |  38% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | #3         |  13% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ####       |  41% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | #4         |  15% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | 1          |   1% [A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ####2      |  42% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ########8  |  89% [A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | #6         |  16% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | 2          |   3% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ####3      |  44% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ########9  |  89% [Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | #8         |  18% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | 4          |   4% [A[A[A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ########9  |  89% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ####5      |  46% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | 5          |   5% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | #9         |  20% [A[A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ########9  |  90% [A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ##         |  21% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ####7      |  47% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | 6          |   7% [A[A[A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########  |  90% [Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | #          |  10% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ##2        |  22% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ####8      |  48% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########  |  90% [A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | #2         |  13% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ####9      |  50% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ##3        |  24% [A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+mysql-8.4.0          | 56.5 MB   | #########  |  91% [A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | #5         |  16% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #####      |  51% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ##5        |  25% [A[A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########1 |  91% [A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | #9         |  20% [A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #####2     |  52% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ##6        |  27% [A[A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########1 |  91% [A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | ##2        |  22% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #####3     |  53% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ##7        |  28% [A[A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########1 |  92% [A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | ##4        |  24% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ##9        |  29% [A[A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########1 |  92% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #####4     |  54% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | ##7        |  27% [A[A[A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########2 |  92% [A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ###        |  31% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | ###        |  30% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #####5     |  55% [A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+mysql-8.4.0          | 56.5 MB   | #########2 |  92% [A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | ###2       |  33% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #####6     |  56% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########2 |  93% [A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ###2       |  32% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | ###5       |  35% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #####7     |  57% [A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+mysql-8.4.0          | 56.5 MB   | #########2 |  93% [A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ###2       |  33% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | ###7       |  38% [A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #####8     |  58% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########3 |  93% [A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ###4       |  34% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | ####       |  41% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #####9     |  59% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########3 |  93% [Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | ####3      |  43% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ###5       |  35% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ######     |  60% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########3 |  94% [A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | ####6      |  46% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ###6       |  37% [A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ######1    |  61% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########4 |  94% [A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ###7       |  38% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | ####8      |  49% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ######2    |  62% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########4 |  94% [A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | #####1     |  52% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ###9       |  39% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ######2    |  63% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########4 |  95% [A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | #####4     |  55% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ####       |  40% [A[A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########4 |  95% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ######3    |  64% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | #####7     |  57% [A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ######5    |  65% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########5 |  95% [A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | ######     |  60% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ####1      |  42% [A[A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########5 |  95% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ######6    |  66% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | ######3    |  63% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ####3      |  43% [A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+mysql-8.4.0          | 56.5 MB   | #########5 |  96% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ######8    |  68% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | ######6    |  67% [A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ######9    |  69% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | ######9    |  70% [A[A[A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########5 |  96% [A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ####4      |  44% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #######    |  71% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | #######2   |  73% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ####5      |  45% [A[A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########6 |  96% [Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #######2   |  72% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | #######5   |  76% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ####6      |  47% [A[A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########6 |  96% [Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #######3   |  73% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | #######8   |  79% [A[A[A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########6 |  97% [A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ####7      |  48% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | ########1  |  81% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #######4   |  75% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########6 |  97% [A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ####8      |  49% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #######5   |  76% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | ########4  |  84% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ####9      |  50% [A[A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########7 |  97% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #######7   |  77% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | ########7  |  87% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | #####      |  51% [A[A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########7 |  97% [A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | #########  |  90% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #######8   |  78% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | #####2     |  53% [A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+mysql-8.4.0          | 56.5 MB   | #########7 |  98% [A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | #########2 |  93% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | #####3     |  54% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #######9   |  80% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########7 |  98% [Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | #########6 |  96% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | #####5     |  56% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ########   |  81% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########7 |  98% [A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | #########8 |  99% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | #####7     |  57% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########8 |  98% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ########2  |  82% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+libcups-2.4.2        | 4.5 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ######     |  60% [A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+mysql-8.4.0          | 56.5 MB   | #########8 |  98% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ########4  |  84% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ######2    |  62% [A[A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########8 |  99% [A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ########5  |  85% [A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+mysql-8.4.0          | 56.5 MB   | #########9 |  99% [A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ######4    |  64% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ########6  |  87% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | #########9 | 100% [A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ######5    |  66% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ########7  |  88% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ######7    |  67% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ########9  |  89% [A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ########## | 100% [A
+mysql-8.4.0          | 56.5 MB   | ########## | 100% [A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ######9    |  69% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #########1 |  91% [A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | #######1   |  71% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #########4 |  94% [A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | #########7 |  97% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | #######3   |  73% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ########## | 100% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ########## | 100% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | #######4   |  75% [A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | #######6   |  77% [A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | #######8   |  79% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+qttools-6.7.3        | 6.6 MB    | ########## | 100% [A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.55.3     | 2.4 MB    |            |   1% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ########   |  81% [A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    |            |   1% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ########3  |  83% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.55.3     | 2.4 MB    | 5          |   5% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | 1          |   2% [A[A[A[A[A[A[A[A[A[A[A
+mysql-8.4.0          | 56.5 MB   | ########## | 100% [A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ########6  |  86% [A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.55.3     | 2.4 MB    | #4         |  14% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | 3          |   4% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | 2          |   2% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ########9  |  89% [A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 4          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.55.3     | 2.4 MB    | ##1        |  22% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | 5          |   5% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | #########3 |  94% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | 4          |   4% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.55.3     | 2.4 MB    | ###2       |  33% [A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | 8          |   9% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | #########8 |  98% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | 6          |   7% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.55.3     | 2.4 MB    | ####3      |  43% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ########## | 100% [A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | #          |  11% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.55.3     | 2.4 MB    | #####5     |  56% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | #          |  11% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | #4         |  14% [A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.55.3     | 2.4 MB    | ######8    |  68% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | #4         |  14% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+pyqt-6.7.1           | 5.0 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | #7         |  18% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.55.3     | 2.4 MB    | #######9   |  79% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | #9         |  19% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | ##1        |  22% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.55.3     | 2.4 MB    | ########9  |  90% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.55.3     | 2.4 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | ##6        |  26% [A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | ##2        |  22% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    |            |   1% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | ###        |  31% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.55.3     | 2.4 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+fonttools-4.55.3     | 2.4 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | ##4        |  25% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | ###4       |  34% [A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | ##8        |  28% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | ###8       |  39% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | 9          |   9% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | ###4       |  35% [A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | ####2      |  43% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | ####1      |  42% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    |            |   1% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | ####6      |  47% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | ####9      |  50% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | #####      |  50% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | 3          |   3% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | #####5     |  55% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #2         |  12% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | 6          |   6% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | ######     |  61% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #7         |  18% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | 9          |  10% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | #####4     |  54% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | ######7    |  67% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ##         |  21% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | #3         |  13% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | #######2   |  72% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ##6        |  26% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | #####7     |  58% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | ##         |  21% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | #######7   |  77% [A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | ##5        |  25% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ###        |  30% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | ########2  |  82% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | ######     |  60% [A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | ##9        |  30% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | ########7  |  88% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | ######3    |  63% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | ###4       |  35% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ###3       |  33% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | #########3 |  94% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | #########8 |  99% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ###7       |  37% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | ###9       |  39% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | ######5    |  65% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | ####3      |  44% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ###9       |  40% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | ######7    |  68% [A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+libprotobuf-5.29.3   | 3.5 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | ####8      |  48% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | ######9    |  70% [A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | #####2     |  53% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | #######2   |  72% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ####2      |  43% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | #####7     |  58% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | #######4   |  74% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | ######2    |  62% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tbb-2021.8.0         | 1.6 MB    |            |   1% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | #######6   |  77% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ####4      |  44% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | ######6    |  67% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tbb-2021.8.0         | 1.6 MB    | 2          |   3% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | #######8   |  79% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | #######1   |  71% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tbb-2021.8.0         | 1.6 MB    | 5          |   6% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | ########1  |  81% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | #######5   |  76% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ####6      |  46% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tbb-2021.8.0         | 1.6 MB    | #1         |  11% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | ########3  |  83% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | ########1  |  81% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tbb-2021.8.0         | 1.6 MB    | #7         |  17% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | ########7  |  88% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | ########5  |  86% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tbb-2021.8.0         | 1.6 MB    | ##4        |  25% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ####8      |  48% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | #########4 |  94% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | ########9  |  90% [A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tbb-2021.8.0         | 1.6 MB    | ###4       |  34% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | #########4 |  94% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-11.2.0  | 2.0 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tbb-2021.8.0         | 1.6 MB    | ####7      |  47% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #####1     |  51% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tbb-2021.8.0         | 1.6 MB    | ######3    |  64% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tbb-2021.8.0         | 1.6 MB    | #######7   |  78% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+libpq-17.4           | 2.8 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tbb-2021.8.0         | 1.6 MB    | #########8 |  99% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tbb-2021.8.0         | 1.6 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tbb-2021.8.0         | 1.6 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #####3     |  54% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% mkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #####5     |  56% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libabseil-20250127.0 | 1.3 MB    | 1          |   1% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libglib-2.78.4       | 1.5 MB    | 1          |   1% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #####8     |  58% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libglib-2.78.4       | 1.5 MB    | 3          |   3% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libabseil-20250127.0 | 1.3 MB    | 4          |   5% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   5% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libglib-2.78.4       | 1.5 MB    | 8          |   8% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libabseil-20250127.0 | 1.3 MB    | 9          |  10% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   6% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libglib-2.78.4       | 1.5 MB    | #6         |  17% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ######     |  61% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libabseil-20250127.0 | 1.3 MB    | #5         |  15% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libglib-2.78.4       | 1.5 MB    | ##6        |  26% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   6% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libabseil-20250127.0 | 1.3 MB    | ##2        |  23% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libglib-2.78.4       | 1.5 MB    | ###9       |  40% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   6% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libabseil-20250127.0 | 1.3 MB    | ###        |  31% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ######3    |  63% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   6% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libglib-2.78.4       | 1.5 MB    | #####7     |  57% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libabseil-20250127.0 | 1.3 MB    | ###9       |  39% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   6% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libglib-2.78.4       | 1.5 MB    | #######7   |  77% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libabseil-20250127.0 | 1.3 MB    | #####3     |  53% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libglib-2.78.4       | 1.5 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libglib-2.78.4       | 1.5 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   6% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libglib-2.78.4       | 1.5 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ######4    |  65% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libabseil-20250127.0 | 1.3 MB    | #######    |  70% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   6% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libabseil-20250127.0 | 1.3 MB    | ########6  |  87% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libabseil-20250127.0 | 1.3 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   6% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ######6    |  66% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   6% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libabseil-20250127.0 | 1.3 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libabseil-20250127.0 | 1.3 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   6% mkl-2023.1.0         | 171.5 MB  | 5          |   6% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ######7    |  67% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   6% mkl-2023.1.0         | 171.5 MB  | 5          |   6% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ######8    |  69% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 5          |   6% mkl-2023.1.0         | 171.5 MB  | 5          |   6% mkl-2023.1.0         | 171.5 MB  | 6          |   6% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #######    |  70% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 6          |   6% mkl-2023.1.0         | 171.5 MB  | 6          |   6% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #######1   |  71% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 6          |   6% mkl-2023.1.0         | 171.5 MB  | 6          |   6% mkl-2023.1.0         | 171.5 MB  | 6          |   6% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #######2   |  73% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 6          |   6% mkl-2023.1.0         | 171.5 MB  | 6          |   7% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #######3   |  74% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 6          |   7% mkl-2023.1.0         | 171.5 MB  | 6          |   7% mkl-2023.1.0         | 171.5 MB  | 6          |   7% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #######5   |  75% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 6          |   7% mkl-2023.1.0         | 171.5 MB  | 7          |   7% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #######6   |  77% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 7          |   7% mkl-2023.1.0         | 171.5 MB  | 7          |   7% mkl-2023.1.0         | 171.5 MB  | 7          |   7% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #######7   |  78% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 7          |   8% mkl-2023.1.0         | 171.5 MB  | 7          |   8% mkl-2023.1.0         | 171.5 MB  | 7          |   8% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #######9   |  79% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ########   |  80% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ########1  |  81% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 7          |   8% mkl-2023.1.0         | 171.5 MB  | 7          |   8% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ########1  |  82% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 8          |   8% mkl-2023.1.0         | 171.5 MB  | 8          |   8% mkl-2023.1.0         | 171.5 MB  | 8          |   8% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ########2  |  82% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 8          |   8% mkl-2023.1.0         | 171.5 MB  | 8          |   9% mkl-2023.1.0         | 171.5 MB  | 8          |   9% mkl-2023.1.0         | 171.5 MB  | 8          |   9% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ########3  |  83% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 8          |   9% mkl-2023.1.0         | 171.5 MB  | 9          |   9% mkl-2023.1.0         | 171.5 MB  | 9          |   9% mkl-2023.1.0         | 171.5 MB  | 9          |   9% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ########3  |  84% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 9          |   9% mkl-2023.1.0         | 171.5 MB  | 9          |  10% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ########4  |  84% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | 9          |  10% mkl-2023.1.0         | 171.5 MB  | 9          |  10% mkl-2023.1.0         | 171.5 MB  | #          |  10% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ########5  |  86% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | #          |  10% mkl-2023.1.0         | 171.5 MB  | #          |  10% mkl-2023.1.0         | 171.5 MB  | #          |  11% mkl-2023.1.0         | 171.5 MB  | #          |  11% mkl-2023.1.0         | 171.5 MB  | #1         |  11% mkl-2023.1.0         | 171.5 MB  | #1         |  11% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ########6  |  86% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | #1         |  12% mkl-2023.1.0         | 171.5 MB  | #1         |  12% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ########7  |  87% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | #2         |  12% mkl-2023.1.0         | 171.5 MB  | #2         |  12% mkl-2023.1.0         | 171.5 MB  | #2         |  13% mkl-2023.1.0         | 171.5 MB  | #2         |  13% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ########7  |  88% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | #3         |  13% mkl-2023.1.0         | 171.5 MB  | #3         |  13% mkl-2023.1.0         | 171.5 MB  | #3         |  13% mkl-2023.1.0         | 171.5 MB  | #3         |  14% mkl-2023.1.0         | 171.5 MB  | #4         |  14% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ########8  |  88% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | #4         |  14% mkl-2023.1.0         | 171.5 MB  | #4         |  15% mkl-2023.1.0         | 171.5 MB  | #4         |  15% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ########8  |  89% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | #5         |  15% mkl-2023.1.0         | 171.5 MB  | #5         |  15% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ########9  |  90% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | #5         |  16% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #########  |  91% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | #6         |  17% mkl-2023.1.0         | 171.5 MB  | #6         |  17% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #########2 |  92% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | #7         |  17% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #########3 |  94% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | #7         |  18% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #########4 |  94% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #########4 |  95% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | #8         |  18% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #########6 |  96% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | #8         |  18% mkl-2023.1.0         | 171.5 MB  | #9         |  20% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #########6 |  97% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | ##         |  20% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #########7 |  97% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #########8 |  98% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | ##         |  20% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #########8 |  99% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | ##         |  21% mkl-2023.1.0         | 171.5 MB  | ##1        |  21% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | #########9 |  99% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | ##1        |  22% mkl-2023.1.0         | 171.5 MB  | ##2        |  22% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+setuptools-72.1.0    | 2.4 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[Amkl-2023.1.0         | 171.5 MB  | ##2        |  23% mkl-2023.1.0         | 171.5 MB  | ##2        |  23% mkl-2023.1.0         | 171.5 MB  | ##3        |  23% mkl-2023.1.0         | 171.5 MB  | ##3        |  23% mkl-2023.1.0         | 171.5 MB  | ##3        |  24% mkl-2023.1.0         | 171.5 MB  | ##3        |  24% mkl-2023.1.0         | 171.5 MB  | ##4        |  24% mkl-2023.1.0         | 171.5 MB  | ##4        |  24% mkl-2023.1.0         | 171.5 MB  | ##4        |  24% mkl-2023.1.0         | 171.5 MB  | ##4        |  25% mkl-2023.1.0         | 171.5 MB  | ##4        |  25% mkl-2023.1.0         | 171.5 MB  | ##4        |  25% mkl-2023.1.0         | 171.5 MB  | ##5        |  25% mkl-2023.1.0         | 171.5 MB  | ##5        |  25% mkl-2023.1.0         | 171.5 MB  | ##5        |  25% mkl-2023.1.0         | 171.5 MB  | ##5        |  26% mkl-2023.1.0         | 171.5 MB  | ##5        |  26% mkl-2023.1.0         | 171.5 MB  | ##5        |  26% mkl-2023.1.0         | 171.5 MB  | ##6        |  26% mkl-2023.1.0         | 171.5 MB  | ##6        |  26% mkl-2023.1.0         | 171.5 MB  | ##6        |  27% mkl-2023.1.0         | 171.5 MB  | ##6        |  27% mkl-2023.1.0         | 171.5 MB  | ##6        |  27% mkl-2023.1.0         | 171.5 MB  | ##7        |  27% mkl-2023.1.0         | 171.5 MB  | ##7        |  27% mkl-2023.1.0         | 171.5 MB  | ##7        |  27% mkl-2023.1.0         | 171.5 MB  | ##7        |  28% mkl-2023.1.0         | 171.5 MB  | ##7        |  28% mkl-2023.1.0         | 171.5 MB  | ##7        |  28% mkl-2023.1.0         | 171.5 MB  | ##8        |  28% mkl-2023.1.0         | 171.5 MB  | ##8        |  28% mkl-2023.1.0         | 171.5 MB  | ##8        |  28% mkl-2023.1.0         | 171.5 MB  | ##8        |  29% mkl-2023.1.0         | 171.5 MB  | ##8        |  29% mkl-2023.1.0         | 171.5 MB  | ##8        |  29% mkl-2023.1.0         | 171.5 MB  | ##9        |  29% mkl-2023.1.0         | 171.5 MB  | ##9        |  29% mkl-2023.1.0         | 171.5 MB  | ##9        |  30% mkl-2023.1.0         | 171.5 MB  | ##9        |  30% mkl-2023.1.0         | 171.5 MB  | ##9        |  30% mkl-2023.1.0         | 171.5 MB  | ###        |  30% mkl-2023.1.0         | 171.5 MB  | ###        |  30% mkl-2023.1.0         | 171.5 MB  | ###        |  30% mkl-2023.1.0         | 171.5 MB  | ###        |  31% mkl-2023.1.0         | 171.5 MB  | ###        |  31% mkl-2023.1.0         | 171.5 MB  | ###        |  31% mkl-2023.1.0         | 171.5 MB  | ###1       |  31% mkl-2023.1.0         | 171.5 MB  | ###1       |  32% mkl-2023.1.0         | 171.5 MB  | ###1       |  32% mkl-2023.1.0         | 171.5 MB  | ###1       |  32% mkl-2023.1.0         | 171.5 MB  | ###2       |  32% mkl-2023.1.0         | 171.5 MB  | ###2       |  32% mkl-2023.1.0         | 171.5 MB  | ###2       |  33% mkl-2023.1.0         | 171.5 MB  | ###2       |  33% mkl-2023.1.0         | 171.5 MB  | ###2       |  33% mkl-2023.1.0         | 171.5 MB  | ###3       |  33% mkl-2023.1.0         | 171.5 MB  | ###3       |  33% mkl-2023.1.0         | 171.5 MB  | ###3       |  33% mkl-2023.1.0         | 171.5 MB  | ###3       |  34% mkl-2023.1.0         | 171.5 MB  | ###3       |  34% mkl-2023.1.0         | 171.5 MB  | ###3       |  34% mkl-2023.1.0         | 171.5 MB  | ###4       |  34% mkl-2023.1.0         | 171.5 MB  | ###4       |  34% mkl-2023.1.0         | 171.5 MB  | ###4       |  34% mkl-2023.1.0         | 171.5 MB  | ###4       |  35% mkl-2023.1.0         | 171.5 MB  | ###4       |  35% mkl-2023.1.0         | 171.5 MB  | ###4       |  35% mkl-2023.1.0         | 171.5 MB  | ###5       |  35% mkl-2023.1.0         | 171.5 MB  | ###5       |  35% mkl-2023.1.0         | 171.5 MB  | ###5       |  36% mkl-2023.1.0         | 171.5 MB  | ###5       |  36% mkl-2023.1.0         | 171.5 MB  | ###6       |  36% mkl-2023.1.0         | 171.5 MB  | ###6       |  36% mkl-2023.1.0         | 171.5 MB  | ###6       |  37% mkl-2023.1.0         | 171.5 MB  | ###6       |  37% mkl-2023.1.0         | 171.5 MB  | ###7       |  37% mkl-2023.1.0         | 171.5 MB  | ###7       |  37% mkl-2023.1.0         | 171.5 MB  | ###7       |  38% mkl-2023.1.0         | 171.5 MB  | ###7       |  38% mkl-2023.1.0         | 171.5 MB  | ###7       |  38% mkl-2023.1.0         | 171.5 MB  | ###8       |  38% mkl-2023.1.0         | 171.5 MB  | ###8       |  38% mkl-2023.1.0         | 171.5 MB  | ###8       |  38% mkl-2023.1.0         | 171.5 MB  | ###8       |  39% mkl-2023.1.0         | 171.5 MB  | ###8       |  39% mkl-2023.1.0         | 171.5 MB  | ###9       |  39% mkl-2023.1.0         | 171.5 MB  | ###9       |  39% mkl-2023.1.0         | 171.5 MB  | ###9       |  39% mkl-2023.1.0         | 171.5 MB  | ###9       |  40% mkl-2023.1.0         | 171.5 MB  | ###9       |  40% mkl-2023.1.0         | 171.5 MB  | ####       |  40% mkl-2023.1.0         | 171.5 MB  | ####       |  40% mkl-2023.1.0         | 171.5 MB  | ####       |  40% mkl-2023.1.0         | 171.5 MB  | ####       |  41% mkl-2023.1.0         | 171.5 MB  | ####       |  41% mkl-2023.1.0         | 171.5 MB  | ####1      |  41% mkl-2023.1.0         | 171.5 MB  | ####1      |  41% mkl-2023.1.0         | 171.5 MB  | ####1      |  42% mkl-2023.1.0         | 171.5 MB  | ####1      |  42% mkl-2023.1.0         | 171.5 MB  | ####2      |  42% mkl-2023.1.0         | 171.5 MB  | ####2      |  42% mkl-2023.1.0         | 171.5 MB  | ####2      |  43% mkl-2023.1.0         | 171.5 MB  | ####2      |  43% mkl-2023.1.0         | 171.5 MB  | ####3      |  43% mkl-2023.1.0         | 171.5 MB  | ####3      |  43% mkl-2023.1.0         | 171.5 MB  | ####3      |  44% mkl-2023.1.0         | 171.5 MB  | ####3      |  44% mkl-2023.1.0         | 171.5 MB  | ####4      |  44% mkl-2023.1.0         | 171.5 MB  | ####4      |  44% mkl-2023.1.0         | 171.5 MB  | ####4      |  45% mkl-2023.1.0         | 171.5 MB  | ####5      |  45% mkl-2023.1.0         | 171.5 MB  | ####5      |  45% mkl-2023.1.0         | 171.5 MB  | ####5      |  46% mkl-2023.1.0         | 171.5 MB  | ####6      |  46% mkl-2023.1.0         | 171.5 MB  | ####6      |  46% mkl-2023.1.0         | 171.5 MB  | ####6      |  47% mkl-2023.1.0         | 171.5 MB  | ####6      |  47% mkl-2023.1.0         | 171.5 MB  | ####7      |  47% mkl-2023.1.0         | 171.5 MB  | ####7      |  48% mkl-2023.1.0         | 171.5 MB  | ####7      |  48% mkl-2023.1.0         | 171.5 MB  | ####8      |  48% mkl-2023.1.0         | 171.5 MB  | ####8      |  49% mkl-2023.1.0         | 171.5 MB  | ####8      |  49% mkl-2023.1.0         | 171.5 MB  | ####9      |  49% mkl-2023.1.0         | 171.5 MB  | ####9      |  50% mkl-2023.1.0         | 171.5 MB  | #####      |  50% mkl-2023.1.0         | 171.5 MB  | #####      |  50% mkl-2023.1.0         | 171.5 MB  | #####      |  51% mkl-2023.1.0         | 171.5 MB  | #####1     |  51% mkl-2023.1.0         | 171.5 MB  | #####1     |  52% mkl-2023.1.0         | 171.5 MB  | #####2     |  53% mkl-2023.1.0         | 171.5 MB  | #####2     |  53% mkl-2023.1.0         | 171.5 MB  | #####3     |  53% mkl-2023.1.0         | 171.5 MB  | #####3     |  54% mkl-2023.1.0         | 171.5 MB  | #####4     |  54% mkl-2023.1.0         | 171.5 MB  | #####4     |  54% mkl-2023.1.0         | 171.5 MB  | #####4     |  55% mkl-2023.1.0         | 171.5 MB  | #####5     |  55% mkl-2023.1.0         | 171.5 MB  | #####5     |  56% mkl-2023.1.0         | 171.5 MB  | #####6     |  56% mkl-2023.1.0         | 171.5 MB  | #####7     |  57% mkl-2023.1.0         | 171.5 MB  | #####7     |  58% mkl-2023.1.0         | 171.5 MB  | #####8     |  58% mkl-2023.1.0         | 171.5 MB  | #####8     |  58% mkl-2023.1.0         | 171.5 MB  | #####8     |  59% mkl-2023.1.0         | 171.5 MB  | #####8     |  59% mkl-2023.1.0         | 171.5 MB  | #####9     |  59% mkl-2023.1.0         | 171.5 MB  | #####9     |  59% mkl-2023.1.0         | 171.5 MB  | #####9     |  60% mkl-2023.1.0         | 171.5 MB  | #####9     |  60% mkl-2023.1.0         | 171.5 MB  | ######     |  60% mkl-2023.1.0         | 171.5 MB  | ######     |  60% mkl-2023.1.0         | 171.5 MB  | ######     |  61% mkl-2023.1.0         | 171.5 MB  | ######     |  61% mkl-2023.1.0         | 171.5 MB  | ######     |  61% mkl-2023.1.0         | 171.5 MB  | ######1    |  61% mkl-2023.1.0         | 171.5 MB  | ######1    |  61% mkl-2023.1.0         | 171.5 MB  | ######1    |  62% mkl-2023.1.0         | 171.5 MB  | ######1    |  62% mkl-2023.1.0         | 171.5 MB  | ######1    |  62% mkl-2023.1.0         | 171.5 MB  | ######2    |  62% mkl-2023.1.0         | 171.5 MB  | ######2    |  62% mkl-2023.1.0         | 171.5 MB  | ######2    |  63% mkl-2023.1.0         | 171.5 MB  | ######2    |  63% mkl-2023.1.0         | 171.5 MB  | ######2    |  63% mkl-2023.1.0         | 171.5 MB  | ######3    |  63% mkl-2023.1.0         | 171.5 MB  | ######3    |  63% mkl-2023.1.0         | 171.5 MB  | ######3    |  64% mkl-2023.1.0         | 171.5 MB  | ######3    |  64% mkl-2023.1.0         | 171.5 MB  | ######3    |  64% mkl-2023.1.0         | 171.5 MB  | ######4    |  64% mkl-2023.1.0         | 171.5 MB  | ######4    |  64% mkl-2023.1.0         | 171.5 MB  | ######4    |  65% mkl-2023.1.0         | 171.5 MB  | ######4    |  65% mkl-2023.1.0         | 171.5 MB  | ######5    |  65% mkl-2023.1.0         | 171.5 MB  | ######5    |  65% mkl-2023.1.0         | 171.5 MB  | ######5    |  65% mkl-2023.1.0         | 171.5 MB  | ######5    |  66% mkl-2023.1.0         | 171.5 MB  | ######5    |  66% mkl-2023.1.0         | 171.5 MB  | ######6    |  66% mkl-2023.1.0         | 171.5 MB  | ######6    |  66% mkl-2023.1.0         | 171.5 MB  | ######6    |  67% mkl-2023.1.0         | 171.5 MB  | ######6    |  67% mkl-2023.1.0         | 171.5 MB  | ######6    |  67% mkl-2023.1.0         | 171.5 MB  | ######7    |  67% mkl-2023.1.0         | 171.5 MB  | ######7    |  67% mkl-2023.1.0         | 171.5 MB  | ######7    |  68% mkl-2023.1.0         | 171.5 MB  | ######7    |  68% mkl-2023.1.0         | 171.5 MB  | ######7    |  68% mkl-2023.1.0         | 171.5 MB  | ######8    |  68% mkl-2023.1.0         | 171.5 MB  | ######8    |  68% mkl-2023.1.0         | 171.5 MB  | ######8    |  69% mkl-2023.1.0         | 171.5 MB  | ######8    |  69% mkl-2023.1.0         | 171.5 MB  | ######9    |  69% mkl-2023.1.0         | 171.5 MB  | ######9    |  69% mkl-2023.1.0         | 171.5 MB  | ######9    |  70% mkl-2023.1.0         | 171.5 MB  | ######9    |  70% mkl-2023.1.0         | 171.5 MB  | #######    |  70% mkl-2023.1.0         | 171.5 MB  | #######    |  70% mkl-2023.1.0         | 171.5 MB  | #######    |  71% mkl-2023.1.0         | 171.5 MB  | #######    |  71% mkl-2023.1.0         | 171.5 MB  | #######    |  71% mkl-2023.1.0         | 171.5 MB  | #######1   |  71% mkl-2023.1.0         | 171.5 MB  | #######1   |  71% mkl-2023.1.0         | 171.5 MB  | #######1   |  72% mkl-2023.1.0         | 171.5 MB  | #######1   |  72% mkl-2023.1.0         | 171.5 MB  | #######1   |  72% mkl-2023.1.0         | 171.5 MB  | #######2   |  72% mkl-2023.1.0         | 171.5 MB  | #######2   |  72% mkl-2023.1.0         | 171.5 MB  | #######2   |  73% mkl-2023.1.0         | 171.5 MB  | #######2   |  73% mkl-2023.1.0         | 171.5 MB  | #######2   |  73% mkl-2023.1.0         | 171.5 MB  | #######3   |  73% mkl-2023.1.0         | 171.5 MB  | #######3   |  73% mkl-2023.1.0         | 171.5 MB  | #######3   |  74% mkl-2023.1.0         | 171.5 MB  | #######3   |  74% mkl-2023.1.0         | 171.5 MB  | #######3   |  74% mkl-2023.1.0         | 171.5 MB  | #######4   |  74% mkl-2023.1.0         | 171.5 MB  | #######4   |  74% mkl-2023.1.0         | 171.5 MB  | #######4   |  75% mkl-2023.1.0         | 171.5 MB  | #######4   |  75% mkl-2023.1.0         | 171.5 MB  | #######5   |  75% mkl-2023.1.0         | 171.5 MB  | #######5   |  75% mkl-2023.1.0         | 171.5 MB  | #######5   |  75% mkl-2023.1.0         | 171.5 MB  | #######5   |  76% mkl-2023.1.0         | 171.5 MB  | #######5   |  76% mkl-2023.1.0         | 171.5 MB  | #######6   |  76% mkl-2023.1.0         | 171.5 MB  | #######6   |  76% mkl-2023.1.0         | 171.5 MB  | #######6   |  76% mkl-2023.1.0         | 171.5 MB  | #######6   |  77% mkl-2023.1.0         | 171.5 MB  | #######6   |  77% mkl-2023.1.0         | 171.5 MB  | #######7   |  77% mkl-2023.1.0         | 171.5 MB  | #######7   |  77% mkl-2023.1.0         | 171.5 MB  | #######7   |  78% mkl-2023.1.0         | 171.5 MB  | #######7   |  78% mkl-2023.1.0         | 171.5 MB  | #######8   |  78% mkl-2023.1.0         | 171.5 MB  | #######8   |  78% mkl-2023.1.0         | 171.5 MB  | #######8   |  79% mkl-2023.1.0         | 171.5 MB  | #######8   |  79% mkl-2023.1.0         | 171.5 MB  | #######9   |  79% mkl-2023.1.0         | 171.5 MB  | #######9   |  79% mkl-2023.1.0         | 171.5 MB  | #######9   |  80% mkl-2023.1.0         | 171.5 MB  | #######9   |  80% mkl-2023.1.0         | 171.5 MB  | ########   |  80% mkl-2023.1.0         | 171.5 MB  | ########   |  80% mkl-2023.1.0         | 171.5 MB  | ########   |  81% mkl-2023.1.0         | 171.5 MB  | ########1  |  81% mkl-2023.1.0         | 171.5 MB  | ########1  |  81% mkl-2023.1.0         | 171.5 MB  | ########1  |  82% mkl-2023.1.0         | 171.5 MB  | ########2  |  82% mkl-2023.1.0         | 171.5 MB  | ########2  |  83% mkl-2023.1.0         | 171.5 MB  | ########3  |  83% mkl-2023.1.0         | 171.5 MB  | ########3  |  84% mkl-2023.1.0         | 171.5 MB  | ########4  |  84% mkl-2023.1.0         | 171.5 MB  | ########4  |  85% mkl-2023.1.0         | 171.5 MB  | ########5  |  85% mkl-2023.1.0         | 171.5 MB  | ########5  |  86% mkl-2023.1.0         | 171.5 MB  | ########6  |  87% mkl-2023.1.0         | 171.5 MB  | ########7  |  87% mkl-2023.1.0         | 171.5 MB  | ########7  |  88% mkl-2023.1.0         | 171.5 MB  | ########7  |  88% mkl-2023.1.0         | 171.5 MB  | ########8  |  88% mkl-2023.1.0         | 171.5 MB  | ########8  |  88% mkl-2023.1.0         | 171.5 MB  | ########8  |  89% mkl-2023.1.0         | 171.5 MB  | ########8  |  89% mkl-2023.1.0         | 171.5 MB  | ########9  |  89% mkl-2023.1.0         | 171.5 MB  | ########9  |  89% mkl-2023.1.0         | 171.5 MB  | ########9  |  90% mkl-2023.1.0         | 171.5 MB  | ########9  |  90% mkl-2023.1.0         | 171.5 MB  | #########  |  90% mkl-2023.1.0         | 171.5 MB  | #########  |  90% mkl-2023.1.0         | 171.5 MB  | #########  |  90% mkl-2023.1.0         | 171.5 MB  | #########  |  91% mkl-2023.1.0         | 171.5 MB  | #########  |  91% mkl-2023.1.0         | 171.5 MB  | #########1 |  91% mkl-2023.1.0         | 171.5 MB  | #########1 |  91% mkl-2023.1.0         | 171.5 MB  | #########1 |  91% mkl-2023.1.0         | 171.5 MB  | #########1 |  92% mkl-2023.1.0         | 171.5 MB  | #########1 |  92% mkl-2023.1.0         | 171.5 MB  | #########1 |  92% mkl-2023.1.0         | 171.5 MB  | #########2 |  92% mkl-2023.1.0         | 171.5 MB  | #########2 |  92% mkl-2023.1.0         | 171.5 MB  | #########2 |  93% mkl-2023.1.0         | 171.5 MB  | #########2 |  93% mkl-2023.1.0         | 171.5 MB  | #########2 |  93% mkl-2023.1.0         | 171.5 MB  | #########3 |  93% mkl-2023.1.0         | 171.5 MB  | #########3 |  93% mkl-2023.1.0         | 171.5 MB  | #########3 |  94% mkl-2023.1.0         | 171.5 MB  | #########3 |  94% mkl-2023.1.0         | 171.5 MB  | #########3 |  94% mkl-2023.1.0         | 171.5 MB  | #########4 |  94% mkl-2023.1.0         | 171.5 MB  | #########4 |  94% mkl-2023.1.0         | 171.5 MB  | #########4 |  95% mkl-2023.1.0         | 171.5 MB  | #########4 |  95% mkl-2023.1.0         | 171.5 MB  | #########4 |  95% mkl-2023.1.0         | 171.5 MB  | #########5 |  95% mkl-2023.1.0         | 171.5 MB  | #########5 |  95% mkl-2023.1.0         | 171.5 MB  | #########5 |  96% mkl-2023.1.0         | 171.5 MB  | #########5 |  96% mkl-2023.1.0         | 171.5 MB  | #########5 |  96% mkl-2023.1.0         | 171.5 MB  | #########6 |  96% mkl-2023.1.0         | 171.5 MB  | #########6 |  96% mkl-2023.1.0         | 171.5 MB  | #########6 |  96% mkl-2023.1.0         | 171.5 MB  | #########6 |  97% mkl-2023.1.0         | 171.5 MB  | #########6 |  97% mkl-2023.1.0         | 171.5 MB  | #########7 |  97% mkl-2023.1.0         | 171.5 MB  | #########7 |  97% mkl-2023.1.0         | 171.5 MB  | #########7 |  97% mkl-2023.1.0         | 171.5 MB  | #########7 |  98% mkl-2023.1.0         | 171.5 MB  | #########7 |  98% mkl-2023.1.0         | 171.5 MB  | #########8 |  98% mkl-2023.1.0         | 171.5 MB  | #########8 |  98% mkl-2023.1.0         | 171.5 MB  | #########8 |  98% mkl-2023.1.0         | 171.5 MB  | #########8 |  99% mkl-2023.1.0         | 171.5 MB  | #########8 |  99% mkl-2023.1.0         | 171.5 MB  | #########9 |  99% mkl-2023.1.0         | 171.5 MB  | #########9 |  99% mkl-2023.1.0         | 171.5 MB  | #########9 |  99% mkl-2023.1.0         | 171.5 MB  | #########9 | 100% mkl-2023.1.0         | 171.5 MB  | #########9 | 100% mkl-2023.1.0         | 171.5 MB  | #########9 | 100% mkl-2023.1.0         | 171.5 MB  | ########## | 100% mkl-2023.1.0         | 171.5 MB  | ########## | 100% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A                                                     
+                                                     [A
+
+                                                     [A[A
+
+
+                                                     [A[A[A
+
+
+
+                                                     [A[A[A[A
+
+
+
+
+                                                     [A[A[A[A[A
+
+
+
+
+
+                                                     [A[A[A[A[A[A
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+[A
+
+[A[A
+
+
+[A[A[A
+
+
+
+[A[A[A[A
+
+
+
+
+[A[A[A[A[A
+
+
+
+
+
+[A[A[A[A[A[A
+
+
+
+
+
+
+[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+[A
+
+[A[A
+
+
+[A[A[A
+
+
+
+[A[A[A[A
+
+
+
+
+[A[A[A[A[A
+
+
+
+
+
+[A[A[A[A[A[A
+
+
+
+
+
+
+[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+[A
+
+[A[A
+
+
+[A[A[A
+
+
+
+[A[A[A[A
+
+
+
+
+[A[A[A[A[A
+
+
+
+
+
+[A[A[A[A[A[A
+
+
+
+
+
+
+[A[A[A[A[A[A[A done
+Preparing transaction: | / - \ done
+Verifying transaction: / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / done
+Executing transaction: \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - done

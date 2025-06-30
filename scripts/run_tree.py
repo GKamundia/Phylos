@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Run tree building using augur tree with Windows WSL support
+Run two-step IQ-TREE2 tree building with Windows WSL support and publication-ready workflow
 """
 
 import os
@@ -8,179 +8,126 @@ import sys
 import subprocess
 import argparse
 import platform
+import re
+
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Run tree building for sequences")
+    parser = argparse.ArgumentParser(description="Run two-step IQ-TREE2 tree building for sequences")
     parser.add_argument("--alignment", required=True, help="Input alignment file")
-    parser.add_argument("--output", required=True, help="Output tree file")
-    parser.add_argument("--log", required=True, help="Log file")
-    parser.add_argument("--method", default="iqtree", choices=["iqtree", "fasttree"], 
-                        help="Tree building method")
-    parser.add_argument("--threads", type=int, default=4,
-                        help="Number of threads to use")
-    parser.add_argument("--substitution-model", default="GTR",
-                        help="Substitution model for tree building")
-    parser.add_argument("--iqtree-args", default="-ninit 2 -n 2",
-                        help="Additional IQ-TREE arguments")
+    parser.add_argument("--output", required=True, help="Output tree file (final support tree)")
+    parser.add_argument("--log", required=True, help="Log file (will contain both steps)")
+    parser.add_argument("--threads", type=int, default=4, help="Number of threads to use")
+    parser.add_argument("--seed", type=int, default=12345, help="Random seed for reproducibility")
+    parser.add_argument("--ml-prefix", default=None, help="Prefix for ML step outputs (default: output file basename)")
+    parser.add_argument("--support-prefix", default=None, help="Prefix for support step outputs (default: output file basename + _support)")
+    parser.add_argument("--n", type=int, default=10, help="Number of independent ML searches (Step 1)")
+    parser.add_argument("--ninit", type=int, default=100, help="Number of initial parsimony trees (Step 1)")
+    parser.add_argument("--bb", type=int, default=1000, help="Ultrafast bootstrap replicates (Step 2)")
+    parser.add_argument("--alrt", type=int, default=1000, help="SH-aLRT support replicates (Step 2)")
+    parser.add_argument("--nstop", type=int, default=100, help="Number of unsuccessful iterations to stop (Step 2, default: 100)")
     return parser.parse_args()
+
+def run_cmd(cmd, log_file, use_wsl=False):
+    # Log the command as a single line for reproducibility
+    cmd_str = ' '.join(cmd)
+    if use_wsl:
+        wsl_cmd = ["wsl", "bash", "-c", cmd_str]
+        with open(log_file, 'a') as log:
+            log.write(f"\nRunning WSL command (one line): {' '.join(wsl_cmd)}\n")
+        result = subprocess.run(wsl_cmd, capture_output=True, text=True)
+    else:
+        with open(log_file, 'a') as log:
+            log.write(f"\nRunning command (one line): {cmd_str}\n")
+        result = subprocess.run(cmd, capture_output=True, text=True)
+    with open(log_file, 'a') as log:
+        log.write(f"STDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}\n")
+    if result.returncode != 0:
+        raise RuntimeError(f"Command failed: {' '.join(cmd)}")
+    return result
+
+def extract_best_fit_model(iqtree_file):
+    # Look for 'Best-fit model according to BIC:' first, then fallback to 'Best-fit model:'
+    with open(iqtree_file, 'r') as f:
+        for line in f:
+            if 'Best-fit model according to BIC:' in line:
+                return line.strip().split(':', 1)[1].strip()
+        f.seek(0)
+        for line in f:
+            if 'Best-fit model:' in line:
+                return line.strip().split(':', 1)[1].strip()
+    raise RuntimeError(f"Best-fit model not found in {iqtree_file}")
 
 def main():
     args = parse_args()
-    
-    # Create output directory
     os.makedirs(os.path.dirname(args.output), exist_ok=True)
-    
-    # Check if we have alignment to build tree from
-    if not os.path.exists(args.alignment) or os.path.getsize(args.alignment) == 0:
-        with open(args.log, 'w') as log_file:
-            log_file.write('No alignment found for tree building\n')
-        open(args.output, 'w').close()
-        return
-    
-    # Count sequences in alignment
-    seq_count = 0
-    try:
-        with open(args.alignment, 'r') as f:
-            seq_count = sum(1 for line in f if line.startswith('>'))
-    except:
-        seq_count = 0
-    
-    with open(args.log, 'w') as log_file:
-        log_file.write(f'Building tree from {seq_count} aligned sequences\n')
-    
-    if seq_count < 2:
-        with open(args.log, 'a') as log_file:
-            log_file.write('Need at least 2 sequences to build a tree\n')
-        open(args.output, 'w').close()
-        return
-    
-    # Construct the augur tree command
-    tree_cmd = [
-        "augur", "tree",
-        "--alignment", args.alignment,
-        "--output", args.output,
-        "--nthreads", str(args.threads)
+    log_file = args.log
+    # Detect if we are on Windows and need to use WSL
+    use_wsl = False
+    if platform.system() == "Windows":
+        use_wsl = True
+        # Convert paths to WSL format
+        def to_wsl_path(path):
+            return path.replace('C:', '/mnt/c').replace('c:', '/mnt/c').replace('\\', '/').replace('\\', '/')
+        args.alignment = to_wsl_path(args.alignment)
+        args.output = to_wsl_path(args.output)
+        if args.ml_prefix:
+            args.ml_prefix = to_wsl_path(args.ml_prefix)
+        if args.support_prefix:
+            args.support_prefix = to_wsl_path(args.support_prefix)
+        log_file = to_wsl_path(log_file)
+    # Step 1: ML tree search/model selection
+    ml_prefix = args.ml_prefix or os.path.splitext(args.output)[0]
+    ml_prefix = re.sub(r'_support$', '', ml_prefix)  # Remove _support if present
+    ml_treefile = f"{ml_prefix}.treefile"
+    ml_iqtree = f"{ml_prefix}.iqtree"
+    ml_cmd = [
+        "iqtree2",
+        "-s", args.alignment,
+        "-m", "MFP",
+        "-nt", "AUTO",
+        "-n", str(args.n),
+        "--ninit", str(args.ninit),
+        "--safe",
+        "--seed", str(args.seed),
+        "--keep-ident",
+        "--redo",
+        "-pre", ml_prefix
     ]
-    
-    if args.method == "iqtree":
-        tree_cmd.extend([
-            "--method", "iqtree",
-            "--substitution-model", args.substitution_model
-        ])
-        # Add IQ-TREE specific arguments
-        if args.iqtree_args:
-            tree_cmd.extend(args.iqtree_args.split())
+    with open(log_file, 'w') as log:
+        log.write(f"Step 1: ML tree search/model selection\n")
+    run_cmd(ml_cmd, log_file, use_wsl=use_wsl)
+    # Step 2: Support estimation
+    best_model = extract_best_fit_model(ml_iqtree)
+    support_prefix = args.support_prefix or (ml_prefix + "_support")
+    support_cmd = [
+        "iqtree2",
+        "-s", args.alignment,
+        "-m", best_model,
+        "-nt", "AUTO",
+        "--keep-ident",
+        "--safe",
+        "--seed", str(args.seed),
+        "-bb", str(args.bb),
+        "-alrt", str(args.alrt),
+        "--redo",
+        "-pre", support_prefix
+    ]
+    # Always add --nstop (default 100 if not provided)
+    nstop_val = args.nstop if args.nstop is not None else 100
+    support_cmd.extend(["--nstop", str(nstop_val)])
+    with open(log_file, 'a') as log:
+        log.write(f"\nStep 2: Branch support estimation\n")
+    run_cmd(support_cmd, log_file, use_wsl=use_wsl)
+    # Copy final support tree to requested output
+    final_tree = f"{support_prefix}.treefile"
+    # Only copy if source and destination are different
+    if os.path.abspath(final_tree) != os.path.abspath(args.output):
+        import shutil
+        shutil.copy(final_tree, args.output)
     else:
-        tree_cmd.extend(["--method", "fasttree"])
-    
-    # Run the tree building
-    try:
-        with open(args.log, 'a') as log_file:
-            log_file.write(f"Running command: {' '.join(tree_cmd)}\n")
-        
-        # Check if we're on Windows and need special handling
-        if platform.system() == "Windows":
-            # Try different approaches for Windows
-            success = False
-            
-            # Option 1: Try with WSL (Windows Subsystem for Linux)
-            try:
-                with open(args.log, 'a') as log_file:
-                    log_file.write("Attempting tree building with WSL\n")
-                
-                # Convert Windows paths to WSL paths
-                wsl_alignment = args.alignment.replace('C:', '/mnt/c').replace('\\', '/')
-                wsl_output = args.output.replace('C:', '/mnt/c').replace('\\', '/')
-                
-                # Check if WSL has augur in virtual environment
-                check_augur = subprocess.run([
-                    "wsl", "bash", "-c", ". /home/anarchy/augur-env/bin/activate && which augur"
-                ], capture_output=True, text=True)
-                
-                if check_augur.returncode != 0:
-                    raise Exception("Augur not found in WSL virtual environment")
-                  # Construct WSL command with virtual environment activation
-                if args.method == "iqtree":
-                    augur_cmd = f". /home/anarchy/augur-env/bin/activate && augur tree --alignment '{wsl_alignment}' --output '{wsl_output}' --method iqtree --substitution-model {args.substitution_model} --nthreads {args.threads}"
-                    if args.iqtree_args:
-                        augur_cmd += f" --tree-builder-args '{args.iqtree_args}'"
-                else:
-                    augur_cmd = f". /home/anarchy/augur-env/bin/activate && augur tree --alignment '{wsl_alignment}' --output '{wsl_output}' --method fasttree --nthreads {args.threads}"
-                
-                wsl_tree_cmd = ["wsl", "bash", "-c", augur_cmd]
-                
-                with open(args.log, 'a') as log_file:
-                    log_file.write(f"WSL command: {' '.join(wsl_tree_cmd)}\n")
-                
-                result = subprocess.run(wsl_tree_cmd, capture_output=True, text=True, check=True)
-                success = True
-                
-                with open(args.log, 'a') as log_file:
-                    log_file.write("WSL tree building completed successfully\n")
-                    if result.stdout:
-                        log_file.write(f"STDOUT:\n{result.stdout}\n")
-                    if result.stderr:
-                        log_file.write(f"STDERR:\n{result.stderr}\n")
-                        
-            except Exception as wsl_error:
-                with open(args.log, 'a') as log_file:
-                    log_file.write(f"WSL approach failed: {wsl_error}\n")
-            
-            # Option 2: Try with conda environment (if WSL failed)
-            if not success:
-                try:
-                    with open(args.log, 'a') as log_file:
-                        log_file.write("Attempting tree building with conda environment\n")
-                    
-                    # Try to run in conda environment
-                    conda_env_name = "mafft-env"
-                    conda_cmd = [
-                        "conda", "run", "-n", conda_env_name
-                    ] + tree_cmd
-                    
-                    with open(args.log, 'a') as log_file:
-                        log_file.write(f"Conda command: {' '.join(conda_cmd)}\n")
-                    
-                    result = subprocess.run(conda_cmd, capture_output=True, text=True, check=True)
-                    success = True
-                    
-                    with open(args.log, 'a') as log_file:
-                        log_file.write("Conda environment tree building completed successfully\n")
-                        if result.stdout:
-                            log_file.write(f"STDOUT:\n{result.stdout}\n")
-                        if result.stderr:
-                            log_file.write(f"STDERR:\n{result.stderr}\n")
-                            
-                except Exception as conda_error:
-                    with open(args.log, 'a') as log_file:
-                        log_file.write(f"Conda environment approach failed: {conda_error}\n")
-            
-            # Option 3: Final fallback - create empty tree
-            if not success:
-                with open(args.log, 'a') as log_file:
-                    log_file.write("Using final fallback - creating empty tree file\n")
-                    log_file.write("WARNING: No proper tree was built!\n")
-                open(args.output, 'w').close()
-                
-        else:
-            # Normal augur tree for Linux/Mac
-            result = subprocess.run(tree_cmd, capture_output=True, text=True, check=True)
-            
-            with open(args.log, 'a') as log_file:
-                log_file.write("Tree building completed successfully\n")
-                if result.stdout:
-                    log_file.write(f"STDOUT:\n{result.stdout}\n")
-                if result.stderr:
-                    log_file.write(f"STDERR:\n{result.stderr}\n")
-                
-    except subprocess.CalledProcessError as e:
-        with open(args.log, 'a') as log_file:
-            log_file.write(f'Tree building failed: {e}\n')
-            if e.stdout:
-                log_file.write(f"STDOUT:\n{e.stdout}\n")
-            if e.stderr:
-                log_file.write(f"STDERR:\n{e.stderr}\n")
-        raise
+        with open(log_file, 'a') as log:
+            log.write(f"Output tree file {final_tree} is already at the requested location. No copy needed.\n")
+        open(args.output, 'w').close()
 
 if __name__ == "__main__":
     main()

@@ -175,10 +175,14 @@ def get_final_outputs(wildcards):
     
     return outputs
 
+all_outputs = (
+    get_final_outputs(None)
+    + expand("results/segments/{segment}/raw/{prefix}_{segment}_sequences.fasta", segment=segments, prefix=output_prefix)
+    + expand("results/segments/{segment}/filtered/{prefix}_{segment}_metadata.tsv", segment=segments, prefix=output_prefix)
+)
+
 rule all:
-    input:
-        # Dynamic output targets based on segment mode
-        get_final_outputs
+    input: all_outputs
 
 # Define a target rule for validated outputs
 rule validate_outputs:
