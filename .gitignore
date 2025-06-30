@@ -61,3 +61,6 @@ augur/
 # Environment files (but keep templates)
 environment.lock.yml
 conda-env/
+
+# Ignore large installers and binaries
+Miniconda3-latest-Linux-x86_64.sh
