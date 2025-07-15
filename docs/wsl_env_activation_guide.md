@@ -93,7 +93,9 @@ This guide explains how to activate and use both Conda environments and Python v
 - [Conda User Guide](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
 - [Python venv Documentation](https://docs.python.org/3/library/venv.html)
 
-/root/miniconda3/bin/conda init bash
-exec bash
+1. /root/miniconda3/condabin/conda init bash
+2. exec bash
+3. conda activate nextstrain-py39
 
-conda activate nextstrain-py39
+Installed augur in nextstrain-py39 using:
+conda install -c conda-forge -c bioconda augur

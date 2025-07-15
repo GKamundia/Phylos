@@ -141,14 +141,17 @@ augur refine --tree results/segments/L/aligned/rvf_L_aligned_support.treefile --
 
 1. Installed conda install -c conda-forge -c bioconda augur
 
-2. refine
+1. tree building:
+   (nextstrain-py39) root@Anarchy:/mnt/c/Users/Anarchy/Documents/Data_Science/NextStrain/rvf-nextstrain# augur tree --method iqtree --alignment results/segments/L/aligned/rvf_L_aligned.fasta --substitution-model auto --output results/segments/L/aligned/rvf_L_aligned.tree --nthreads auto --tree-builder-args="--ninit 100 -n 10 --nstop 500 -bb 1000 --alrt 1000" --override-default-args
+
+1. refine
    (nextstrain-py39) root@Anarchy:/mnt/c/Users/Anarchy/Documents/Data_Science/NextStrain/rvf-nextstrain# augur refine --alignment results/segments/L/aligned/rvf_L_aligned.fasta --tree results/segments/L/aligned/rvf_L_aligned_support.treefile --metadata results/segments/L/filtered/rvf_L_metadata_minimal.tsv --output-tree results/segments/L/refined/rvf_L_refined.tree --output-node-data results/segments/L/refined/rvf_L_refined_node_data.json --date-confidence --coalescent opt --clock-filter-iqd 4 --keep-root --date-inference marginal --timetree
 
-3. Ancestral
+1. Ancestral
    (nextstrain-py39) root@Anarchy:/mnt/c/Users/Anarchy/Documents/Data_Science/NextStrain/rvf-nextstrain# augur ancestral --tree results/segments/L/refined/rvf_L_refined.tree --alignment results/segments/L/aligned/rvf_L_aligned.fasta --output-node-data results/segments/L/node_data/rvf_L_nt_muts.json
 
-4. Traits
+1. Traits
    (nextstrain-py39) root@Anarchy:/mnt/c/Users/Anarchy/Documents/Data_Science/NextStrain/rvf-nextstrain# augur traits --tree results/segments/L/refined/rvf_L_refined.tree --metadata results/segments/L/filtered/rvf_L_metadata_minimal.tsv --output results/segments/L/traits/rvf_L_traits.json --columns country
 
-5. Export
+1. Export
    (nextstrain-py39) root@Anarchy:/mnt/c/Users/Anarchy/Documents/Data_Science/NextStrain/rvf-nextstrain# augur export v2 --tree results/segments/L/refined/rvf_L_refined.tree --node-data results/segments/L/refined/rvf_L_refined_node_data.json --node-data results/segments/L/node_data/rvf_L_nt_muts.json --node-data results/segments/L/traits/rvf_L_traits.json --metadata results/segments/L/filtered/rvf_L_metadata_minimal.tsv --output auspice/rvf_L.json
