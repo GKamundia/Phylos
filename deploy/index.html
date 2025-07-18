@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RVF Nextstrain Dashboard</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 800px; 
+            margin: 2rem auto; 
+            padding: 1rem; 
+            background: #f5f5f5; 
+        }
+        .container { 
+            background: white; 
+            padding: 2rem; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+        }
+        .download-link { 
+            display: block; 
+            padding: 1rem; 
+            margin: 1rem 0; 
+            background: #e3f2fd; 
+            border: 2px solid #2196f3; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            color: #0d47a1; 
+        }
+        .download-link:hover { 
+            background: #bbdefb; 
+        }
+        h1 { 
+            color: #1565c0; 
+            text-align: center; 
+        }
+        .desc { 
+            font-size: 0.9em; 
+            color: #666; 
+            margin-top: 0.5rem; 
+            font-style: italic; 
+        }
+        .info { 
+            background: #fff3cd; 
+            border: 1px solid #ffeaa7; 
+            border-radius: 4px; 
+            padding: 1rem; 
+            margin: 1rem 0; 
+        }
+        .howto {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🦠 Rift Valley Fever Nextstrain Dashboard</h1>
+        
+        <div class="info">
+            <strong>📱 How to view:</strong> Download the JSON files below and drag them to auspice.us for visualization.
+        </div>
+        
+        <p><strong>Genomic surveillance and phylogenetic analysis of Rift Valley Fever virus segments.</strong></p>
+        
+        <a href="rvf_L.json" class="download-link" download>
+            <strong>🧬 RVF Segment L (Large)</strong>
+            <div class="desc">RNA-dependent RNA polymerase gene - Click to download</div>
+        </a>
+        
+        <a href="rvf_M.json" class="download-link" download>
+            <strong>🧬 RVF Segment M (Medium)</strong>
+            <div class="desc">Glycoprotein genes and NSm protein - Click to download</div>
+        </a>
+        
+        <a href="rvf_S.json" class="download-link" download>
+            <strong>🧬 RVF Segment S (Small)</strong>
+            <div class="desc">Nucleocapsid protein and NSs protein genes - Click to download</div>
+        </a>
+        
+        <div class="howto">
+            <p><strong>🎯 How to use these files:</strong></p>
+            <ol>
+                <li>Click the download links above to save JSON files</li>
+                <li>Go to <a href="https://auspice.us" target="_blank">auspice.us</a></li>
+                <li>Drag and drop the JSON files onto the page</li>
+                <li>Explore your phylogenetic data!</li>
+            </ol>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #ddd; color: #666;">
+            <p><small>Built with <strong>Nextstrain</strong> | 
+            <a href="https://github.com/GKamundia/Phylos" target="_blank">View Source Code</a></small></p>
+        </div>
+    </div>
+</body>
+</html>
