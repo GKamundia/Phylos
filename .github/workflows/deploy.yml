@@ -51,10 +51,26 @@ jobs:
       - name: Build interactive Auspice dashboard
         run: |
           echo "Building interactive Auspice dashboard..."
-
+          
+          # Create build directory
+          mkdir -p build
+          
           # Build the complete Auspice site with interactive viewer
-          auspice build --extend ./auspice --outputDir ./build
-
+          # Auspice build creates files in current directory, so we need to work differently
+          auspice build --extend ./auspice
+          
+          # Move generated files to build directory
+          if [ -d "auspice" ]; then
+            # Copy the generated Auspice web files to build directory
+            cp -r auspice/* build/ 2>/dev/null || true
+          fi
+          
+          # Also copy any generated HTML files
+          find . -maxdepth 1 -name "*.html" -exec cp {} build/ \; 2>/dev/null || true
+          
+          # Copy JSON files to build directory for direct access
+          cp auspice/*.json build/ 2>/dev/null || true
+          
           # Create main index.html that links to the actual dashboards
           cat > build/index.html << 'EOF'
           <!DOCTYPE html>
@@ -114,6 +130,20 @@ jobs:
                       color: #155724;
                       text-align: center;
                   }
+                  .nextstrain-link {
+                      display: block;
+                      padding: 1rem;
+                      margin: 0.5rem 0;
+                      background: #f8f9fa;
+                      border: 2px solid #007bff;
+                      border-radius: 8px;
+                      text-decoration: none;
+                      color: #007bff;
+                      text-align: center;
+                  }
+                  .nextstrain-link:hover {
+                      background: #e9ecef;
+                  }
               </style>
           </head>
           <body>
@@ -121,7 +151,7 @@ jobs:
                   <h1>🦠 Rift Valley Fever<br>Nextstrain Dashboard</h1>
                   
                   <div class="status">
-                      <strong>✅ Interactive dashboards are live!</strong><br>
+                      <strong>✅ Interactive dashboards are ready!</strong><br>
                       Click below to explore phylogenetic analyses of RVF virus segments.
                   </div>
                   
@@ -129,20 +159,30 @@ jobs:
                       <strong>Genomic surveillance and phylogenetic analysis of Rift Valley Fever virus segments</strong>
                   </p>
                   
-                  <a href="./rvf_L" class="dashboard-link">
+                  <a href="https://nextstrain.org/fetch/gkamundia.github.io/Phylos/rvf_L.json" class="dashboard-link" target="_blank">
                       <strong>🧬 RVF Segment L (Large)</strong>
                       <div class="desc">RNA-dependent RNA polymerase gene - Largest genomic segment</div>
                   </a>
                   
-                  <a href="./rvf_M" class="dashboard-link">
+                  <a href="https://nextstrain.org/fetch/gkamundia.github.io/Phylos/rvf_M.json" class="dashboard-link" target="_blank">
                       <strong>🧬 RVF Segment M (Medium)</strong>
                       <div class="desc">Glycoprotein genes (Gn, Gc) and NSm protein</div>
                   </a>
                   
-                  <a href="./rvf_S" class="dashboard-link">
+                  <a href="https://nextstrain.org/fetch/gkamundia.github.io/Phylos/rvf_S.json" class="dashboard-link" target="_blank">
                       <strong>🧬 RVF Segment S (Small)</strong>
                       <div class="desc">Nucleocapsid protein and NSs protein genes</div>
                   </a>
+                  
+                  <div style="margin: 2rem 0; padding: 1rem; background: #fff3cd; border-radius: 8px;">
+                      <p><strong>💡 Alternative viewing options:</strong></p>
+                      <a href="rvf_L.json" class="nextstrain-link" download>📥 Download L segment JSON</a>
+                      <a href="rvf_M.json" class="nextstrain-link" download>📥 Download M segment JSON</a>
+                      <a href="rvf_S.json" class="nextstrain-link" download>📥 Download S segment JSON</a>
+                      <p style="font-size: 0.9em; margin-top: 1rem; color: #856404;">
+                          Download files and drag them to <a href="https://auspice.us" target="_blank">auspice.us</a> for offline viewing.
+                      </p>
+                  </div>
                   
                   <div style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #ddd; color: #6c757d;">
                       <p>Built with <strong>Nextstrain</strong> | 
@@ -152,9 +192,7 @@ jobs:
               </div>
           </body>
           </html>
-          EOF
-
-          echo "✅ Interactive Auspice dashboard created"
+          EOF          echo "✅ Interactive Auspice dashboard created"
           echo "📂 Build contents:"
           ls -la build/
           echo ""
