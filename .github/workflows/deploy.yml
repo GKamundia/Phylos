@@ -177,7 +177,7 @@ jobs:
           </body>
           </html>
           EOF
-          
+
           echo "✅ Dashboard deployment created"
           echo "📂 Build contents:"
           ls -la build/
