@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RVF Nextstrain Dashboard</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif;
+            max-width: 800px; 
+            margin: 2rem auto; 
+            padding: 0 1rem;
+            line-height: 1.6;
+            background-color: #f8f9fa;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .dashboard-link {
+            display: block;
+            padding: 1rem;
+            margin: 1rem 0;
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #0d47a1;
+            transition: all 0.3s;
+        }
+        .dashboard-link:hover {
+            background: #bbdefb;
+            transform: translateY(-2px);
+        }
+        h1 { 
+            color: #1565c0; 
+            text-align: center;
+            border-bottom: 3px solid #2196f3;
+            padding-bottom: 1rem;
+        }
+        .segment-description { 
+            font-size: 0.9em; 
+            color: #424242; 
+            margin-top: 0.5rem; 
+            font-style: italic;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #ddd;
+            color: #666;
+        }
+        .status {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            border-radius: 4px;
+            padding: 0.5rem;
+            margin: 1rem 0;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🦠 Rift Valley Fever Nextstrain Dashboard</h1>
+        
+        <div class="status">
+            <strong>✅ Status:</strong> Dashboard is live and ready to use!
+        </div>
+        
+        <p><strong>Genomic surveillance and phylogenetic analysis of Rift Valley Fever virus segments.</strong></p>
+        <p>Select a viral segment below to explore the phylogenetic data:</p>
+        
+        <a href="./auspice/rvf_L.json" class="dashboard-link" target="_blank">
+            <strong>🧬 RVF Segment L (Large)</strong>
+            <div class="segment-description">RNA-dependent RNA polymerase gene - The largest genomic segment</div>
+        </a>
+        
+        <a href="./auspice/rvf_M.json" class="dashboard-link" target="_blank">
+            <strong>🧬 RVF Segment M (Medium)</strong>
+            <div class="segment-description">Glycoprotein genes (Gn, Gc) and NSm protein - Medium genomic segment</div>
+        </a>
+        
+        <a href="./auspice/rvf_S.json" class="dashboard-link" target="_blank">
+            <strong>🧬 RVF Segment S (Small)</strong>
+            <div class="segment-description">Nucleocapsid protein and NSs protein genes - Smallest genomic segment</div>
+        </a>
+        
+        <div class="footer">
+            <p><small>Built with <strong>Nextstrain</strong> | 
+            <a href="https://github.com/GKamundia/Phylos" target="_blank">View Source Code</a></small></p>
+            <p><small>For best experience, open links in a new tab or use the Nextstrain web application</small></p>
+        </div>
+    </div>
+
+    <script>
+        // Add click tracking for analytics (optional)
+        document.querySelectorAll('.dashboard-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                console.log('Viewing segment:', this.textContent.trim());
+            });
+        });
+    </script>
+</body>
+</html>
