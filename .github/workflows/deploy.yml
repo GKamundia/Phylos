@@ -45,32 +45,16 @@ jobs:
         with:
           node-version: "18"
 
-      - name: Install Auspice
-        run: npm install -g auspice
-
-      - name: Build interactive Auspice dashboard
+      - name: Create dashboard deployment
         run: |
-          echo "Building interactive Auspice dashboard..."
-          
+          echo "Creating dashboard deployment..."
+
           # Create build directory
           mkdir -p build
-          
-          # Build the complete Auspice site with interactive viewer
-          # Auspice build creates files in current directory, so we need to work differently
-          auspice build --extend ./auspice
-          
-          # Move generated files to build directory
-          if [ -d "auspice" ]; then
-            # Copy the generated Auspice web files to build directory
-            cp -r auspice/* build/ 2>/dev/null || true
-          fi
-          
-          # Also copy any generated HTML files
-          find . -maxdepth 1 -name "*.html" -exec cp {} build/ \; 2>/dev/null || true
-          
+
           # Copy JSON files to build directory for direct access
-          cp auspice/*.json build/ 2>/dev/null || true
-          
+          cp auspice/*.json build/
+
           # Create main index.html that links to the actual dashboards
           cat > build/index.html << 'EOF'
           <!DOCTYPE html>
@@ -192,12 +176,14 @@ jobs:
               </div>
           </body>
           </html>
-          EOF          echo "✅ Interactive Auspice dashboard created"
+          EOF
+          
+          echo "✅ Dashboard deployment created"
           echo "📂 Build contents:"
           ls -la build/
           echo ""
-          echo "🔍 Checking for dashboard files:"
-          find build/ -name "*.html" -o -name "*.js" -o -name "*.json" | head -10
+          echo "🔍 JSON files available:"
+          find build/ -name "*.json" | head -10
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
