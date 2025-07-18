@@ -54,7 +54,7 @@ Thumbs.db
 *.swo
 
 # Nextstrain specific
-auspice/
+# auspice/ - commented out to allow deployment of JSON files
 augur/
 .snakemake/
 
